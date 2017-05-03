@@ -50,11 +50,13 @@ public class MainPage extends Application implements Initializable {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
         primaryStage.setTitle("Little Chat");
-        primaryStage.setMaximized(true);
-        primaryStage.setResizable(false);
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add(
                 getClass().getResource("../assets/style.css").toExternalForm());
+        primaryStage.setMaximized(true);
+        primaryStage.setResizable(false);
+        primaryStage.setMinWidth(800);
+        primaryStage.setMinHeight(600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
