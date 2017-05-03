@@ -3,6 +3,6 @@
 }
 
 .button {
-    color: white;
     -fx-background-color: #da3;
+    -fx-border-radius: 10px;
 }
