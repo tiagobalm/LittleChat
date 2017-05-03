@@ -10,14 +10,14 @@ import java.util.ResourceBundle;
 /**
  * Created by vasco on 03-05-2017.
  */
-public class LoginButton implements Initializable {
+public class RegisterButton implements Initializable {
 
-    @FXML //  fx:id="login"
-    private Button loginButton; // Value injected by FXMLLoader
+    @FXML //  fx:id="register"
+    private Button registerButton; // Value injected by FXMLLoader
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        assert loginButton != null :
-                    "fx:id=\"myButton\" was not injected: check your FXML file 'login.fxml'.";
+        assert registerButton != null :
+                "fx:id=\"myButton\" was not injected: check your FXML file 'login.fxml'.";
     }
 }
