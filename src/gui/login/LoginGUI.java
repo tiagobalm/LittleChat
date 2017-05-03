@@ -46,6 +46,7 @@ public class LoginGUI extends Application implements Initializable {
         scene.getStylesheets().add(
                 getClass().getResource("../assets/style.css").toExternalForm());
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
@@ -62,19 +63,42 @@ public class LoginGUI extends Application implements Initializable {
     }
 
     @FXML
-    private void setPane(Pane pane, boolean arg) {
-        pane.setDisable(!arg);
-        pane.setVisible(arg);
-
-        if( arg ) {
-            FadeTransition ft = new FadeTransition(Duration.millis(500), pane);
-            ft.setFromValue(0);
-            ft.setToValue(1);
-            ft.setCycleCount(1);
-            ft.setInterpolator(Interpolator.LINEAR);
-            ft.setAutoReverse(true);
-            ft.play();
+    private void setPane(Pane pane, boolean show) {
+        if( show ) {
+            pane.setDisable(!show);
+            pane.setVisible(show);
+            TranslateTransition tt = getPaneTransition(pane, show);
+            tt.play();
+        } else {
+            TranslateTransition tt = getPaneTransition(pane, show);
+            tt.setOnFinished(e -> {
+                tt.getNode().setVisible(false);
+                tt.getNode().setDisable(true);
+                System.out.println(tt.getNode().isDisable());
+                System.out.println(tt.getNode().isVisible());
+            });
+            tt.play();
         }
+    }
+
+    private TranslateTransition getPaneTransition(Pane pane, boolean show){
+        TranslateTransition tt;
+        int orgX = (state == MenuState.MENU) ? -600 : 600;
+        int dstX = 0;
+
+        tt = new TranslateTransition(Duration.millis(500), pane);
+        tt.setCycleCount(1);
+        tt.setAutoReverse(true);
+
+        if( show ) {
+            tt.setFromX(orgX);
+            tt.setToX(dstX);
+        } else {
+            tt.setFromX(dstX);
+            tt.setToX(orgX);
+        }
+
+        return tt;
     }
 
     private void disableCurrState() {
