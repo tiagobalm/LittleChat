@@ -21,7 +21,7 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Button fx:id="menuRegisterButton" contentDisplay="CENTER" layoutX="333.0" layoutY="230.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="127.0" text="Register" textFill="WHITE">
+            <Button fx:id="menuRegisterButton" contentDisplay="CENTER" layoutX="333.0" layoutY="230.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="127.0" styleClass="button" text="Register" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -47,7 +47,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Button fx:id="loginButton" layoutX="306.0" layoutY="319.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" style="-fx-background-color: #3c3; -fx-border-radius: 10px;" text="Login" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="loginButton" layoutX="306.0" layoutY="319.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" styleClass="button"  text="Login" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
