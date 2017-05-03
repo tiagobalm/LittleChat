@@ -46,6 +46,7 @@ public class LoginGUI extends Application implements Initializable {
         scene.getStylesheets().add(
                 getClass().getResource("../assets/style.css").toExternalForm());
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
