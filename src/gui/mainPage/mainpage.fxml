@@ -1,8 +1,24 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
+<?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<GridPane fx:controller="gui.mainPage.MainPage"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-</GridPane>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="73.0" spacing="30.0">
+         <children>
+            <Button id="roomsButton" mnemonicParsing="false" />
+            <Button id="friendsButton" mnemonicParsing="false" />
+            <Button id="friendRequestButton" mnemonicParsing="false" />
+            <Button id="profileButton" mnemonicParsing="false" />
+            <Button id="logoutButton" mnemonicParsing="false" />
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />
+         </padding>
+      </VBox>
+      <AnchorPane id="roomsPanel" layoutX="73.0" prefHeight="400.0" prefWidth="116.0" />
+   </children>
+</AnchorPane>

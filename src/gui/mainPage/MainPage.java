@@ -12,6 +12,7 @@ public class MainPage extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
         primaryStage.setTitle("Hello World");
+        primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
     }
