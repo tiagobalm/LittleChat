@@ -21,8 +21,5 @@ public class LoginGUI extends Application {
         primaryStage.setTitle("LittleChat");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
-
-        StackPane page = FXMLLoader.load(LoginGUI.class.getResource("login.fxml"));
-        Scene scene = new Scene(page);
     }
 }
