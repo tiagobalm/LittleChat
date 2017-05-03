@@ -14,12 +14,12 @@
                   <Font name="System Bold" size="39.0" />
                </font>
             </Label>
-            <Button contentDisplay="CENTER" layoutX="137.0" layoutY="230.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="127.0" style="-fx-border-radius: 10px; -fx-background-color: #3c3;" text="Login" textFill="WHITE">
+            <Button fx:id="loginButton" contentDisplay="CENTER" layoutX="137.0" layoutY="230.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="127.0" style="-fx-border-radius: 10px; -fx-background-color: #3c3;" text="Login" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Button contentDisplay="CENTER" layoutX="333.0" layoutY="230.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="127.0" style="-fx-border-radius: 10px; -fx-background-color: #3c3;" text="Register" textFill="WHITE">
+            <Button fx:id="registerButton" contentDisplay="CENTER" layoutX="333.0" layoutY="230.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="127.0" style="-fx-border-radius: 10px; -fx-background-color: #3c3;" text="Register" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
