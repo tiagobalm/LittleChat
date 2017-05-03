@@ -1,0 +1,8 @@
+#body {
+    -fx-background-color: #bbf;
+}
+
+.button {
+    color: white;
+    -fx-background-color: #da3;
+}

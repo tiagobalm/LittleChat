@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -42,7 +41,10 @@ public class LoginGUI extends Application implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
 
         primaryStage.setTitle("LittleChat");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        Scene scene = new Scene(root, 600, 400);
+        scene.getStylesheets().add(
+                getClass().getResource("../assets/style.css").toExternalForm());
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
