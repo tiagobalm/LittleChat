@@ -2,20 +2,39 @@
     -fx-background-color: #bbf;
 }
 
-.button {
+.buttonLogin {
     -fx-background-color: #da3;
     -fx-background-radius: 20px;
     -fx-border-radius: 20px;
 }
 
-.buttonMainPage{
+.buttonLogin:hover {
+    -fx-background-color: #c93;
+}
+
+.buttonLogin:pressed {
+    -fx-background-color: #a73;
+}
+
+.buttonMainPage {
     -fx-min-width: 70px;
     -fx-min-height: 70px;
     -fx-background-size: 50px, 50px;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
     -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
 }
+
+.buttonMainPage:hover {
+    -fx-background-color: #aaa;
+}
+
+.buttonMainPage:pressed {
+    -fx-background-color: #aaa;
+}
+
 #roomsButton{
     -fx-background-image: url("images/chatBallon.png");
 }

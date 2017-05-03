@@ -4,11 +4,18 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -45,18 +52,27 @@ public class MainPage extends Application implements Initializable {
     @FXML
     private Pane profilePanel;
 
+    @FXML
+    private VBox menuVBox;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
         primaryStage.setTitle("Little Chat");
-        Scene scene = new Scene(root, 800, 600);
+
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+
+        primaryStage.setX(bounds.getMinX());
+        primaryStage.setY(bounds.getMinY());
+        primaryStage.setWidth(bounds.getWidth());
+        primaryStage.setHeight(bounds.getHeight());
+
+        Scene scene = new Scene(root, bounds.getWidth(), bounds.getHeight());
         scene.getStylesheets().add(
                 getClass().getResource("../assets/style.css").toExternalForm());
-        primaryStage.setMaximized(true);
+
         primaryStage.setResizable(false);
-        primaryStage.setMinWidth(800);
-        primaryStage.setMinHeight(600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -82,6 +98,15 @@ public class MainPage extends Application implements Initializable {
 
         logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> System.out.println("logout"));
+
+        roomsButton.setMaxWidth(Double.MAX_VALUE);
+        friendsButton.setMaxWidth(Double.MAX_VALUE);
+        friendRequestButton.setMaxWidth(Double.MAX_VALUE);
+        profileButton.setMaxWidth(Double.MAX_VALUE);
+        logoutButton.setMaxWidth(Double.MAX_VALUE);
+
+        menuVBox.setSpacing(0);
+        menuVBox.setPadding(new Insets(0, 0, 0, 0));
     }
 
     private void disableCurrState() {

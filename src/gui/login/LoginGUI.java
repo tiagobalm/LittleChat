@@ -86,7 +86,7 @@ public class LoginGUI extends Application implements Initializable {
         int orgX = (state == MenuState.MENU) ? -600 : 600;
         int dstX = 0;
 
-        tt = new TranslateTransition(Duration.millis(500), pane);
+        tt = new TranslateTransition(Duration.millis(250), pane);
         tt.setCycleCount(1);
         tt.setAutoReverse(true);
 
