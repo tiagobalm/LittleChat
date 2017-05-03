@@ -8,9 +8,30 @@
     -fx-border-radius: 20px;
 }
 
+.buttonMainPage{
+    -fx-min-width: 70px;
+    -fx-min-height: 70px;
+    -fx-background-size: 50px, 50px;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;
+}
 #roomsButton{
-    -fx-max-height: 100px;
-    -fx-min-height: 100px;
-    -fx-background-size: 30px, 30px;
     -fx-background-image: url("images/chatBallon.png");
+}
+
+#friendsButton{
+    -fx-background-image: url("images/contacts.jpg");
+}
+
+#friendRequestButton{
+    -fx-background-image: url("images/addContact.png");
+}
+
+#profileButton{
+    -fx-background-image: url("images/profile.png");
+}
+
+#logoutButton{
+    -fx-background-image: url("images/logout.png");
 }
