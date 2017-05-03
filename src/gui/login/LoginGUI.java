@@ -1,5 +1,6 @@
 package gui.login;
 
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -59,9 +61,20 @@ public class LoginGUI extends Application implements Initializable {
                 e -> System.out.println("Current state:" + state));
     }
 
+    @FXML
     private void setPane(Pane pane, boolean arg) {
         pane.setDisable(!arg);
         pane.setVisible(arg);
+
+        if( arg ) {
+            FadeTransition ft = new FadeTransition(Duration.millis(500), pane);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            ft.setCycleCount(1);
+            ft.setInterpolator(Interpolator.LINEAR);
+            ft.setAutoReverse(true);
+            ft.play();
+        }
     }
 
     private void disableCurrState() {
