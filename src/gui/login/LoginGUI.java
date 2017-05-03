@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,6 +20,12 @@ public class LoginGUI extends Application implements Initializable {
     private Button loginButton;
     @FXML
     private Button registerButton;
+    @FXML
+    private Pane menuPane;
+    @FXML
+    private Pane loginPane;
+    @FXML
+    private Pane registerPane;
 
     public static void main(String[] args) {
         launch(args);
@@ -35,8 +42,15 @@ public class LoginGUI extends Application implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> System.out.println("Login dude"));
+                e -> goToLogin());
         registerButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> System.out.println("Register dude"));
+    }
+
+    private void goToLogin() {
+        menuPane.setDisable(true);
+        menuPane.setVisible(false);
+        loginPane.setDisable(false);
+        loginPane.setVisible(true);
     }
 }
