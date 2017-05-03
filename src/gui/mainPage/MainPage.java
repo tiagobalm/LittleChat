@@ -51,6 +51,7 @@ public class MainPage extends Application implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
         primaryStage.setTitle("Little Chat");
         primaryStage.setMaximized(true);
+        primaryStage.setResizable(false);
         Scene scene = new Scene(root, 600, 400);
         scene.getStylesheets().add(
                 getClass().getResource("../assets/style.css").toExternalForm());
