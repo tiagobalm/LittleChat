@@ -7,3 +7,10 @@
     -fx-background-radius: 20px;
     -fx-border-radius: 20px;
 }
+
+#roomsButton{
+    -fx-max-height: 100px;
+    -fx-min-height: 100px;
+    -fx-background-size: 30px, 30px;
+    -fx-background-image: url("images/chatBallon.png");
+}
