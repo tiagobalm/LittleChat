@@ -4,5 +4,6 @@
 
 .button {
     -fx-background-color: #da3;
-    -fx-border-radius: 10px;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
 }
