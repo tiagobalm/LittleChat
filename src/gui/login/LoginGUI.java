@@ -39,7 +39,6 @@ public class LoginGUI extends Application implements Initializable {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
-
         primaryStage.setTitle("LittleChat");
         Scene scene = new Scene(root, 600, 400);
         scene.getStylesheets().add(
