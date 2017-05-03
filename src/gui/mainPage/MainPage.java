@@ -1,6 +1,5 @@
 package gui.mainPage;
 
-import gui.login.LoginGUI;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +16,7 @@ import java.util.ResourceBundle;
 
 public class MainPage extends Application implements Initializable {
     private enum MainPageState {EMPTY, ROOMS, FRIENDS, FRIENDREQUEST, PROFILE}
+    private MainPageState state = MainPageState.EMPTY;
 
     @FXML
     private Button roomsButton;
@@ -51,6 +51,7 @@ public class MainPage extends Application implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
         primaryStage.setTitle("Little Chat");
         primaryStage.setMaximized(true);
+        primaryStage.setResizable(false);
         Scene scene = new Scene(root, 600, 400);
         scene.getStylesheets().add(
                 getClass().getResource("../assets/style.css").toExternalForm());
@@ -65,15 +66,67 @@ public class MainPage extends Application implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /*roomsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> goToLogin());*/
+        roomsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> setNewState(MainPageState.ROOMS));
+
+        friendsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> setNewState(MainPageState.FRIENDS));
+
+        friendRequestButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> setNewState(MainPageState.FRIENDREQUEST));
+
+        profileButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> setNewState(MainPageState.PROFILE));
+
+        logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> System.out.println("logout"));
     }
 
     private void disableCurrState() {
-        /*if(state == LoginGUI.MenuState.LOGIN || state == LoginGUI.MenuState.REGISTER)
-            setPane(loginPane, false);
-        else if(state == LoginGUI.MenuState.MENU)
-            setPane(menuPane, false);*/
+        switch (state) {
+            case ROOMS:
+                setPane(roomsPanel, false);
+                break;
+            case FRIENDS:
+                setPane(friendsPanel, false);
+                break;
+            case FRIENDREQUEST:
+                setPane(friendRequestPanel, false);
+                break;
+            case PROFILE:
+                setPane(profilePanel, false);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void setNewState(MainPageState newState) {
+
+        if(newState != state) {
+            disableCurrState();
+
+            switch (newState) {
+                case ROOMS:
+                    setPane(roomsPanel, true);
+                    state = MainPageState.ROOMS;
+                    break;
+                case FRIENDS:
+                    setPane(friendsPanel, true);
+                    state = MainPageState.FRIENDS;
+                    break;
+                case FRIENDREQUEST:
+                    setPane(friendRequestPanel, true);
+                    state = MainPageState.FRIENDREQUEST;
+                    break;
+                case PROFILE:
+                    setPane(profilePanel, true);
+                    state = MainPageState.PROFILE;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     private void setPane(Pane pane, boolean arg) {
