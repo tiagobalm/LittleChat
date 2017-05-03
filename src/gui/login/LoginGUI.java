@@ -1,15 +1,24 @@
 package gui.login;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LoginGUI extends Application {
+public class LoginGUI extends Application implements Initializable {
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Button registerButton;
 
     public static void main(String[] args) {
         launch(args);
@@ -21,8 +30,13 @@ public class LoginGUI extends Application {
         primaryStage.setTitle("LittleChat");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
+    }
 
-        StackPane page = FXMLLoader.load(LoginGUI.class.getResource("login.fxml"));
-        Scene scene = new Scene(page);
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> System.out.println("Login dude"));
+        registerButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> System.out.println("Register dude"));
     }
 }
