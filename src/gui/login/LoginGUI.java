@@ -35,9 +35,11 @@ public class LoginGUI extends Application implements Initializable, Controller<M
     @FXML
     private Pane loginPane;
 
+
     public static void main(String[] args) {
         launch(args);
     }
+
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -63,7 +65,8 @@ public class LoginGUI extends Application implements Initializable, Controller<M
                 e -> System.out.println("Current state:" + state));
     }
 
-    @Override @FXML
+
+    @Override
     public void setPane(Pane pane, boolean show) {
         TransitionControl.showTransition(pane, show, getPaneTransition(pane, show));
     }
@@ -95,7 +98,8 @@ public class LoginGUI extends Application implements Initializable, Controller<M
         }
     }
 
-    private TranslateTransition getPaneTransition(Pane pane, boolean show){
+    @Override
+    public TranslateTransition getPaneTransition(Pane pane, boolean show){
         TranslateTransition tt;
         int orgX = (state == MenuState.MENU) ? -600 : 600;
         int dstX = 0;

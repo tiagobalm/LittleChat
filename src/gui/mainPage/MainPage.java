@@ -160,7 +160,8 @@ public class MainPage extends Application implements Initializable, Controller<M
         TransitionControl.showTransition(pane, show, getPaneTransition(pane, show));
     }
 
-    private TranslateTransition getPaneTransition(Pane pane, boolean show){
+    @Override
+    public TranslateTransition getPaneTransition(Pane pane, boolean show){
         TranslateTransition tt;
         int orgX = -200;
         int dstX = 0;
