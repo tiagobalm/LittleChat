@@ -17,9 +17,9 @@
 }
 
 .buttonMainPage {
-    -fx-min-width: 70px;
-    -fx-min-height: 70px;
-    -fx-background-size: 50px, 50px;
+    -fx-min-width: 80px;
+    -fx-min-height: 80px;
+    /*-fx-background-size: 40px, 40px;*/
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
     -fx-background-color: transparent;
@@ -40,7 +40,7 @@
 }
 
 #friendsButton{
-    -fx-background-image: url("images/contacts.jpg");
+    -fx-background-image: url("images/contacts.png");
 }
 
 #friendRequestButton{
