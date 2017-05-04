@@ -28,10 +28,19 @@
 }
 
 .buttonMainPage:hover {
-    -fx-background-color: #aaa;
+    -fx-background-color: #666;
 }
 
 .buttonMainPage:pressed {
+    -fx-background-color: #444;
+}
+
+
+#menuVBox {
+    -fx-background-color: #888;
+}
+
+.optionsMenu {
     -fx-background-color: #aaa;
 }
 
