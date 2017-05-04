@@ -1,5 +1,7 @@
 package gui.login;
 
+import gui.Controller;
+import gui.TransitionControl;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -17,8 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginGUI extends Application implements Initializable {
-    private enum MenuState {MENU, LOGIN, REGISTER}
+public class LoginGUI extends Application implements Initializable, Controller<MenuState> {
     private MenuState state = MenuState.MENU;
 
     @FXML
@@ -53,31 +54,44 @@ public class LoginGUI extends Application implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         menuLoginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> goToLogin());
+                e -> setNewState(MenuState.LOGIN));
         cancelLogin.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> goToMenu());
+                e -> setNewState(MenuState.MENU));
         menuRegisterButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> goToRegister());
+                e -> setNewState(MenuState.REGISTER));
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> System.out.println("Current state:" + state));
     }
 
-    @FXML
-    private void setPane(Pane pane, boolean show) {
-        if( show ) {
-            pane.setDisable(!show);
-            pane.setVisible(show);
-            TranslateTransition tt = getPaneTransition(pane, show);
-            tt.play();
-        } else {
-            TranslateTransition tt = getPaneTransition(pane, show);
-            tt.setOnFinished(e -> {
-                tt.getNode().setVisible(false);
-                tt.getNode().setDisable(true);
-                System.out.println(tt.getNode().isDisable());
-                System.out.println(tt.getNode().isVisible());
-            });
-            tt.play();
+    @Override @FXML
+    public void setPane(Pane pane, boolean show) {
+        TransitionControl.showTransition(pane, show, getPaneTransition(pane, show));
+    }
+
+    @Override
+    public void disableCurrState() {
+        if(state == MenuState.LOGIN || state == MenuState.REGISTER)
+            setPane(loginPane, false);
+        else if(state == MenuState.MENU)
+            setPane(menuPane, false);
+    }
+
+    @Override
+    public void setNewState(MenuState newState) {
+        disableCurrState();
+        state = newState;
+        switch (state) {
+            case MENU:
+                setPane(menuPane, true);
+                break;
+            case LOGIN:
+                setPane(loginPane, true);
+                loginButton.setText("Login");
+                break;
+            case REGISTER:
+                setPane(loginPane, true);
+                loginButton.setText("Register");
+                break;
         }
     }
 
@@ -99,32 +113,5 @@ public class LoginGUI extends Application implements Initializable {
         }
 
         return tt;
-    }
-
-    private void disableCurrState() {
-        if(state == MenuState.LOGIN || state == MenuState.REGISTER)
-            setPane(loginPane, false);
-        else if(state == MenuState.MENU)
-            setPane(menuPane, false);
-    }
-
-    private void goToMenu() {
-        disableCurrState();
-        state = MenuState.MENU;
-        setPane(menuPane, true);
-    }
-
-    private void goToLogin() {
-        disableCurrState();
-        state = MenuState.LOGIN;
-        setPane(loginPane, true);
-        loginButton.setText("Login");
-    }
-
-    private void goToRegister() {
-        disableCurrState();
-        state = MenuState.REGISTER;
-        setPane(loginPane, true);
-        loginButton.setText("Register");
     }
 }

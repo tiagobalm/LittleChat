@@ -1,28 +1,28 @@
 package gui.mainPage;
 
+import gui.Controller;
+import gui.TransitionControl;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainPage extends Application implements Initializable {
-    private enum MainPageState {EMPTY, ROOMS, FRIENDS, FRIENDREQUEST, PROFILE}
+public class MainPage extends Application implements Initializable, Controller<MainPageState> {
     private MainPageState state = MainPageState.EMPTY;
 
     @FXML
@@ -55,8 +55,14 @@ public class MainPage extends Application implements Initializable {
     @FXML
     private VBox menuVBox;
 
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
         primaryStage.setTitle("Little Chat");
 
@@ -77,11 +83,6 @@ public class MainPage extends Application implements Initializable {
         primaryStage.show();
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         roomsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -99,17 +100,20 @@ public class MainPage extends Application implements Initializable {
         logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> System.out.println("logout"));
 
+        menuVBox.setSpacing(0);
+        menuVBox.setPadding(new Insets(0, 0, 0, 0));
+
+        menuVBox.setMaxHeight(Double.MAX_VALUE);
         roomsButton.setMaxWidth(Double.MAX_VALUE);
         friendsButton.setMaxWidth(Double.MAX_VALUE);
         friendRequestButton.setMaxWidth(Double.MAX_VALUE);
         profileButton.setMaxWidth(Double.MAX_VALUE);
         logoutButton.setMaxWidth(Double.MAX_VALUE);
-
-        menuVBox.setSpacing(0);
-        menuVBox.setPadding(new Insets(0, 0, 0, 0));
     }
 
-    private void disableCurrState() {
+
+    @Override
+    public void disableCurrState() {
         switch (state) {
             case ROOMS:
                 setPane(roomsPanel, false);
@@ -128,36 +132,52 @@ public class MainPage extends Application implements Initializable {
         }
     }
 
-    private void setNewState(MainPageState newState) {
+    @Override
+    public void setNewState(MainPageState newState) {
+        disableCurrState();
+        state = state == newState ? MainPageState.EMPTY : newState;
 
-        if(newState != state) {
-            disableCurrState();
-
-            switch (newState) {
-                case ROOMS:
-                    setPane(roomsPanel, true);
-                    state = MainPageState.ROOMS;
-                    break;
-                case FRIENDS:
-                    setPane(friendsPanel, true);
-                    state = MainPageState.FRIENDS;
-                    break;
-                case FRIENDREQUEST:
-                    setPane(friendRequestPanel, true);
-                    state = MainPageState.FRIENDREQUEST;
-                    break;
-                case PROFILE:
-                    setPane(profilePanel, true);
-                    state = MainPageState.PROFILE;
-                    break;
-                default:
-                    break;
-            }
+        switch(state) {
+            case ROOMS:
+                setPane(roomsPanel, true);
+                break;
+            case FRIENDS:
+                setPane(friendsPanel, true);
+                break;
+            case FRIENDREQUEST:
+                setPane(friendRequestPanel, true);
+                break;
+            case PROFILE:
+                setPane(profilePanel, true);
+                break;
+            default:
+                break;
         }
     }
 
-    private void setPane(Pane pane, boolean arg) {
-        pane.setDisable(!arg);
-        pane.setVisible(arg);
+    @Override
+    public void setPane(Pane pane, boolean show) {
+        TransitionControl.showTransition(pane, show, getPaneTransition(pane, show));
+    }
+
+    private TranslateTransition getPaneTransition(Pane pane, boolean show){
+        TranslateTransition tt;
+        int orgX = -200;
+        int dstX = 0;
+
+        tt = new TranslateTransition(Duration.millis(250), pane);
+        tt.setCycleCount(1);
+        tt.setAutoReverse(true);
+
+        if( !show ) {
+            int tmp = orgX;
+            orgX = dstX;
+            dstX = tmp;
+        }
+
+        tt.setFromX(orgX);
+        tt.setToX(dstX);
+
+        return tt;
     }
 }
