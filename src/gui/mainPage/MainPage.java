@@ -100,9 +100,6 @@ public class MainPage extends Application implements Initializable, Controller<M
         logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> System.out.println("logout"));
 
-        menuVBox.setSpacing(0);
-        menuVBox.setPadding(new Insets(0, 0, 0, 0));
-
         menuVBox.setMaxHeight(Double.MAX_VALUE);
         roomsButton.setMaxWidth(Double.MAX_VALUE);
         friendsButton.setMaxWidth(Double.MAX_VALUE);

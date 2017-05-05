@@ -17,9 +17,10 @@
 }
 
 .buttonMainPage {
-    -fx-min-width: 70px;
-    -fx-min-height: 70px;
-    -fx-background-size: 50px, 50px;
+    /*-fx-min-width: 40px;
+    -fx-min-height: 40px;*/
+    -fx-padding: 20px;
+    -fx-background-size: 40px, 40px;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
     -fx-background-color: transparent;
@@ -28,20 +29,20 @@
 }
 
 .buttonMainPage:hover {
-    -fx-background-color: #666;
+    -fx-background-color: #B7AFA3;
 }
 
 .buttonMainPage:pressed {
-    -fx-background-color: #444;
+    -fx-background-color: #8E8474;
 }
 
 
 #menuVBox {
-    -fx-background-color: #888;
+    -fx-background-color: #E8D0A9;
 }
 
 .optionsMenu {
-    -fx-background-color: #aaa;
+    -fx-background-color: #F5FAFA;
 }
 
 #roomsButton{
