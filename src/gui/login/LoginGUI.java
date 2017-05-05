@@ -1,6 +1,7 @@
 package gui.login;
 
 import gui.Controller;
+import gui.Manager;
 import gui.TransitionControl;
 import javafx.animation.*;
 import javafx.application.Application;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginGUI extends Application implements Initializable, Controller<MenuState> {
+public class LoginGUI implements Initializable, Controller<MenuState> {
     private MenuState state = MenuState.MENU;
 
     @FXML
@@ -40,13 +41,9 @@ public class LoginGUI extends Application implements Initializable, Controller<M
     @FXML
     private TextField password;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public Stage start() throws IOException {
+        Stage primaryStage = new Stage();
 
-
-    @Override
-    public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         primaryStage.setTitle("LittleChat");
         Scene scene = new Scene(root, 600, 400);
@@ -54,7 +51,8 @@ public class LoginGUI extends Application implements Initializable, Controller<M
                 getClass().getResource("../assets/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        primaryStage.show();
+
+        return primaryStage;
     }
 
     @Override
@@ -67,13 +65,18 @@ public class LoginGUI extends Application implements Initializable, Controller<M
                 e -> setNewState(MenuState.REGISTER));
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> {
-                        System.out.println("Current state:" + state);
+                    System.out.println("Current state:" + state);
 
-                        String username = this.username.getText();
-                        String password = this.password.getText();
+                    String username = this.username.getText();
+                    String password = this.password.getText();
 
-                        System.out.println("Username: " + username + "\n" + "Password: " + password);
-                     });
+                    System.out.println("Username: " + username + "\n" + "Password: " + password);
+                    try {
+                        Manager.changeToMainPage();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                });
     }
 
 

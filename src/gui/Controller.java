@@ -1,6 +1,5 @@
 package gui;
 
-import gui.mainPage.MainPage;
 import javafx.animation.TranslateTransition;
 import javafx.scene.layout.Pane;
 

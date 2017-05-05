@@ -11,7 +11,7 @@
    <children>
       <AnchorPane fx:id="menuPane" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Label layoutX="183.0" layoutY="82.0" text="LITTLE CHAT" textFill="WHITE">
+            <Label layoutX="162.0" layoutY="80.0" text="LITTLE CHAT" textFill="WHITE" styleClass="title">
                <font>
                   <Font name="System Bold" size="39.0" />
                </font>
@@ -30,7 +30,7 @@
       </AnchorPane>
       <AnchorPane fx:id="loginPane" disable="true" prefHeight="400.0" prefWidth="600.0" visible="false">
          <children>
-            <Label layoutX="162.0" layoutY="67.0" text="LITTLE CHAT" textFill="WHITE">
+            <Label layoutX="162.0" layoutY="67.0" text="LITTLE CHAT" textFill="WHITE" styleClass="title">
                <font>
                   <Font name="System Bold" size="39.0" />
                </font>

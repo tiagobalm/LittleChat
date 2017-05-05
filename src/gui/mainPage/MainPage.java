@@ -1,6 +1,7 @@
 package gui.mainPage;
 
 import gui.Controller;
+import gui.Manager;
 import gui.TransitionControl;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
@@ -22,7 +23,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainPage extends Application implements Initializable, Controller<MainPageState> {
+public class MainPage implements Initializable, Controller<MainPageState> {
     private MainPageState state = MainPageState.EMPTY;
 
     @FXML
@@ -55,14 +56,9 @@ public class MainPage extends Application implements Initializable, Controller<M
     @FXML
     private VBox menuVBox;
 
+    public Stage start() throws Exception {
+        Stage primaryStage = new Stage();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
         primaryStage.setTitle("Little Chat");
 
@@ -80,7 +76,8 @@ public class MainPage extends Application implements Initializable, Controller<M
 
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
-        primaryStage.show();
+
+        return primaryStage;
     }
 
     @Override
@@ -98,7 +95,13 @@ public class MainPage extends Application implements Initializable, Controller<M
                 e -> setNewState(MainPageState.PROFILE));
 
         logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> System.out.println("logout"));
+                e -> {
+                    try {
+                        Manager.changeToLogin();
+                    } catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
 
         menuVBox.setMaxHeight(Double.MAX_VALUE);
         roomsButton.setMaxWidth(Double.MAX_VALUE);
@@ -108,20 +111,23 @@ public class MainPage extends Application implements Initializable, Controller<M
         logoutButton.setMaxWidth(Double.MAX_VALUE);
     }
 
-
     @Override
     public void disableCurrState() {
         switch (state) {
             case ROOMS:
+                roomsButton.getStyleClass().remove("buttonSelected");
                 setPane(roomsPanel, false);
                 break;
             case FRIENDS:
+                friendsButton.getStyleClass().remove("buttonSelected");
                 setPane(friendsPanel, false);
                 break;
             case FRIENDREQUEST:
+                friendRequestButton.getStyleClass().remove("buttonSelected");
                 setPane(friendRequestPanel, false);
                 break;
             case PROFILE:
+                profileButton.getStyleClass().remove("buttonSelected");
                 setPane(profilePanel, false);
                 break;
             default:
@@ -136,15 +142,19 @@ public class MainPage extends Application implements Initializable, Controller<M
 
         switch(state) {
             case ROOMS:
+                roomsButton.getStyleClass().add("buttonSelected");
                 setPane(roomsPanel, true);
                 break;
             case FRIENDS:
+                friendsButton.getStyleClass().add("buttonSelected");
                 setPane(friendsPanel, true);
                 break;
             case FRIENDREQUEST:
+                friendRequestButton.getStyleClass().add("buttonSelected");
                 setPane(friendRequestPanel, true);
                 break;
             case PROFILE:
+                profileButton.getStyleClass().add("buttonSelected");
                 setPane(profilePanel, true);
                 break;
             default:

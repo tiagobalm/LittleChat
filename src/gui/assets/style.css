@@ -1,24 +1,31 @@
-#body, #anchor {
-    -fx-background-color: #C1DAD6;
+@font-face {
+    src: url('Raleway-Regular.ttf');
+}
+
+#body {
+    -fx-background-color: #a1c6c0;
+}
+
+.title {
+    -fx-font-family: "Raleway";
+    -fx-font-size: 45px;
 }
 
 .buttonLogin {
-    -fx-background-color: #B7AFA3;
+    -fx-background-color: #f9a03f;
     -fx-background-radius: 20px;
     -fx-border-radius: 20px;
 }
 
 .buttonLogin:hover {
-    -fx-background-color: #c93;
+    -fx-background-color: #f7880e;
 }
 
 .buttonLogin:pressed {
-    -fx-background-color: #a73;
+    -fx-background-color: #e47b08;
 }
 
 .buttonMainPage {
-    /*-fx-min-width: 40px;
-    -fx-min-height: 40px;*/
     -fx-padding: 20px;
     -fx-background-size: 40px, 40px;
     -fx-background-position: center;
@@ -28,21 +35,21 @@
     -fx-border-radius: 0px;
 }
 
-.buttonMainPage:hover {
-    -fx-background-color: #B7AFA3;
+.buttonMainPage:hover,
+.buttonMainPage:pressed,
+.buttonSelected
+{
+    -fx-background-color: #a9c5f6;
 }
-
-.buttonMainPage:pressed {
-    -fx-background-color: #8E8474;
-}
-
 
 #menuVBox {
-    -fx-background-color: #E8D0A9;
+    -fx-background-color: #92b5f3;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
 }
 
 .optionsMenu {
-    -fx-background-color: #F5FAFA;
+    -fx-background-color: #a9c5f6;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
 }
 
 #roomsButton{
