@@ -1,9 +1,9 @@
-#body {
-    -fx-background-color: #bbf;
+#body, #anchor {
+    -fx-background-color: #C1DAD6;
 }
 
 .buttonLogin {
-    -fx-background-color: #da3;
+    -fx-background-color: #B7AFA3;
     -fx-background-radius: 20px;
     -fx-border-radius: 20px;
 }
@@ -50,7 +50,7 @@
 }
 
 #friendsButton{
-    -fx-background-image: url("images/contacts.jpg");
+    -fx-background-image: url("images/contacts.png");
 }
 
 #friendRequestButton{
