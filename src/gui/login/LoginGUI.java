@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -34,7 +35,10 @@ public class LoginGUI extends Application implements Initializable, Controller<M
     private Pane menuPane;
     @FXML
     private Pane loginPane;
-
+    @FXML
+    private TextField username;
+    @FXML
+    private TextField password;
 
     public static void main(String[] args) {
         launch(args);
@@ -62,7 +66,14 @@ public class LoginGUI extends Application implements Initializable, Controller<M
         menuRegisterButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> setNewState(MenuState.REGISTER));
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> System.out.println("Current state:" + state));
+                e -> {
+                        System.out.println("Current state:" + state);
+
+                        String username = this.username.getText();
+                        String password = this.password.getText();
+
+                        System.out.println("Username: " + username + "\n" + "Password: " + password);
+                     });
     }
 
 
