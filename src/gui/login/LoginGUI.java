@@ -1,5 +1,6 @@
 package gui.login;
 
+import communication.Communication;
 import gui.Controller;
 import gui.Manager;
 import gui.TransitionControl;
@@ -40,6 +41,8 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
     @FXML
     private TextField password;
 
+    private Communication conn;
+
     public Stage start() throws IOException {
         Stage primaryStage = new Stage();
 
@@ -56,6 +59,8 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        conn = Communication.getInstance();
+
         menuLoginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> setNewState(MenuState.LOGIN));
         cancelLogin.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -64,14 +69,20 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
                 e -> setNewState(MenuState.REGISTER));
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> {
-                    System.out.println("Current state:" + state);
 
                     String username = this.username.getText();
                     String password = this.password.getText();
 
-                    System.out.println("Username: " + username + "\n" + "Password: " + password);
                     try {
-                        Manager.changeToMainPage();
+                        boolean loggedIn = false;
+
+                        if(state == MenuState.REGISTER)
+                            loggedIn = conn.sendRegisterRequest(username, password);
+                        if(state == MenuState.LOGIN)
+                            loggedIn = conn.sendLoginRequest(username, password);
+
+                        if(loggedIn)
+                            Manager.changeToMainPage();
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }

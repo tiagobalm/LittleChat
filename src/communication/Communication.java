@@ -5,15 +5,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 
-public class EchoClient {
-    private static final String keystorePath = EchoClient.class.getResource("../keys/client.private").getPath();
+public class Communication {
+    private static final String keystorePath = Communication.class.getResource("../keys/client.private").getPath();
     private static final String keystorePass = "littlechat";
-    private static final String truststorePath = EchoClient.class.getResource("../keys/truststore").getPath();
+    private static final String truststorePath = Communication.class.getResource("../keys/truststore").getPath();
     private static final String truststorePass = "littlechat";
 
     private static final String IP = "127.0.0.1";
@@ -22,7 +21,9 @@ public class EchoClient {
     private static DataInputStream is;
     private static final byte messageEnd = 0;
 
-    public static void main(String[] args) {
+    private static Communication instance = null;
+
+    public Communication() {
         System.setProperty("javax.net.ssl.keyStore", keystorePath);
         System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
         System.setProperty("javax.net.ssl.trustStore", truststorePath);
@@ -41,24 +42,61 @@ public class EchoClient {
             System.out.println("Loading output streams");
             os = new DataOutputStream(sslsocket.getOutputStream());
             System.out.println("Streams loaded");
-            os.write("Hi\0".getBytes());
-
-            byte character;
-            List<Byte> message = new ArrayList<>();
-            while ((character = is.readByte()) != messageEnd) {
-                message.add(character);
-            }
-
-            byte[] messageBytes = byteListToByteArray(message);
-            String response = new String(messageBytes);
-            System.out.println("Server response: " + response);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static byte[] byteListToByteArray(List<Byte> bytes) {
+    public static Communication getInstance() {
+        if(instance == null)
+            instance = new Communication();
+
+        return instance;
+    }
+
+    public boolean sendRegisterRequest(String username, String password) {
+
+        try {
+            String request = "REGISTER " + username + " " + password + "\0";
+            os.write(request.getBytes());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    public boolean sendLoginRequest(String username, String password) {
+
+        try {
+            String request = "LOGIN " + username + " " + password + "\0";
+            os.write(request.getBytes());
+
+            List<Byte> answerList = new ArrayList<>();
+            byte character;
+
+            try {
+
+                while ((character = is.readByte()) != messageEnd)
+                    answerList.add(character);
+
+                byte[] answer = byteListToByteArray(answerList);
+                String response = new String(answer);
+
+                System.out.println("Server sad: " + response);
+
+            } catch(Exception e) {}
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    public byte[] byteListToByteArray(List<Byte> bytes) {
         byte[] result = new byte[bytes.size()];
         for (int i = 0; i < bytes.size(); i++) {
             result[i] = bytes.get(i).byteValue();
