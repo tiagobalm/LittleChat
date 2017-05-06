@@ -3,7 +3,7 @@
 }
 
 #body {
-    -fx-background-color: #a1c6c0;
+    -fx-background-color: #a3cfe0;
 }
 
 .title {
@@ -12,17 +12,17 @@
 }
 
 .buttonLogin {
-    -fx-background-color: #f9a03f;
+    -fx-background-color: #e5b181;
     -fx-background-radius: 20px;
     -fx-border-radius: 20px;
 }
 
 .buttonLogin:hover {
-    -fx-background-color: #f7880e;
+    -fx-background-color: #e1a46c;
 }
 
 .buttonLogin:pressed {
-    -fx-background-color: #e47b08;
+    -fx-background-color: #dd9757;
 }
 
 .buttonMainPage {
@@ -39,16 +39,17 @@
 .buttonMainPage:pressed,
 .buttonSelected
 {
-    -fx-background-color: #a9c5f6;
+    -fx-background-color: #bedde9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 1, 0, -1, 0);
 }
 
 #menuVBox {
-    -fx-background-color: #92b5f3;
+    -fx-background-color: #a3cfe0;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
 }
 
 .optionsMenu {
-    -fx-background-color: #a9c5f6;
+    -fx-background-color: #bedde9;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
 }
 
