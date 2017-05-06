@@ -11,10 +11,10 @@ import javax.net.ssl.SSLSocketFactory;
 
 
 public class EchoClient {
-    private static final String keystorePath = EchoClient.class.getResource("../keystore").getPath();
-    private static final String keystorePass = "gruposdis";
-    private static final String truststorePath = EchoClient.class.getResource("../truststore").getPath();
-    private static final String truststorePass = "gruposdis";
+    private static final String keystorePath = EchoClient.class.getResource("../keys/client.private").getPath();
+    private static final String keystorePass = "littlechat";
+    private static final String truststorePath = EchoClient.class.getResource("../keys/truststore").getPath();
+    private static final String truststorePass = "littlechat";
 
     private static final String IP = "127.0.0.1";
     private static final int PORT = 15000;
@@ -32,8 +32,11 @@ public class EchoClient {
 
         try {
             SSLSocket sslsocket = (SSLSocket) factory.createSocket(IP, PORT);
-            sslsocket.setNeedClientAuth(true);
-            
+
+            String[] ciphers = new String[1];
+            ciphers[0] ="TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256";
+            sslsocket.setEnabledCipherSuites(ciphers);
+
             is = new DataInputStream(sslsocket.getInputStream());
             System.out.println("Loading output streams");
             os = new DataOutputStream(sslsocket.getOutputStream());
