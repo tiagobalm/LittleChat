@@ -33,9 +33,7 @@ public class EchoClient {
         try {
             SSLSocket sslsocket = (SSLSocket) factory.createSocket(IP, PORT);
             sslsocket.setNeedClientAuth(true);
-            String[] ciphers = new String[1];
-            ciphers[0] ="TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256";
-            sslsocket.setEnabledCipherSuites(ciphers);
+            
             is = new DataInputStream(sslsocket.getInputStream());
             System.out.println("Loading output streams");
             os = new DataOutputStream(sslsocket.getOutputStream());
