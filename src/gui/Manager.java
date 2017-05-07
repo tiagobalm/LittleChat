@@ -1,18 +1,14 @@
 package gui;
 
-import communication.Communication;
 import gui.login.LoginGUI;
 import gui.mainPage.MainPage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-/**
- * Created by tiagobalm on 05-05-2017.
- */
 public class Manager extends Application {
 
     private static Stage Stage;
-    private static Communication conn;
+    //private static Communication conn;
 
     public static void main(String[] args) {
         launch(args);
