@@ -69,6 +69,7 @@ public class Communication {
     }
 
     public boolean sendLoginRequest(String username, String password) {
+        boolean loggedIn = false;
 
         try {
             String request = "LOGIN " + username + " " + password + "\0";
@@ -77,23 +78,21 @@ public class Communication {
             List<Byte> answerList = new ArrayList<>();
             byte character;
 
-            try {
+            while ((character = is.readByte()) != messageEnd)
+                answerList.add(character);
 
-                while ((character = is.readByte()) != messageEnd)
-                    answerList.add(character);
+            byte[] answer = byteListToByteArray(answerList);
+            String response = new String(answer);
 
-                byte[] answer = byteListToByteArray(answerList);
-                String response = new String(answer);
+            loggedIn = ("True".equals(response.trim()));
 
-                System.out.println("Server sad: " + response);
-
-            } catch(Exception e) {}
-
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
+        catch(Exception e) {}
 
-        return true;
+        return loggedIn;
     }
 
     public byte[] byteListToByteArray(List<Byte> bytes) {

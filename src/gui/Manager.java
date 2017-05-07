@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 public class Manager extends Application {
 
     private static Stage Stage;
-    //private static Communication conn;
 
     public static void main(String[] args) {
         launch(args);
