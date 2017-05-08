@@ -1,0 +1,74 @@
+@font-face {
+    src: url('Raleway-Regular.ttf');
+}
+
+#body {
+    -fx-background-color: #a3cfe0;
+}
+
+.title {
+    -fx-font-family: "Raleway";
+    -fx-font-size: 45px;
+}
+
+.buttonLogin {
+    -fx-background-color: #e5b181;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+}
+
+.buttonLogin:hover {
+    -fx-background-color: #e1a46c;
+}
+
+.buttonLogin:pressed {
+    -fx-background-color: #dd9757;
+}
+
+.buttonMainPage {
+    -fx-padding: 20px;
+    -fx-background-size: 40px, 40px;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+}
+
+.buttonMainPage:hover,
+.buttonMainPage:pressed,
+.buttonSelected
+{
+    -fx-background-color: #bedde9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 1, 0, -1, 0);
+}
+
+#menuVBox {
+    -fx-background-color: #a3cfe0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
+}
+
+.optionsMenu {
+    -fx-background-color: #bedde9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
+}
+
+#roomsButton{
+    -fx-background-image: url("images/chatBallon.png");
+}
+
+#friendsButton{
+    -fx-background-image: url("images/contacts.png");
+}
+
+#friendRequestButton{
+    -fx-background-image: url("images/addContact.png");
+}
+
+#profileButton{
+    -fx-background-image: url("images/profile.png");
+}
+
+#logoutButton{
+    -fx-background-image: url("images/logout.png");
+}
