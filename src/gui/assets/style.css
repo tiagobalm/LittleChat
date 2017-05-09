@@ -6,6 +6,26 @@
     -fx-background-color: #a3cfe0;
 }
 
+#anchor {
+    -fx-background-color: #daebf2;
+}
+
+.hboxMe {
+    -fx-background-color: floralwhite;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+
+.hboxThey {
+    -fx-background-color: aquamarine;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+
+.messageInput {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 4, 0, 0, 0);
+}
+
 .title {
     -fx-font-family: "Raleway";
     -fx-font-size: 45px;
