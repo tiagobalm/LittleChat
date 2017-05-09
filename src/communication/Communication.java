@@ -23,7 +23,7 @@ public class Communication {
 
     private static Communication instance = null;
 
-    public Communication() {
+    private Communication() {
         System.setProperty("javax.net.ssl.keyStore", keystorePath);
         System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
         System.setProperty("javax.net.ssl.trustStore", truststorePath);
@@ -58,7 +58,7 @@ public class Communication {
     public boolean sendRegisterRequest(String username, String password) {
 
         try {
-            String request = "REGISTER " + username + " " + password + "\0";
+            String request = "REGISTER " + username + " " + password + " 0.0.0.0" + " " + "0" + "\0";
             os.write(request.getBytes());
 
         } catch (IOException e) {
@@ -72,7 +72,7 @@ public class Communication {
         boolean loggedIn = false;
 
         try {
-            String request = "LOGIN " + username + " " + password + "\0";
+            String request = "LOGIN " + username + " " + password + " 0.0.0.0" + " " + "0" + "\0";
             os.write(request.getBytes());
 
             List<Byte> answerList = new ArrayList<>();
@@ -90,15 +90,15 @@ public class Communication {
         catch (IOException e) {
             e.printStackTrace();
         }
-        catch(Exception e) {}
+        catch(Exception ignore) {}
 
         return loggedIn;
     }
 
-    public byte[] byteListToByteArray(List<Byte> bytes) {
+    private byte[] byteListToByteArray(List<Byte> bytes) {
         byte[] result = new byte[bytes.size()];
         for (int i = 0; i < bytes.size(); i++) {
-            result[i] = bytes.get(i).byteValue();
+            result[i] = bytes.get(i);
         }
 
         return result;
