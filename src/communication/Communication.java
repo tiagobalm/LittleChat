@@ -24,7 +24,7 @@ public class Communication {
 
     private static Communication instance = null;
 
-    public Communication() {
+    private Communication() {
         System.setProperty("javax.net.ssl.keyStore", keystorePath);
         System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
         System.setProperty("javax.net.ssl.trustStore", truststorePath);
@@ -138,7 +138,7 @@ public class Communication {
         }
     }
 
-    public byte[] byteListToByteArray(List<Byte> bytes) {
+    private byte[] byteListToByteArray(List<Byte> bytes) {
         byte[] result = new byte[bytes.size()];
         for (int i = 0; i < bytes.size(); i++) {
             result[i] = bytes.get(i).byteValue();
