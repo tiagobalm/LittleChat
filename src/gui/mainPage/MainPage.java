@@ -1,5 +1,6 @@
 package gui.mainPage;
 
+import workers.ReadThread;
 import communication.Communication;
 import gui.Controller;
 import gui.Manager;
@@ -10,23 +11,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import workers.Worker;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.*;
 
 public class MainPage implements Initializable, Controller<MainPageState> {
     private MainPageState state = MainPageState.ROOMS;
@@ -84,6 +84,17 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     private Communication conn;
 
+    private ReadThread readThread;
+
+    private BlockingQueue<String> messages;
+
+    private String username;
+
+    private int room = 1;
+
+    private static final int numberOfWorkerThreads = 20;
+    private static final ExecutorService executor = Executors.newFixedThreadPool(numberOfWorkerThreads);
+
     public Stage start() throws Exception {
         Stage primaryStage = new Stage();
 
@@ -103,6 +114,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         conn = Communication.getInstance();
+        messages = new ArrayBlockingQueue<>(500);
 
         roomsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> setNewState(MainPageState.ROOMS));
@@ -120,15 +132,21 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                 e -> changeToLogin());
 
         messageSend.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> changeToLogin());
+                e -> sendMessage(messageInput.getText()));
 
         setPaneMaxWidth();
+        startWorkerThreads();
 
-        Button button = new Button("VascoUP");
-        Button button2 = new Button("SaraUP");
+        System.out.println("Continuing!");
+
+        Button button = new Button("Chat Room 1");
+        Button button2 = new Button("Chat Room 2");
 
         button.setMaxWidth(Double.MAX_VALUE);
         button2.setMaxWidth(Double.MAX_VALUE);
+
+        button.getStyleClass().add("roomsButtons");
+        button2.getStyleClass().add("roomsButtons");
 
         conversationButtons.getChildren().addAll(button, button2);
 
@@ -147,6 +165,19 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
         MessagesPanel.setPadding(new Insets(10));
         MessagesPanel.getChildren().addAll(hbox, hbox1);
+    }
+
+    private void startWorkerThreads() {
+        System.out.println("Starting worker threads");
+
+        executor.execute(new ReadThread(messages));
+        for( int i = 0; i < numberOfWorkerThreads - 1; i++ ) {
+            executor.execute(new Worker(this));
+        }
+    }
+
+    public void stopWorkers() {
+        executor.shutdownNow();
     }
 
     @Override
@@ -251,8 +282,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         logoutButton.setMaxWidth(Double.MAX_VALUE);
     }
 
-    private void sendMessage() {
-
-        System.out.println("");
+    private void sendMessage(String message) {
+        Communication.getInstance().sendMessage(username, room, message);
     }
+
+    public BlockingQueue<String> getMessages() { return messages; }
+
+    public void setUsername(String username) { this.username = username; }
 }

@@ -18,7 +18,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.*;
+import java.util.Enumeration;
 import java.util.ResourceBundle;
 
 public class LoginGUI implements Initializable, Controller<MenuState> {
@@ -43,6 +44,8 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
 
     private Communication conn;
 
+    private String IPAddress;
+
     public Stage start() throws IOException {
         Stage primaryStage = new Stage();
 
@@ -60,6 +63,7 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         conn = Communication.getInstance();
+        getIPAddress();
 
         menuLoginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> setNewState(MenuState.LOGIN));
@@ -77,18 +81,17 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
                         boolean loggedIn = false;
 
                         if(state == MenuState.REGISTER)
-                            loggedIn = conn.sendRegisterRequest(username, password);
+                            loggedIn = conn.sendRegisterRequest(username, password, IPAddress, 4556);
                         if(state == MenuState.LOGIN)
-                            loggedIn = conn.sendLoginRequest(username, password);
+                            loggedIn = conn.sendLoginRequest(username, password, IPAddress, 4556);
 
                         if(loggedIn)
-                            Manager.changeToMainPage();
+                            Manager.changeToMainPage(username);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
                 });
     }
-
 
     @Override
     public void setPane(Pane pane, boolean show) {
@@ -142,4 +145,27 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
 
         return tt;
     }
+
+    private void getIPAddress() {
+
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface iface = interfaces.nextElement();
+                if (iface.isLoopback() || !iface.isUp())
+                    continue;
+
+                Enumeration<InetAddress> addresses = iface.getInetAddresses();
+                while(addresses.hasMoreElements()) {
+                    InetAddress address = addresses.nextElement();
+
+                    if (address instanceof Inet6Address) continue;
+                    IPAddress = address.getHostAddress();
+                }
+            }
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

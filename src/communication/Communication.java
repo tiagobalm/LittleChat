@@ -20,6 +20,7 @@ public class Communication {
     private static DataOutputStream os;
     private static DataInputStream is;
     private static final byte messageEnd = 0;
+    private static SSLSocket socket;
 
     private static Communication instance = null;
 
@@ -32,15 +33,15 @@ public class Communication {
         SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 
         try {
-            SSLSocket sslsocket = (SSLSocket) factory.createSocket(IP, PORT);
+            socket = (SSLSocket) factory.createSocket(IP, PORT);
 
             String[] ciphers = new String[1];
             ciphers[0] ="TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256";
-            sslsocket.setEnabledCipherSuites(ciphers);
+            socket.setEnabledCipherSuites(ciphers);
 
-            is = new DataInputStream(sslsocket.getInputStream());
+            is = new DataInputStream(socket.getInputStream());
             System.out.println("Loading output streams");
-            os = new DataOutputStream(sslsocket.getOutputStream());
+            os = new DataOutputStream(socket.getOutputStream());
             System.out.println("Streams loaded");
 
         } catch (IOException e) {
@@ -55,10 +56,38 @@ public class Communication {
         return instance;
     }
 
-    public boolean sendRegisterRequest(String username, String password) {
+    public String read() {
+        System.out.println("Communication reading...");
+        try {
+            List<Byte> answerList = new ArrayList<>();
+            byte character;
+
+            System.out.println("Communication reading 2...");
+            System.out.println("Reading " + is.available());
+            while ((character = is.readByte()) != messageEnd) {
+                System.out.println(character);
+                answerList.add(character);
+            }
+
+            System.out.println("Communication reading 3...");
+
+            byte[] answer = byteListToByteArray(answerList);
+            String serverRequest = new String(answer);
+
+            System.out.println(serverRequest);
+
+            return serverRequest;
+        } catch(IOException e) {
+            System.out.println("IO exception");
+            return "";
+        }
+    }
+
+    public boolean sendRegisterRequest(String username, String password, String IPAddress, int port) {
 
         try {
-            String request = "REGISTER " + username + " " + password + "\0";
+            String request = "REGISTER " + username + " " + password + " " + IPAddress + " " + port + " " +
+                    "\0";
             os.write(request.getBytes());
 
         } catch (IOException e) {
@@ -68,11 +97,12 @@ public class Communication {
         return true;
     }
 
-    public boolean sendLoginRequest(String username, String password) {
+    public boolean sendLoginRequest(String username, String password, String IPAddress, int port) {
         boolean loggedIn = false;
 
         try {
-            String request = "LOGIN " + username + " " + password + "\0";
+            String request = "LOGIN " + username + " " + password + " " + IPAddress + " " + port + " " +
+                    "\0";
             os.write(request.getBytes());
 
             List<Byte> answerList = new ArrayList<>();
@@ -93,6 +123,19 @@ public class Communication {
         catch(Exception e) {}
 
         return loggedIn;
+    }
+
+    public void sendMessage(String username, int room, String message) {
+
+        try {
+
+            String request = "Message " + username + " " + room + " " + (char)0x0D + (char)0x0A + (char)0x0D
+                    + (char)0x0A + message + " " + "\0";
+            os.write(request.getBytes());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public byte[] byteListToByteArray(List<Byte> bytes) {
