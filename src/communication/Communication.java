@@ -59,6 +59,7 @@ public class Communication {
 
         try {
             String request = "REGISTER " + username + " " + password + " 0.0.0.0" + " " + "0" + "\0";
+            System.out.println(request);
             os.write(request.getBytes());
 
         } catch (IOException e) {
@@ -73,6 +74,7 @@ public class Communication {
 
         try {
             String request = "LOGIN " + username + " " + password + " 0.0.0.0" + " " + "0" + "\0";
+            System.out.println(request);
             os.write(request.getBytes());
 
             List<Byte> answerList = new ArrayList<>();
