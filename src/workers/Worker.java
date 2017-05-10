@@ -1,6 +1,7 @@
 package workers;
 
 import gui.mainPage.MainPage;
+import message.Message;
 import message.WorkMessage;
 
 import java.util.concurrent.BlockingQueue;
@@ -9,7 +10,7 @@ import java.util.concurrent.BlockingQueue;
  * Created by tiagobalm on 09-05-2017.
  */
 public class Worker implements Runnable {
-    private BlockingQueue<String> messages;
+    private BlockingQueue<Message> messages;
     private MainPage mainPage;
     private boolean running;
 
@@ -25,7 +26,7 @@ public class Worker implements Runnable {
         while(running) {
 
             try {
-                String message = messages.take();
+                Message message = messages.take();
                 WorkMessage worker = new WorkMessage(mainPage, message);
                 worker.decode();
 

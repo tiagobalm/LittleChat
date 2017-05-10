@@ -1,6 +1,7 @@
 package workers;
 
 import communication.Communication;
+import message.Message;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -8,10 +9,10 @@ import java.util.concurrent.BlockingQueue;
  * Created by tiagobalm on 09-05-2017.
  */
 public class ReadThread implements Runnable {
-    private BlockingQueue<String> messages;
+    private BlockingQueue<Message> messages;
     private boolean running;
 
-    public ReadThread(BlockingQueue<String> messages) {
+    public ReadThread(BlockingQueue<Message> messages) {
         this.messages = messages;
         running = true;
     }
@@ -21,9 +22,9 @@ public class ReadThread implements Runnable {
         System.out.println("Running read thread.");
 
         while (running) {
-            String message = Communication.getInstance().read();
+            Message message = Communication.getInstance().read();
 
-            if(message != "")
+            if(message != null)
                 messages.add(message);
         }
     }

@@ -56,33 +56,20 @@ public class Communication {
         return instance;
     }
 
-    public String read() {
+    public Message read() {
+        Message message = null;
 
-        /*System.out.println("Communication reading...");
         try {
-            List<Byte> answerList = new ArrayList<>();
-            byte character;
+            socket.setSoTimeout(500);
+            message = (Message)is.readObject();
 
-            System.out.println("Communication reading 2...");
-            System.out.println("Reading " + is.readByte());
-            while ((character = is.readByte()) != messageEnd) {
-                System.out.println(character);
-                answerList.add(character);
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-            System.out.println("Communication reading 3...");
-
-            byte[] answer = byteListToByteArray(answerList);
-            String serverRequest = new String(answer);
-
-            System.out.println(serverRequest);
-
-            return serverRequest;
-        } catch(IOException e) {
-            System.out.println("IO exception");
-            return "";
-        }*/
-        return "";
+        return message;
     }
 
     public boolean sendRegisterRequest(String username, String password, String IPAddress, int port) {
@@ -96,18 +83,28 @@ public class Communication {
             e.printStackTrace();
         }
 
-        return true;
+        return waitForLoginResponse();
     }
 
     public boolean sendLoginRequest(String username, String password, String IPAddress, int port) {
-        boolean loggedIn = false;
 
         String header = "LOGIN " + username + " " + password + " " + IPAddress + " " + port;
         Message message = new Message(header, "");
 
         try {
             os.writeObject(message);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        return waitForLoginResponse();
+    }
+
+    public boolean waitForLoginResponse() {
+        boolean loggedIn = false;
+
+        try {
             socket.setSoTimeout(1000);
             Message response = (Message)is.readObject();
 

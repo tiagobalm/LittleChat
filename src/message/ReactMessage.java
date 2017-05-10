@@ -1,27 +1,32 @@
 package message;
 
-import communication.Communication;
+import gui.mainPage.MainPage;
 
 import java.io.IOException;
 
 public abstract class ReactMessage {
-    protected String[] message;
-    ReactMessage(String[] message) {
+    protected Message message;
+    protected MainPage mainPage;
+
+    ReactMessage(MainPage mainPage, Message message) {
+        this.mainPage = mainPage;
         this.message = message;
     }
 
-    public void react(Communication client) throws IOException {
+    public void react() throws IOException {
         throw new AbstractMethodError("Wrong class");
     }
 
-    static ReactMessage getReactMessage(String message) {
-        String[] parameters = message.split(" ");
+    static ReactMessage getReactMessage(MainPage mainPage, Message message) {
+        String[] parameters = message.getHeader().split(" ");
         if( parameters.length < 1 )
             return null;
 
         String messageType = parameters[0];
         switch (messageType) {
-           default: break;
+            case MessageConstants.messageType:
+                return new MessageType(mainPage, message);
+            default: break;
         }
 
         return null;

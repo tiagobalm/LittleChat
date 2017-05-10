@@ -1,5 +1,6 @@
 package gui.mainPage;
 
+import message.Message;
 import workers.ReadThread;
 import communication.Communication;
 import gui.Controller;
@@ -84,7 +85,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     private Communication conn;
 
-    private BlockingQueue<String> messages;
+    private BlockingQueue<Message> messages;
 
     private String username;
 
@@ -137,6 +138,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         setPaneMaxWidth();
         startWorkerThreads();
 
+        MessagesPanel.setPadding(new Insets(10));
+
         System.out.println("Continuing!");
 
         Button button = new Button("Chat Room 1");
@@ -159,11 +162,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         label1.getStyleClass().add("hboxMe");
         Label label2 = new Label("Hello Tiago :)");
         label2.getStyleClass().add("hboxThey");
-        label2.setPadding(new Insets(10));
         hbox.getChildren().add(label1);
         hbox1.getChildren().add(label2);
 
-        MessagesPanel.setPadding(new Insets(10));
         MessagesPanel.getChildren().addAll(hbox, hbox1);
     }
 
@@ -286,10 +287,36 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     private void sendMessage(String message) {
+        HBox hbox = new HBox();
+        Label label1 = new Label(message);
+
+        hbox.setAlignment(Pos.BOTTOM_RIGHT);
+        label1.setPadding(new Insets(10));
+        label1.getStyleClass().add("hboxMe");
+
+        hbox.getChildren().add(label1);
+        MessagesPanel.getChildren().addAll(hbox, hbox);
+
         Communication.getInstance().sendMessage(username, room, message);
     }
 
-    public BlockingQueue<String> getMessages() { return messages; }
+    public BlockingQueue<Message> getMessages() { return messages; }
 
     public void setUsername(String username) { this.username = username; }
+
+    public void addMessage(String from, String to, String message) {
+        System.out.println("Message from " + from);
+
+        if(room == Integer.parseInt(to)) {
+
+            HBox hbox = new HBox();
+            Label messageLabel = new Label(message);
+
+            messageLabel.getStyleClass().add("hboxThey");
+            messageLabel.setPadding(new Insets(10));
+            hbox.getChildren().add(messageLabel);
+
+            MessagesPanel.getChildren().addAll(hbox);
+        }
+    }
 }
