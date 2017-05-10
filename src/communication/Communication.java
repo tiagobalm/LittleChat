@@ -1,7 +1,8 @@
 package communication;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import message.Message;
+
+import java.io.*;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,8 @@ public class Communication {
 
     private static final String IP = "127.0.0.1";
     private static final int PORT = 15000;
-    private static DataOutputStream os;
-    private static DataInputStream is;
-    private static final byte messageEnd = 0;
+    private static ObjectOutputStream os;
+    private static ObjectInputStream is;
     private static SSLSocket socket;
 
     private static Communication instance = null;
@@ -39,9 +39,9 @@ public class Communication {
             ciphers[0] ="TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256";
             socket.setEnabledCipherSuites(ciphers);
 
-            is = new DataInputStream(socket.getInputStream());
+            is = new ObjectInputStream(socket.getInputStream());
             System.out.println("Loading output streams");
-            os = new DataOutputStream(socket.getOutputStream());
+            os = new ObjectOutputStream(socket.getOutputStream());
             System.out.println("Streams loaded");
 
         } catch (IOException e) {
@@ -57,13 +57,14 @@ public class Communication {
     }
 
     public String read() {
-        System.out.println("Communication reading...");
+
+        /*System.out.println("Communication reading...");
         try {
             List<Byte> answerList = new ArrayList<>();
             byte character;
 
             System.out.println("Communication reading 2...");
-            System.out.println("Reading " + is.available());
+            System.out.println("Reading " + is.readByte());
             while ((character = is.readByte()) != messageEnd) {
                 System.out.println(character);
                 answerList.add(character);
@@ -80,16 +81,17 @@ public class Communication {
         } catch(IOException e) {
             System.out.println("IO exception");
             return "";
-        }
+        }*/
+        return "";
     }
 
     public boolean sendRegisterRequest(String username, String password, String IPAddress, int port) {
 
-        try {
-            String request = "REGISTER " + username + " " + password + " " + IPAddress + " " + port + " " +
-                    "\0";
-            os.write(request.getBytes());
+        String header = "REGISTER " + username + " " + password + " " + IPAddress + " " + port;
+        Message message = new Message(header, "");
 
+        try {
+            os.writeObject(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,50 +102,39 @@ public class Communication {
     public boolean sendLoginRequest(String username, String password, String IPAddress, int port) {
         boolean loggedIn = false;
 
+        String header = "LOGIN " + username + " " + password + " " + IPAddress + " " + port;
+        Message message = new Message(header, "");
+
         try {
-            String request = "LOGIN " + username + " " + password + " " + IPAddress + " " + port + " " +
-                    "\0";
-            os.write(request.getBytes());
+            os.writeObject(message);
 
-            List<Byte> answerList = new ArrayList<>();
-            byte character;
+            socket.setSoTimeout(1000);
+            Message response = (Message)is.readObject();
 
-            while ((character = is.readByte()) != messageEnd)
-                answerList.add(character);
-
-            byte[] answer = byteListToByteArray(answerList);
-            String response = new String(answer);
-
-            loggedIn = ("True".equals(response.trim()));
-
+            System.out.println(response.getServerAnswer());
+            loggedIn = ("True".equals(response.getServerAnswer()));
+        }
+        catch (SocketTimeoutException timeout) {
+            System.out.println("Timeout exception");
         }
         catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
-        catch(Exception e) {}
 
         return loggedIn;
     }
 
-    public void sendMessage(String username, int room, String message) {
+    public void sendMessage(String username, int room, String body) {
+
+        String header = "Message " + username + " " + room;
+        Message message = new Message(header, body);
 
         try {
-
-            String request = "Message " + username + " " + room + " " + (char)0x0D + (char)0x0A + (char)0x0D
-                    + (char)0x0A + message + " " + "\0";
-            os.write(request.getBytes());
-        }
-        catch (Exception e) {
+            os.writeObject(message);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private byte[] byteListToByteArray(List<Byte> bytes) {
-        byte[] result = new byte[bytes.size()];
-        for (int i = 0; i < bytes.size(); i++) {
-            result[i] = bytes.get(i).byteValue();
-        }
-
-        return result;
     }
 }

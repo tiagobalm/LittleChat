@@ -42,8 +42,6 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
     @FXML
     private TextField password;
 
-    private Communication conn;
-
     private String IPAddress;
 
     public Stage start() throws IOException {
@@ -62,7 +60,6 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        conn = Communication.getInstance();
         getIPAddress();
 
         menuLoginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -81,9 +78,9 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
                         boolean loggedIn = false;
 
                         if(state == MenuState.REGISTER)
-                            loggedIn = conn.sendRegisterRequest(username, password, IPAddress, 4556);
+                            loggedIn = Communication.getInstance().sendRegisterRequest(username, password, IPAddress, 4556);
                         if(state == MenuState.LOGIN)
-                            loggedIn = conn.sendLoginRequest(username, password, IPAddress, 4556);
+                            loggedIn = Communication.getInstance().sendLoginRequest(username, password, IPAddress, 4556);
 
                         if(loggedIn)
                             Manager.changeToMainPage(username);

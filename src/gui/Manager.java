@@ -5,6 +5,7 @@ import gui.mainPage.MainPage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sun.applet.Main;
 
 public class Manager extends Application {
 
@@ -30,7 +31,6 @@ public class Manager extends Application {
 
         Stage.setOnCloseRequest((WindowEvent t) -> {
             mainPage.stopWorkers();
-            System.out.println("Closed");
         });
     }
 

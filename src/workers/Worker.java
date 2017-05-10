@@ -23,7 +23,6 @@ public class Worker implements Runnable {
     public void run() {
 
         while(running) {
-            System.out.println("ldgnsç");
 
             try {
                 String message = messages.take();
@@ -31,7 +30,6 @@ public class Worker implements Runnable {
                 worker.decode();
 
             } catch (InterruptedException e) {
-                System.out.println("Shutting down");
                 running = false;
             }
         }

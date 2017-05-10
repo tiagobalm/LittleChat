@@ -1,0 +1,44 @@
+package message;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * Created by tiagobalm on 10-05-2017.
+ */
+public class Message {
+    private String header, message, serverAnswer;
+    private BufferedImage image;
+
+    public Message(String header, String message) {
+        this.header = header;
+
+        this.message = message;
+    }
+
+    public Message(String path) {
+        try {
+            this.image = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+    public String getServerAnswer() {
+        return serverAnswer;
+    }
+
+}

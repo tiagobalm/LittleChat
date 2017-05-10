@@ -84,16 +84,16 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     private Communication conn;
 
-    private ReadThread readThread;
-
     private BlockingQueue<String> messages;
 
     private String username;
 
     private int room = 1;
 
-    private static final int numberOfWorkerThreads = 20;
+    private static final int numberOfWorkerThreads = 10;
     private static final ExecutorService executor = Executors.newFixedThreadPool(numberOfWorkerThreads);
+
+    private static ReadThread readThread;
 
     public Stage start() throws Exception {
         Stage primaryStage = new Stage();
@@ -170,14 +170,17 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private void startWorkerThreads() {
         System.out.println("Starting worker threads");
 
-        executor.execute(new ReadThread(messages));
-        for( int i = 0; i < numberOfWorkerThreads - 1; i++ ) {
-            executor.execute(new Worker(this));
+        readThread = new ReadThread(messages);
+        readThread.run();
+
+        for( int i = 0; i < numberOfWorkerThreads; i++ ) {
+            executor.submit(new Worker(this));
         }
     }
 
     public void stopWorkers() {
         executor.shutdownNow();
+        readThread.stopThread();
     }
 
     @Override

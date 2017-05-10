@@ -18,14 +18,14 @@ public class ReadThread implements Runnable {
 
     @Override
     public void run() {
-        /*System.out.println("Running read thread.");
+        System.out.println("Running read thread.");
 
         while (running) {
             String message = Communication.getInstance().read();
 
             if(message != "")
                 messages.add(message);
-        }*/
+        }
     }
 
     public void stopThread() { this.running = false; }
