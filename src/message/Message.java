@@ -6,9 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by tiagobalm on 10-05-2017.
- */
 public class Message {
     private String header, message, serverAnswer;
     private ArrayList<String> optionalMessage;
@@ -43,6 +40,7 @@ public class Message {
     public BufferedImage getImage() {
         return image;
     }
+
     public String getServerAnswer() {
         return serverAnswer;
     }

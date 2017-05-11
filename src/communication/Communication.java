@@ -1,14 +1,12 @@
 package communication;
+
 import message.Message;
 
 import java.io.*;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-
 
 public class Communication {
     private static final String keystorePath = Communication.class.getResource("../keys/client.private").getPath();
@@ -39,10 +37,12 @@ public class Communication {
             ciphers[0] ="TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256";
             socket.setEnabledCipherSuites(ciphers);
 
-            is = new ObjectInputStream(socket.getInputStream());
-            System.out.println("Loading output streams");
+            System.out.println("Bf Streams loaded");
             os = new ObjectOutputStream(socket.getOutputStream());
             System.out.println("Streams loaded");
+            os.flush();
+            is = new ObjectInputStream(socket.getInputStream());
+            System.out.println("Loading output streams");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,9 +63,7 @@ public class Communication {
             socket.setSoTimeout(500);
             message = (Message)is.readObject();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -114,9 +112,7 @@ public class Communication {
         catch (SocketTimeoutException timeout) {
             System.out.println("Timeout exception");
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
