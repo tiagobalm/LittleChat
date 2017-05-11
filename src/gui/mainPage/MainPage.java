@@ -173,6 +173,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
         readThread = new ReadThread(messages);
         readThread.run();
+        System.out.println("After Read Thread");
 
         for( int i = 0; i < numberOfWorkerThreads; i++ ) {
             executor.submit(new Worker(this));
