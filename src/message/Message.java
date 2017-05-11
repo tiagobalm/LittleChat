@@ -6,9 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by tiagobalm on 10-05-2017.
- */
 public class Message {
     private String header, message;
     private ArrayList<String> optionalMessage;
