@@ -2,6 +2,7 @@ package communication;
 import message.Message;
 
 import java.io.*;
+import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 import javax.net.ssl.SSLSocket;
@@ -38,7 +39,7 @@ public class Communication {
 
             os = new ObjectOutputStream(socket.getOutputStream());
             os.flush();
-            System.out.println("HEllo!");
+            System.out.println("Hello!");
             is = new ObjectInputStream(socket.getInputStream());
 
             System.out.println("Loading output streams");
@@ -64,7 +65,9 @@ public class Communication {
             socket.setSoTimeout(500);
             message = (Message)is.readObject();
 
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (SocketTimeoutException ignore) {}
+
+        catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -91,6 +94,7 @@ public class Communication {
         Message message = new Message(header, "");
 
         try {
+            System.out.println("Sending message " + message.getHeader());
             os.writeObject(message);
         }
         catch (IOException e) {
