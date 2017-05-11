@@ -61,9 +61,10 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         getIPAddress();
-        System.out.println("Communication");
-        Communication.getInstance();
+        initializeHandlers();
+    }
 
+    private void initializeHandlers() {
         menuLoginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> setNewState(MenuState.LOGIN));
         cancelLogin.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -71,25 +72,26 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
         menuRegisterButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> setNewState(MenuState.REGISTER));
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> {
+                e -> loginHandler());
+    }
 
-                    String username = this.username.getText();
-                    String password = this.password.getText();
+    private void loginHandler() {
+        String username = this.username.getText();
+        String password = this.password.getText();
 
-                    try {
-                        boolean loggedIn = false;
+        try {
+            boolean loggedIn = false;
 
-                        if(state == MenuState.REGISTER)
-                            loggedIn = Communication.getInstance().sendRegisterRequest(username, password, IPAddress, 4556);
-                        if(state == MenuState.LOGIN)
-                            loggedIn = Communication.getInstance().sendLoginRequest(username, password, IPAddress, 4556);
+            if(state == MenuState.REGISTER)
+                loggedIn = Communication.getInstance().sendRegisterRequest(username, password, IPAddress, 4556);
+            if(state == MenuState.LOGIN)
+                loggedIn = Communication.getInstance().sendLoginRequest(username, password, IPAddress, 4556);
 
-                        if(loggedIn)
-                            Manager.changeToMainPage(username);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                });
+            if(loggedIn)
+                Manager.changeToMainPage();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
     }
 
     @Override

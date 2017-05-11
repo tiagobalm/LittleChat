@@ -1,14 +1,8 @@
 package message;
 
 public class MessageConstants {
-    public static final String loginType = "LOGIN";
-    public static final int loginSize= 5;
-
     public static final String logoutType = "LOGOUT";
     public static final int logoutSize= 2;
-
-    public static final String registerType = "REGISTER";
-    public static final int registerSize= 5;
 
     public static final String messageType = "MESSAGE";
     public static final int messageSize= 3;

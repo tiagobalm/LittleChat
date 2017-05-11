@@ -5,7 +5,7 @@ import message.Message;
 
 import java.util.concurrent.BlockingQueue;
 
-public class ReadThread implements Runnable {
+public class ReadThread extends Thread {
     private BlockingQueue<Message> messages;
     private boolean running;
 

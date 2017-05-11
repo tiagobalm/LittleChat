@@ -26,6 +26,7 @@ import javafx.util.Duration;
 import workers.Worker;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
 
@@ -83,11 +84,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     @FXML
     private Button messageSend;
 
-    private Communication conn;
-
     private BlockingQueue<Message> messages;
-
-    private String username;
 
     private int room = 1;
 
@@ -95,6 +92,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private static final ExecutorService executor = Executors.newFixedThreadPool(numberOfWorkerThreads);
 
     private static ReadThread readThread;
+
+    private ConcurrentHashMap<Integer, ArrayList<String>> chatMessages;
 
     public Stage start() throws Exception {
         Stage primaryStage = new Stage();
@@ -114,29 +113,13 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        conn = Communication.getInstance();
         messages = new ArrayBlockingQueue<>(500);
+        chatMessages = new ConcurrentHashMap<>();
 
-        roomsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> setNewState(MainPageState.ROOMS));
-
-        friendsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> setNewState(MainPageState.FRIENDS));
-
-        friendRequestButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> setNewState(MainPageState.FRIENDREQUEST));
-
-        profileButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> setNewState(MainPageState.PROFILE));
-
-        logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> changeToLogin());
-
-        messageSend.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> sendMessage(messageInput.getText()));
-
+        initializeHandlers();
         setPaneMaxWidth();
         startWorkerThreads();
+        getRooms();
 
         MessagesPanel.setPadding(new Insets(10));
 
@@ -168,12 +151,42 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         MessagesPanel.getChildren().addAll(hbox, hbox1);
     }
 
+    private void getRooms() {
+        Communication.getInstance().getRooms();
+    }
+
+    public void addRooms(ArrayList<String> rooms) {
+
+        for(String room : rooms) {
+
+        }
+    }
+
+    private void initializeHandlers() {
+        roomsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> setNewState(MainPageState.ROOMS));
+
+        friendsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> setNewState(MainPageState.FRIENDS));
+
+        friendRequestButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> setNewState(MainPageState.FRIENDREQUEST));
+
+        profileButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> setNewState(MainPageState.PROFILE));
+
+        logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> changeToLogin());
+
+        messageSend.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> sendMessage(messageInput.getText()));
+    }
+
     private void startWorkerThreads() {
         System.out.println("Starting worker threads");
 
         readThread = new ReadThread(messages);
-        Thread thread = new Thread(readThread);
-        thread.start();
+        readThread.start();
         System.out.println("After Read Thread");
 
         for( int i = 0; i < numberOfWorkerThreads; i++ ) {
@@ -270,11 +283,14 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     public void changeToLogin() {
+        boolean loggedOut =  Communication.getInstance().sendLogoutRequest();
 
-        try {
-            Manager.changeToLogin();
-        } catch(Exception ex) {
-            ex.printStackTrace();
+        if(loggedOut) {
+            try {
+                Manager.changeToLogin();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -299,12 +315,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         hbox.getChildren().add(label1);
         MessagesPanel.getChildren().addAll(hbox, hbox);
 
-        Communication.getInstance().sendMessage(username, room, message);
+        Communication.getInstance().sendMessage(room, message);
     }
 
     public BlockingQueue<Message> getMessages() { return messages; }
-
-    public void setUsername(String username) { this.username = username; }
 
     public void addMessage(String from, String to, String message) {
         System.out.println("Message from " + from);

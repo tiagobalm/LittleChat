@@ -2,7 +2,6 @@ package communication;
 import message.Message;
 
 import java.io.*;
-import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 import javax.net.ssl.SSLSocket;
@@ -104,6 +103,24 @@ public class Communication {
         return waitForLoginResponse();
     }
 
+    public boolean sendLogoutRequest() {
+        Message logout = new Message("LOGOUT ", "");
+        boolean loggedOut = false;
+
+        try {
+            os.writeObject(logout);
+
+            socket.setSoTimeout(1000);
+            Message response = (Message)is.readObject();
+
+            loggedOut = ("LOGOUT".equals(response.getHeader()));
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return loggedOut;
+    }
+
     public boolean waitForLoginResponse() {
         boolean loggedIn = false;
 
@@ -111,7 +128,6 @@ public class Communication {
             socket.setSoTimeout(1000);
             Message response = (Message)is.readObject();
 
-            System.out.println(response.getMessage());
             loggedIn = ("True".equals(response.getMessage()));
         }
         catch (SocketTimeoutException timeout) {
@@ -124,10 +140,18 @@ public class Communication {
         return loggedIn;
     }
 
-    public void sendMessage(String username, int room, String body) {
+    public void sendMessage(int room, String body) {
+        Message message = new Message("MESSAGE " + room, body);
 
-        String header = "Message " + username + " " + room;
-        Message message = new Message(header, body);
+        try {
+            os.writeObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getRooms() {
+        Message message = new Message("GETROOMS", "");
 
         try {
             os.writeObject(message);

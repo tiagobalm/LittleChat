@@ -1,5 +1,6 @@
 package gui;
 
+import communication.Communication;
 import gui.login.LoginGUI;
 import gui.mainPage.MainPage;
 import javafx.application.Application;
@@ -21,16 +22,20 @@ public class Manager extends Application {
         changeToLogin();
     }
 
-    public static void changeToMainPage(String username) throws Exception {
+    public static void changeToMainPage() throws Exception {
         MainPage mainPage = new MainPage();
-        mainPage.setUsername(username);
 
         Stage.close();
         Stage = mainPage.start();
         Stage.show();
 
         Stage.setOnCloseRequest((WindowEvent t) -> {
-            mainPage.stopWorkers();
+            boolean loggedOut = Communication.getInstance().sendLogoutRequest();
+
+            if(loggedOut)
+                mainPage.stopWorkers();
+            else
+                t.consume();
         });
     }
 
