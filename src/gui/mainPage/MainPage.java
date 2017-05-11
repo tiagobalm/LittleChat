@@ -125,12 +125,17 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         setPaneMaxWidth();
         startWorkerThreads();
         getRooms();
+        getFriends();
     }
 
     public void setUsername(String username) { this.username = username; }
 
     private void getRooms() {
         Communication.getInstance().getRooms();
+    }
+
+    private void getFriends() {
+        Communication.getInstance().getFriends();
     }
 
     public void addRooms(List<String> rooms) {
@@ -283,15 +288,15 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     public void changeToLogin() {
-        boolean loggedOut =  Communication.getInstance().sendLogoutRequest();
-
+        Communication.getInstance().sendLogoutRequest();
+        /*
         if(loggedOut) {
             try {
                 Manager.changeToLogin();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }
+        }*/
     }
 
     private void setPaneMaxWidth() {

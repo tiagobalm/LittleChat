@@ -19,9 +19,12 @@ public class MessageConstants {
     public static final String requestIPType = "REQUESTIP";
     public static final int requestIPSize= 3;
 
-    public static final String getRooms = "GETROOMS";
-    public static final int getRoomsSize= 1;
+    static final String getRooms = "GETROOMS";
+    static final int getRoomsSize= 1;
 
-    public static final String getMessages = "GETMESSAGES";
-    public static final int getMessagesSize = 2;
+    static final String getFriendsType = "GETFRIENDS";
+    static final int getFriendsSize = 1;
+
+    static final String getMessages = "GETMESSAGES";
+    static final int getMessagesSize = 2;
 }

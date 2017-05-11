@@ -15,17 +15,21 @@ public abstract class ReactMessage {
         this.message = message;
     }
 
-    public void react() throws IOException {
+    public void react() throws Exception {
         throw new AbstractMethodError("Wrong class");
     }
 
     public static ReactMessage getReactMessage(MainPage mainPage, Message message) {
+        System.out.println("Work message " + message.getHeader());
         String[] parameters = message.getHeader().split(" ");
         if( parameters.length < 1 )
             return null;
 
         String messageHeaderType = parameters[0];
         switch (messageHeaderType) {
+            case logoutType:
+                System.out.println("Receive logout");
+                return new LogoutType(mainPage, message);
             case messageType:
                 System.out.println("Receive MESSAGE");
                 return new MessageType(mainPage, message);
@@ -35,6 +39,9 @@ public abstract class ReactMessage {
             case getMessages:
                 System.out.println("Receive MESSAGES");
                 return new GetMessagesType(mainPage, message);
+            case getFriendsType:
+                System.out.println("Receive GETFRIENDS");
+                return new GetFriendsType(mainPage, message);
             default: break;
         }
 

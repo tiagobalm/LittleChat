@@ -6,11 +6,11 @@ import gui.mainPage.MainPage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import sun.applet.Main;
 
 public class Manager extends Application {
 
-    private static Stage Stage;
+    public static Stage Stage;
+    public static boolean wantToClose = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -31,12 +31,11 @@ public class Manager extends Application {
         Stage.show();
 
         Stage.setOnCloseRequest((WindowEvent t) -> {
-            boolean loggedOut = Communication.getInstance().sendLogoutRequest();
-
-            if(loggedOut)
-                mainPage.stopWorkers();
-            else
+            if( !wantToClose ) {
+                wantToClose = true;
+                Communication.getInstance().sendLogoutRequest();
                 t.consume();
+            }
         });
     }
 

@@ -63,6 +63,7 @@ public class Communication {
         try {
             socket.setSoTimeout(500);
             message = (Message)is.readObject();
+            System.out.println("Message received");
 
         } catch (SocketTimeoutException ignore) {}
 
@@ -78,11 +79,7 @@ public class Communication {
         String header = "REGISTER " + username + " " + password + " " + IPAddress + " " + port;
         Message message = new Message(header, "");
 
-        try {
-            os.writeObject(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        sendMessage(message);
 
         return waitForLoginResponse();
     }
@@ -92,18 +89,12 @@ public class Communication {
         String header = "LOGIN " + username + " " + password + " " + IPAddress + " " + port;
         Message message = new Message(header, "");
 
-        try {
-            System.out.println("Sending message " + message.getHeader());
-            os.writeObject(message);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        sendMessage(message);
 
         return waitForLoginResponse();
     }
 
-    public boolean waitForLoginResponse() {
+    private boolean waitForLoginResponse() {
         boolean loggedIn = false;
 
         try {
@@ -122,22 +113,19 @@ public class Communication {
         return loggedIn;
     }
 
-    public boolean sendLogoutRequest() {
-        Message logout = new Message("LOGOUT ", "");
-        boolean loggedOut = false;
-
+    public void sendLogoutRequest() {
+        Message logout = new Message("LOGOUT", "");
+        sendMessage(logout);
+/*
         try {
-            os.writeObject(logout);
-
-            socket.setSoTimeout(1000);
-            Message response = (Message)is.readObject();
-
-            loggedOut = ("LOGOUT".equals(response.getHeader()));
-        } catch (IOException | ClassNotFoundException e) {
+            synchronized (this) {
+                os.writeObject(logout);
+                os.flush();
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return loggedOut;
+*/
     }
 
     public void sendMessageRequest(int room, String body) {
@@ -150,6 +138,11 @@ public class Communication {
         sendMessage(message);
     }
 
+    public void getFriends() {
+        Message message = new Message("GETFRIENDS", "");
+        sendMessage(message);
+    }
+
     public void getRoomMessages(Integer room) {
         Message message = new Message("GETMESSAGES " + room, "");
         sendMessage(message);
@@ -157,7 +150,10 @@ public class Communication {
 
     private void sendMessage(Message message) {
         try {
-            os.writeObject(message);
+            synchronized (this) {
+                os.writeObject(message);
+                os.flush();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
