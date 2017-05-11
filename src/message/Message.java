@@ -10,13 +10,12 @@ import java.util.ArrayList;
  * Created by tiagobalm on 10-05-2017.
  */
 public class Message {
-    private String header, message, serverAnswer;
+    private String header, message;
     private ArrayList<String> optionalMessage;
     private BufferedImage image;
 
     public Message(String header, String message) {
         this.header = header;
-
         this.message = message;
     }
 
@@ -42,9 +41,6 @@ public class Message {
 
     public BufferedImage getImage() {
         return image;
-    }
-    public String getServerAnswer() {
-        return serverAnswer;
     }
 
 }

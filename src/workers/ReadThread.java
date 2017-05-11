@@ -8,7 +8,7 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Created by tiagobalm on 09-05-2017.
  */
-public class ReadThread implements Runnable {
+public class ReadThread extends Thread {
     private BlockingQueue<Message> messages;
     private boolean running;
 

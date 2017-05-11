@@ -2,8 +2,9 @@ package workers;
 
 import gui.mainPage.MainPage;
 import message.Message;
-import message.WorkMessage;
+import message.ReactMessage;
 
+import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -13,6 +14,7 @@ public class Worker implements Runnable {
     private BlockingQueue<Message> messages;
     private MainPage mainPage;
     private boolean running;
+    private ReactMessage reactMessage;
 
     public Worker(MainPage mainpage) {
         this.mainPage = mainpage;
@@ -26,11 +28,12 @@ public class Worker implements Runnable {
         while(running) {
 
             try {
-                Message message = messages.take();
-                WorkMessage worker = new WorkMessage(mainPage, message);
-                worker.decode();
+                reactMessage = ReactMessage.getReactMessage(mainPage, messages.take());
 
-            } catch (InterruptedException e) {
+                if( reactMessage == null ) return ;
+                reactMessage.react();
+
+            } catch (Exception e) {
                 running = false;
             }
         }

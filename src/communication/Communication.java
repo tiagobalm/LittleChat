@@ -25,6 +25,7 @@ public class Communication {
     private static Communication instance = null;
 
     private Communication() {
+
         System.setProperty("javax.net.ssl.keyStore", keystorePath);
         System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
         System.setProperty("javax.net.ssl.trustStore", truststorePath);
@@ -39,9 +40,13 @@ public class Communication {
             ciphers[0] ="TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256";
             socket.setEnabledCipherSuites(ciphers);
 
-            is = new ObjectInputStream(socket.getInputStream());
-            System.out.println("Loading output streams");
             os = new ObjectOutputStream(socket.getOutputStream());
+            os.flush();
+            System.out.println("HEllo!");
+            is = new ObjectInputStream(socket.getInputStream());
+
+            System.out.println("Loading output streams");
+
             System.out.println("Streams loaded");
 
         } catch (IOException e) {
@@ -108,8 +113,8 @@ public class Communication {
             socket.setSoTimeout(1000);
             Message response = (Message)is.readObject();
 
-            System.out.println(response.getServerAnswer());
-            loggedIn = ("True".equals(response.getServerAnswer()));
+            System.out.println(response.getMessage());
+            loggedIn = ("True".equals(response.getMessage()));
         }
         catch (SocketTimeoutException timeout) {
             System.out.println("Timeout exception");

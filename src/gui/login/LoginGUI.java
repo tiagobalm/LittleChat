@@ -61,6 +61,8 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         getIPAddress();
+        System.out.println("Communication");
+        Communication.getInstance();
 
         menuLoginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> setNewState(MenuState.LOGIN));

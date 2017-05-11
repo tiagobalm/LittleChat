@@ -4,6 +4,8 @@ import gui.mainPage.MainPage;
 
 import java.io.IOException;
 
+import static message.MessageConstants.*;
+
 public abstract class ReactMessage {
     protected Message message;
     protected MainPage mainPage;
@@ -17,14 +19,14 @@ public abstract class ReactMessage {
         throw new AbstractMethodError("Wrong class");
     }
 
-    static ReactMessage getReactMessage(MainPage mainPage, Message message) {
+    public static ReactMessage getReactMessage(MainPage mainPage, Message message) {
         String[] parameters = message.getHeader().split(" ");
         if( parameters.length < 1 )
             return null;
 
-        String messageType = parameters[0];
-        switch (messageType) {
-            case MessageConstants.messageType:
+        String messageHeaderType = parameters[0];
+        switch (messageHeaderType) {
+            case messageType:
                 return new MessageType(mainPage, message);
             default: break;
         }

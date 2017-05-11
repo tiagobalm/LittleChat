@@ -2,14 +2,14 @@ package message;
 
 import gui.mainPage.MainPage;
 
-import static message.MessageConstants.*;
+import static message.MessageConstants.messageSize;
 
 /**
- * Created by tiagobalm on 10-05-2017.
+ * Created by tiagobalm on 11-05-2017.
  */
-public class MessageType extends ReactMessage {
+public class LoginType extends ReactMessage {
 
-    MessageType(MainPage mainPage, Message message) {
+    LoginType(MainPage mainPage, Message message) {
         super(mainPage, message);
     }
 
