@@ -88,7 +88,7 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
                 loggedIn = Communication.getInstance().sendLoginRequest(username, password, IPAddress, 4556);
 
             if(loggedIn)
-                Manager.changeToMainPage();
+                Manager.changeToMainPage(username);
         } catch (Exception e1) {
             e1.printStackTrace();
         }

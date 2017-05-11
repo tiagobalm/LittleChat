@@ -16,7 +16,6 @@ public class ReadThread extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Running read thread.");
 
         while (running) {
             Message message = Communication.getInstance().read();

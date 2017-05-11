@@ -1,5 +1,6 @@
 package gui.mainPage;
 
+import javafx.scene.layout.AnchorPane;
 import message.Message;
 import workers.ReadThread;
 import communication.Communication;
@@ -85,6 +86,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     @FXML
     private Button messageSend;
 
+    private static String username;
+
     private BlockingQueue<Message> messages;
 
     private int room = 1;
@@ -124,6 +127,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         getRooms();
     }
 
+    public void setUsername(String username) { this.username = username; }
+
     private void getRooms() {
         Communication.getInstance().getRooms();
     }
@@ -131,12 +136,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     public void addRooms(List<String> rooms) {
 
         for(String room : rooms) {
-            System.out.println(room);
             String[] roomParameters = room.split("\0");
-
-            System.out.println("Room parameters: ");
-            System.out.println(roomParameters[0]);
-            System.out.println(roomParameters[1]);
 
             Button button = new Button(roomParameters[1].trim());
             button.setId(roomParameters[0].trim());
@@ -144,17 +144,14 @@ public class MainPage implements Initializable, Controller<MainPageState> {
             button.setMaxWidth(Double.MAX_VALUE);
             button.getStyleClass().add("roomsButtons");
 
-            System.out.println(button);
             conversationButtons.getChildren().add(button);
         }
     }
 
     private void roomButtonHandler(MouseEvent event) {
-        System.out.println("Button id: " + event.getSource());
         Integer buttonID = Integer.parseInt(((Button)event.getSource()).getId());
         room = buttonID;
 
-        System.out.println("Handler");
         if(chatMessages.containsKey(buttonID))
             addRoomMessagesToPanel(buttonID);
         else
@@ -326,7 +323,6 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private void getRoomMessages(Integer room) {
         int counter = 0;
 
-        System.out.println("Get Messages");
         while(counter < 3) {
             Communication.getInstance().getRoomMessages(room);
 
@@ -336,8 +332,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                 e.printStackTrace();
             }
 
-            if(chatMessages.containsKey(room))
+            if(chatMessages.containsKey(room)) {
                 addRoomMessagesToPanel(room);
+                counter = 4;
+            }
             counter++;
         }
 
@@ -355,9 +353,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     private void addRoomMessagesToPanel(Integer room) {
-        MessagesPanel.getChildren().removeAll();
+        MessagesPanel.getChildren().clear();
 
-        System.out.println("Add room messages to panel");
         for(String message : chatMessages.get(room)) {
             String[] messageParameters = message.split("\0");
             addMessageToPanel(messageParameters[0].trim(), messageParameters[1].trim());
@@ -369,7 +366,12 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         HBox hbox = new HBox();
         Label messageLabel = new Label(username + ": " + message);
 
-        messageLabel.getStyleClass().add("hboxThey");
+        if(!username.equals(this.username)) {
+            messageLabel.getStyleClass().add("hboxThey");
+        } else {
+            messageLabel.getStyleClass().add("hboxMe");
+            hbox.setAlignment(Pos.BOTTOM_RIGHT);
+        }
         messageLabel.setPadding(new Insets(10));
         hbox.getChildren().add(messageLabel);
 

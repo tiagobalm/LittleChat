@@ -22,8 +22,9 @@ public class Manager extends Application {
         changeToLogin();
     }
 
-    public static void changeToMainPage() throws Exception {
+    public static void changeToMainPage(String username) throws Exception {
         MainPage mainPage = new MainPage();
+        mainPage.setUsername(username);
 
         Stage.close();
         Stage = mainPage.start();
