@@ -103,24 +103,6 @@ public class Communication {
         return waitForLoginResponse();
     }
 
-    public boolean sendLogoutRequest() {
-        Message logout = new Message("LOGOUT ", "");
-        boolean loggedOut = false;
-
-        try {
-            os.writeObject(logout);
-
-            socket.setSoTimeout(1000);
-            Message response = (Message)is.readObject();
-
-            loggedOut = ("LOGOUT".equals(response.getHeader()));
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return loggedOut;
-    }
-
     public boolean waitForLoginResponse() {
         boolean loggedIn = false;
 
@@ -140,19 +122,40 @@ public class Communication {
         return loggedIn;
     }
 
-    public void sendMessage(int room, String body) {
-        Message message = new Message("MESSAGE " + room, body);
+    public boolean sendLogoutRequest() {
+        Message logout = new Message("LOGOUT ", "");
+        boolean loggedOut = false;
 
         try {
-            os.writeObject(message);
-        } catch (IOException e) {
+            os.writeObject(logout);
+
+            socket.setSoTimeout(1000);
+            Message response = (Message)is.readObject();
+
+            loggedOut = ("LOGOUT".equals(response.getHeader()));
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        return loggedOut;
+    }
+
+    public void sendMessageRequest(int room, String body) {
+        Message message = new Message("MESSAGE " + room, body);
+        sendMessage(message);
     }
 
     public void getRooms() {
         Message message = new Message("GETROOMS", "");
+        sendMessage(message);
+    }
 
+    public void getRoomMessages(Integer room) {
+        Message message = new Message("GETMESSAGES " + room, "");
+        sendMessage(message);
+    }
+
+    private void sendMessage(Message message) {
         try {
             os.writeObject(message);
         } catch (IOException e) {

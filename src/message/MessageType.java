@@ -4,9 +4,6 @@ import gui.mainPage.MainPage;
 
 import static message.MessageConstants.*;
 
-/**
- * Created by tiagobalm on 10-05-2017.
- */
 public class MessageType extends ReactMessage {
 
     MessageType(MainPage mainPage, Message message) {
@@ -19,6 +16,6 @@ public class MessageType extends ReactMessage {
             return ;
 
         String[] parameters = message.getHeader().split(" ");
-        mainPage.addMessage(parameters[1], parameters[2], message.getMessage());
+        mainPage.addNewMessage(parameters[1], Integer.parseInt(parameters[2]), message.getMessage());
     }
 }

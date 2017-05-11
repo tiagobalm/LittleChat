@@ -28,6 +28,10 @@ public abstract class ReactMessage {
         switch (messageHeaderType) {
             case messageType:
                 return new MessageType(mainPage, message);
+            case getRooms:
+                return new GetRoomsType(mainPage, message);
+            case getMessages:
+                return new GetMessagesType(mainPage, message);
             default: break;
         }
 

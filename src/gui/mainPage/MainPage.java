@@ -115,40 +115,12 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     public void initialize(URL location, ResourceBundle resources) {
         messages = new ArrayBlockingQueue<>(500);
         chatMessages = new ConcurrentHashMap<>();
+        MessagesPanel.setPadding(new Insets(10));
 
         initializeHandlers();
         setPaneMaxWidth();
         startWorkerThreads();
         getRooms();
-
-        MessagesPanel.setPadding(new Insets(10));
-
-        System.out.println("Continuing!");
-
-        Button button = new Button("Chat Room 1");
-        Button button2 = new Button("Chat Room 2");
-
-        button.setMaxWidth(Double.MAX_VALUE);
-        button2.setMaxWidth(Double.MAX_VALUE);
-
-        button.getStyleClass().add("roomsButtons");
-        button2.getStyleClass().add("roomsButtons");
-
-        conversationButtons.getChildren().addAll(button, button2);
-
-        HBox hbox =  new HBox();
-        HBox hbox1 = new HBox();
-
-        hbox.setAlignment(Pos.BOTTOM_RIGHT);
-        Label label1 = new Label("Hello Vasco :)");
-        label1.setPadding(new Insets(10));
-        label1.getStyleClass().add("hboxMe");
-        Label label2 = new Label("Hello Tiago :)");
-        label2.getStyleClass().add("hboxThey");
-        hbox.getChildren().add(label1);
-        hbox1.getChildren().add(label2);
-
-        MessagesPanel.getChildren().addAll(hbox, hbox1);
     }
 
     private void getRooms() {
@@ -158,8 +130,29 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     public void addRooms(ArrayList<String> rooms) {
 
         for(String room : rooms) {
+            String[] roomParameters = room.split("\0");
 
+            System.out.println("Room parameters: " + roomParameters[0] + " " + roomParameters[1]);
+
+            Button button = new Button(roomParameters[1]);
+
+            button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> roomButtonHandler(event));
+            button.setId(roomParameters[0]);
+            button.setMaxWidth(Double.MAX_VALUE);
+            button.getStyleClass().add("roomsButtons");
+
+            conversationButtons.getChildren().addAll(button);
         }
+    }
+
+    private void roomButtonHandler(MouseEvent event) {
+        Integer buttonID = Integer.parseInt(((Button)event.getSource()).getId());
+        room = buttonID;
+
+        if(chatMessages.containsKey(buttonID))
+            addRoomMessagesToPanel(buttonID);
+        else
+            getRoomMessages(buttonID);
     }
 
     private void initializeHandlers() {
@@ -282,6 +275,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         return tt;
     }
 
+    public ConcurrentHashMap<Integer, ArrayList<String>> getChatMessages() {
+        return chatMessages;
+    }
+
     public void changeToLogin() {
         boolean loggedOut =  Communication.getInstance().sendLogoutRequest();
 
@@ -315,24 +312,59 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         hbox.getChildren().add(label1);
         MessagesPanel.getChildren().addAll(hbox, hbox);
 
-        Communication.getInstance().sendMessage(room, message);
+        Communication.getInstance().sendMessageRequest(room, message);
     }
 
     public BlockingQueue<Message> getMessages() { return messages; }
 
-    public void addMessage(String from, String to, String message) {
-        System.out.println("Message from " + from);
+    private void getRoomMessages(Integer room) {
+        int counter = 0;
 
-        if(room == Integer.parseInt(to)) {
+        while(counter < 3) {
+            Communication.getInstance().getRoomMessages(room);
 
-            HBox hbox = new HBox();
-            Label messageLabel = new Label(message);
+            try {
+                Thread.sleep(1000 * (long)Math.pow(2, counter));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-            messageLabel.getStyleClass().add("hboxThey");
-            messageLabel.setPadding(new Insets(10));
-            hbox.getChildren().add(messageLabel);
-
-            MessagesPanel.getChildren().addAll(hbox);
+            if(chatMessages.containsKey(room))
+                addRoomMessagesToPanel(room);
+            counter++;
         }
+
+        if(counter == 3) System.out.println("Unable to retrieve messages from room with ID " + room);
+    }
+
+    public void addNewMessage(String from, int to, String message) {
+        System.out.println("From: " + from + " To: " + to);
+
+        if(chatMessages.containsKey(to))
+            chatMessages.get(to).add(message);
+
+        if(room == to)
+            addMessageToPanel(from, message);
+    }
+
+    private void addRoomMessagesToPanel(Integer room) {
+        MessagesPanel.getChildren().removeAll();
+
+        for(String message : chatMessages.get(room)) {
+            String[] messageParameters = message.split("\0");
+            addMessageToPanel(messageParameters[0], messageParameters[1]);
+        }
+    }
+
+    private void addMessageToPanel(String username, String message) {
+
+        HBox hbox = new HBox();
+        Label messageLabel = new Label(username + ": " + message);
+
+        messageLabel.getStyleClass().add("hboxThey");
+        messageLabel.setPadding(new Insets(10));
+        hbox.getChildren().add(messageLabel);
+
+        MessagesPanel.getChildren().addAll(hbox);
     }
 }
