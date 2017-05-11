@@ -27,10 +27,13 @@ public abstract class ReactMessage {
         String messageHeaderType = parameters[0];
         switch (messageHeaderType) {
             case messageType:
+                System.out.println("Receive MESSAGE");
                 return new MessageType(mainPage, message);
             case getRooms:
+                System.out.println("Receive GETROOMS");
                 return new GetRoomsType(mainPage, message);
             case getMessages:
+                System.out.println("Receive MESSAGES");
                 return new GetMessagesType(mainPage, message);
             default: break;
         }

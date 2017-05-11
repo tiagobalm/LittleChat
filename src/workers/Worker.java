@@ -25,7 +25,7 @@ public class Worker implements Runnable {
 
             try {
                 reactMessage = ReactMessage.getReactMessage(mainPage, messages.take());
-
+                System.out.println("React message " + reactMessage);
                 if( reactMessage == null ) return ;
                 reactMessage.react();
 

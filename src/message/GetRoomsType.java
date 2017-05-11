@@ -12,9 +12,15 @@ public class GetRoomsType extends ReactMessage {
 
     @Override
     public void react() {
-        if( message.getOptionalMessage() == null || message.getHeader().length() != getRoomsSize)
+        String[] headerParameters = message.getHeader().split(" ");
+
+        if( message.getOptionalMessage() == null || headerParameters.length != getRoomsSize)
             return ;
 
+        System.out.println("Adding rooms");
+        for(String message : message.getOptionalMessage()) {
+            System.out.println("Received message: " + message);
+        }
         mainPage.addRooms(message.getOptionalMessage());
     }
 }

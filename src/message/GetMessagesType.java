@@ -12,7 +12,8 @@ public class GetMessagesType extends ReactMessage {
 
     @Override
     public void react() {
-        if( message.getOptionalMessage() == null || message.getHeader().length() != getMessagesSize)
+        String[] headerParameters = message.getHeader().split(" ");
+        if( message.getOptionalMessage() == null || headerParameters.length != getMessagesSize)
             return ;
 
         String[] messageParameters = message.getHeader().split(" ");

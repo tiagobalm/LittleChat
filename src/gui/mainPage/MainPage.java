@@ -27,6 +27,7 @@ import workers.Worker;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
 
@@ -93,7 +94,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     private static ReadThread readThread;
 
-    private ConcurrentHashMap<Integer, ArrayList<String>> chatMessages;
+    private ConcurrentHashMap<Integer, List<String>> chatMessages;
 
     public Stage start() throws Exception {
         Stage primaryStage = new Stage();
@@ -127,28 +128,33 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         Communication.getInstance().getRooms();
     }
 
-    public void addRooms(ArrayList<String> rooms) {
+    public void addRooms(List<String> rooms) {
 
         for(String room : rooms) {
+            System.out.println(room);
             String[] roomParameters = room.split("\0");
 
-            System.out.println("Room parameters: " + roomParameters[0] + " " + roomParameters[1]);
+            System.out.println("Room parameters: ");
+            System.out.println(roomParameters[0]);
+            System.out.println(roomParameters[1]);
 
-            Button button = new Button(roomParameters[1]);
-
+            Button button = new Button(roomParameters[1].trim());
+            button.setId(roomParameters[0].trim());
             button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> roomButtonHandler(event));
-            button.setId(roomParameters[0]);
             button.setMaxWidth(Double.MAX_VALUE);
             button.getStyleClass().add("roomsButtons");
 
-            conversationButtons.getChildren().addAll(button);
+            System.out.println(button);
+            conversationButtons.getChildren().add(button);
         }
     }
 
     private void roomButtonHandler(MouseEvent event) {
+        System.out.println("Button id: " + event.getSource());
         Integer buttonID = Integer.parseInt(((Button)event.getSource()).getId());
         room = buttonID;
 
+        System.out.println("Handler");
         if(chatMessages.containsKey(buttonID))
             addRoomMessagesToPanel(buttonID);
         else
@@ -275,7 +281,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         return tt;
     }
 
-    public ConcurrentHashMap<Integer, ArrayList<String>> getChatMessages() {
+    public ConcurrentHashMap<Integer, List<String>> getChatMessages() {
         return chatMessages;
     }
 
@@ -320,6 +326,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private void getRoomMessages(Integer room) {
         int counter = 0;
 
+        System.out.println("Get Messages");
         while(counter < 3) {
             Communication.getInstance().getRoomMessages(room);
 
@@ -350,9 +357,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private void addRoomMessagesToPanel(Integer room) {
         MessagesPanel.getChildren().removeAll();
 
+        System.out.println("Add room messages to panel");
         for(String message : chatMessages.get(room)) {
             String[] messageParameters = message.split("\0");
-            addMessageToPanel(messageParameters[0], messageParameters[1]);
+            addMessageToPanel(messageParameters[0].trim(), messageParameters[1].trim());
         }
     }
 
@@ -365,6 +373,6 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         messageLabel.setPadding(new Insets(10));
         hbox.getChildren().add(messageLabel);
 
-        MessagesPanel.getChildren().addAll(hbox);
+        MessagesPanel.getChildren().add(hbox);
     }
 }
