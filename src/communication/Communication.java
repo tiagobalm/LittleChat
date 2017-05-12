@@ -63,7 +63,6 @@ public class Communication {
         try {
             socket.setSoTimeout(500);
             message = (Message)is.readObject();
-            System.out.println("Message received");
 
         } catch (SocketTimeoutException ignore) {}
 
@@ -116,16 +115,6 @@ public class Communication {
     public void sendLogoutRequest() {
         Message logout = new Message("LOGOUT", "");
         sendMessage(logout);
-/*
-        try {
-            synchronized (this) {
-                os.writeObject(logout);
-                os.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-*/
     }
 
     public void sendMessageRequest(int room, String body) {

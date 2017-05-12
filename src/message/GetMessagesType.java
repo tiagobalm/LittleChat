@@ -17,6 +17,5 @@ public class GetMessagesType extends ReactMessage {
             return ;
 
         mainPage.getChatMessages().put(Integer.parseInt(headerParameters[1]), message.getOptionalMessage());
-        System.out.println("Get messages react: " + Integer.parseInt(headerParameters[1]));
     }
 }

@@ -138,21 +138,6 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         Communication.getInstance().getFriends();
     }
 
-    public void addRooms(List<String> rooms) {
-
-        for(String room : rooms) {
-            String[] roomParameters = room.split("\0");
-
-            Button button = new Button(roomParameters[1].trim());
-            button.setId(roomParameters[0].trim());
-            button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> roomButtonHandler(event));
-            button.setMaxWidth(Double.MAX_VALUE);
-            button.getStyleClass().add("roomsButtons");
-
-            conversationButtons.getChildren().add(button);
-        }
-    }
-
     private void roomButtonHandler(MouseEvent event) {
         Integer buttonID = Integer.parseInt(((Button)event.getSource()).getId());
         room = buttonID;
@@ -289,14 +274,6 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     public void changeToLogin() {
         Communication.getInstance().sendLogoutRequest();
-        /*
-        if(loggedOut) {
-            try {
-                Manager.changeToLogin();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }*/
     }
 
     private void setPaneMaxWidth() {
@@ -347,6 +324,21 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         if(counter == 3) System.out.println("Unable to retrieve messages from room with ID " + room);
     }
 
+    public void addRooms(List<String> rooms) {
+
+        for(String room : rooms) {
+            String[] roomParameters = room.split("\0");
+
+            Button button = new Button(roomParameters[1].trim());
+            button.setId(roomParameters[0].trim());
+            button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> roomButtonHandler(event));
+            button.setMaxWidth(Double.MAX_VALUE);
+            button.getStyleClass().add("roomsButtons");
+
+            conversationButtons.getChildren().add(button);
+        }
+    }
+
     public void addNewMessage(String from, int to, String message) {
         System.out.println("From: " + from + " To: " + to);
 
@@ -381,5 +373,19 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         hbox.getChildren().add(messageLabel);
 
         MessagesPanel.getChildren().add(hbox);
+    }
+
+    public void addFriends(List<String> friends) {
+
+        for(String friend: friends) {
+
+            Button button = new Button(friend);
+            button.setId(friend);
+            //button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> roomButtonHandler(event));
+            button.setMaxWidth(Double.MAX_VALUE);
+            button.getStyleClass().add("roomsButtons");
+
+            friendsButtons.getChildren().add(button);
+        }
     }
 }
