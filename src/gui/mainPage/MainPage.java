@@ -1,11 +1,9 @@
 package gui.mainPage;
 
-import javafx.scene.layout.AnchorPane;
 import message.Message;
 import workers.ReadThread;
 import communication.Communication;
 import gui.Controller;
-import gui.Manager;
 import gui.TransitionControl;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -27,7 +25,6 @@ import javafx.util.Duration;
 import workers.Worker;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
@@ -128,7 +125,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         getFriends();
     }
 
-    public void setUsername(String username) { this.username = username; }
+    public void setUsername(String username) { MainPage.username = username; }
 
     private void getRooms() {
         Communication.getInstance().getRooms();
@@ -272,7 +269,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         return chatMessages;
     }
 
-    public void changeToLogin() {
+    private void changeToLogin() {
         Communication.getInstance().sendLogoutRequest();
     }
 
@@ -300,7 +297,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         Communication.getInstance().sendMessageRequest(room, message);
     }
 
-    public BlockingQueue<Message> getMessages() { return messages; }
+    public BlockingQueue<Message> getMessages() {
+        return messages;
+    }
 
     private void getRoomMessages(Integer room) {
         int counter = 0;
@@ -331,7 +330,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
             Button button = new Button(roomParameters[1].trim());
             button.setId(roomParameters[0].trim());
-            button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> roomButtonHandler(event));
+            button.addEventHandler(MouseEvent.MOUSE_CLICKED, this::roomButtonHandler);
             button.setMaxWidth(Double.MAX_VALUE);
             button.getStyleClass().add("roomsButtons");
 
@@ -363,7 +362,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         HBox hbox = new HBox();
         Label messageLabel = new Label(username + ": " + message);
 
-        if(!username.equals(this.username)) {
+        if(!username.equals(MainPage.username)) {
             messageLabel.getStyleClass().add("hboxThey");
         } else {
             messageLabel.getStyleClass().add("hboxMe");
