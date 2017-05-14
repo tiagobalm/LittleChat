@@ -10,6 +10,10 @@
     -fx-background-color: #daebf2;
 }
 
+#popup {
+    -fx-background-color: #bedde9;
+}
+
 .hboxMe {
     -fx-background-color: floralwhite;
     -fx-border-radius: 20px;
@@ -27,9 +31,10 @@
     -fx-background-image: none;
     -fx-border-width: 1;
     -fx-border-color: #a3cfe0;
+    -fx-padding: 10px;
 }
 .roomsButtons:hover,
-.roomsButtons:selected {
+.roomsButtons-selected {
     -fx-background-color: #daebf2;
 }
 
@@ -42,10 +47,25 @@
     -fx-font-size: 45px;
 }
 
+.buttonYesNo {
+    -fx-background-color: #e5b181;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.buttonYesNo:hover {
+    -fx-background-color: #e1a46c;
+}
+
+.buttonYesNo:pressed {
+    -fx-background-color: #dd9757;
+}
+
 .buttonLogin {
     -fx-background-color: #e5b181;
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 0);
 }
 
 .buttonLogin:hover {
@@ -102,4 +122,12 @@
 
 #logoutButton{
     -fx-background-image: url("images/logout.png");
+}
+
+#settingsButton {
+    -fx-background-image: url("images/settings.png");
+    -fx-background-size: 30px, 30px;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;
 }
