@@ -12,10 +12,12 @@ public class MessageType extends ReactMessage {
 
     @Override
     public void react() {
-        if( message.getMessage().length() != messageSize || message.getMessage() == null)
-            return ;
-
         String[] parameters = message.getHeader().split(" ");
+        for(String str : parameters)
+            System.out.println(str);
+        if( parameters.length != messageSize || message.getMessage() == null)
+            return ;
+        System.out.println("Add message");
         mainPage.addNewMessage(parameters[1], Integer.parseInt(parameters[2]), message.getMessage());
     }
 }

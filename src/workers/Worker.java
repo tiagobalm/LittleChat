@@ -20,14 +20,11 @@ public class Worker implements Runnable {
 
     @Override
     public void run() {
-
         while(running) {
-
             try {
                 reactMessage = ReactMessage.getReactMessage(mainPage, messages.take());
                 if( reactMessage == null ) return ;
                 reactMessage.react();
-
             } catch (Exception e) {
                 running = false;
             }

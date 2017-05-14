@@ -25,14 +25,15 @@ public abstract class ReactMessage {
             return null;
 
         String messageHeaderType = parameters[0];
+        System.out.println("Reacting to message: " + messageHeaderType);
         switch (messageHeaderType) {
             case logoutType:
                 return new LogoutType(mainPage, message);
             case messageType:
                 return new MessageType(mainPage, message);
-            case getRooms:
+            case getRoomsType:
                 return new GetRoomsType(mainPage, message);
-            case getMessages:
+            case getMessagesType:
                 return new GetMessagesType(mainPage, message);
             case getFriendsType:
                 return new GetFriendsType(mainPage, message);

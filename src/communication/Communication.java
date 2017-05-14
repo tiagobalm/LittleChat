@@ -59,17 +59,14 @@ public class Communication {
 
     public Message read() {
         Message message = null;
-
         try {
             socket.setSoTimeout(500);
             message = (Message)is.readObject();
-
+            System.out.println("Read message");
         } catch (SocketTimeoutException ignore) {}
-
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
         return message;
     }
 

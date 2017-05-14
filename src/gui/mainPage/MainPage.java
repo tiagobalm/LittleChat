@@ -1,5 +1,6 @@
 package gui.mainPage;
 
+import javafx.application.Platform;
 import message.Message;
 import workers.ReadThread;
 import communication.Communication;
@@ -199,11 +200,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     private void startWorkerThreads() {
         System.out.println("Starting worker threads");
-
         readThread = new ReadThread(messages);
         readThread.start();
         System.out.println("After Read Thread");
-
         for( int i = 0; i < numberOfWorkerThreads; i++ ) {
             executor.submit(new Worker(this));
         }
@@ -381,12 +380,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     public void addNewMessage(String from, int to, String message) {
         System.out.println("From: " + from + " To: " + to);
-
         if(chatMessages.containsKey(to))
             chatMessages.get(to).add(message);
-
         if(room == to)
-            addMessageToPanel(from, message);
+            Platform.runLater(() -> addMessageToPanel(from, message));
     }
 
     private void addRoomMessagesToPanel(Integer room) {
