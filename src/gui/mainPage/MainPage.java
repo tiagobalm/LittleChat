@@ -86,14 +86,17 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     @FXML
     private Button messageSend;
 
+    @FXML
+    private Button settingsButton;
+
     private static String username;
 
     private BlockingQueue<Message> messages;
 
-    private int room = 1;
+    private int room = -1;
 
-    private static final int numberOfWorkerThreads = 10;
-    private static final ExecutorService executor = Executors.newFixedThreadPool(numberOfWorkerThreads);
+    private static int numberOfWorkerThreads = 10;
+    private static ExecutorService executor = Executors.newFixedThreadPool(numberOfWorkerThreads);
 
     private static ReadThread readThread;
 
@@ -101,6 +104,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     public Stage start() throws Exception {
         Stage primaryStage = new Stage();
+        executor = Executors.newFixedThreadPool(numberOfWorkerThreads);
 
         Parent root = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
         primaryStage.setTitle("Little Chat");
@@ -140,12 +144,26 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     private void roomButtonHandler(MouseEvent event) {
         Integer buttonID = Integer.parseInt(((Button)event.getSource()).getId());
+
+        changeActiveRoom(room, buttonID);
         room = buttonID;
 
         if(chatMessages.containsKey(buttonID))
             addRoomMessagesToPanel(buttonID);
         else
             getRoomMessages(buttonID);
+
+        toggleSettingButton(true);
+    }
+
+    private void changeActiveRoom(int room, Integer buttonID) {
+        if(room != -1) {
+            Button previousRoom = (Button) Manager.Stage.getScene().lookup("#" + room);
+            previousRoom.getStyleClass().remove("roomsButtons-selected");
+        }
+
+        Button nextRoom = (Button)Manager.Stage.getScene().lookup("#" + buttonID);
+        nextRoom.getStyleClass().add("roomsButtons-selected");
     }
 
     private void initializeHandlers() {
@@ -166,6 +184,16 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
         messageSend.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> sendMessage(messageInput.getText()));
+
+        settingsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                event -> {
+                    try {
+                        Button roomButton = (Button) Manager.Stage.getScene().lookup("#" + room);
+                        Manager.showChatSettings(roomButton.getText());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     private void startWorkerThreads() {
@@ -192,6 +220,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                 roomsButton.getStyleClass().remove("buttonSelected");
                 setPane(roomsPanel, false);
                 setPane(MessagesPanel, false);
+                toggleInput(false);
+                toggleSettingButton(false);
                 break;
             case FRIENDS:
                 friendsButton.getStyleClass().remove("buttonSelected");
@@ -210,6 +240,19 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    private void toggleInput(boolean show) {
+        messageInput.setVisible(show);
+        messageInput.setDisable(!show);
+
+        messageSend.setVisible(show);
+        messageSend.setDisable(!show);
+    }
+
+    private void toggleSettingButton(boolean show) {
+        settingsButton.setVisible(show);
+        settingsButton.setDisable(!show);
+    }
+
     @Override
     public void setNewState(MainPageState newState) {
 
@@ -222,6 +265,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                     roomsButton.getStyleClass().add("buttonSelected");
                     setPane(roomsPanel, true);
                     setPane(MessagesPanel, true);
+                    toggleInput(true);
+                    if(room != -1)
+                        toggleSettingButton(true);
                     break;
                 case FRIENDS:
                     friendsButton.getStyleClass().add("buttonSelected");
@@ -329,8 +375,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         for(String room : rooms) {
             String[] roomParameters = room.split("\0");
 
-            Button button = new Button(roomParameters[1].trim());
-            button.setId(roomParameters[0].trim());
+            Button button = new Button(roomParameters[1]);
+            button.setId(roomParameters[0]);
             button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> roomButtonHandler(event));
             button.setMaxWidth(Double.MAX_VALUE);
             button.getStyleClass().add("roomsButtons");
@@ -381,7 +427,13 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
             Button button = new Button(friend);
             button.setId(friend);
-            //button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> roomButtonHandler(event));
+            button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                try {
+                    Manager.showConversationPopUp();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
             button.setMaxWidth(Double.MAX_VALUE);
             button.getStyleClass().add("roomsButtons");
 
