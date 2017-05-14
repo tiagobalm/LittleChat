@@ -181,7 +181,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                 e -> changeToLogin());
 
         messageSend.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> sendMessage(messageInput.getText()));
+                e -> {
+            sendMessage(messageInput.getText());
+            messageInput.setText("");
+        });
 
         settingsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 event -> {
@@ -331,16 +334,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     private void sendMessage(String message) {
-        HBox hbox = new HBox();
-        Label label1 = new Label(message);
-
-        hbox.setAlignment(Pos.BOTTOM_RIGHT);
-        label1.setPadding(new Insets(10));
-        label1.getStyleClass().add("hboxMe");
-
-        hbox.getChildren().add(label1);
-        MessagesPanel.getChildren().addAll(hbox, hbox);
-
+        if( message.length() == 0 )
+            return ;
+        addMessageToPanel(MainPage.username, message);
         Communication.getInstance().sendMessageRequest(room, message);
     }
 
@@ -398,6 +394,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
         for(String message : chatMessages.get(room)) {
             String[] messageParameters = message.split("\0");
+            for( String m : messageParameters )
+                System.out.println(m);
+            if( messageParameters.length != 2 )
+                continue;
             addMessageToPanel(messageParameters[0].trim(), messageParameters[1].trim());
         }
     }
