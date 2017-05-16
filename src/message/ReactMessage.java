@@ -2,8 +2,6 @@ package message;
 
 import gui.mainPage.MainPage;
 
-import java.io.IOException;
-
 import static message.MessageConstants.*;
 
 public abstract class ReactMessage {
@@ -38,7 +36,7 @@ public abstract class ReactMessage {
             case getFriendsType:
                 return new GetFriendsType(mainPage, message);
             case getFriendRequestsType:
-                return new GetFriendsType(mainPage, message);
+                return new GetFriendRequestType(mainPage, message);
             default: break;
         }
 

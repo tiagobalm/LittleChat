@@ -3,7 +3,6 @@ package gui.mainPage;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Priority;
-import javafx.application.Platform;
 import message.Message;
 import workers.ReadThread;
 import communication.Communication;
@@ -76,8 +75,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     @FXML
     private TextField friendRequestInput;
 
-    @FXML
-    private VBox profileButtons;
+    //@FXML
+    //private VBox profileButtons;
 
     @FXML
     private VBox messagesPanel;
@@ -163,11 +162,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     private void changeActiveRoom(int room, Integer buttonID) {
         if(room != -1) {
-            Button previousRoom = (Button) Manager.Stage.getScene().lookup("#" + room);
+            Button previousRoom = (Button) Manager.getScene().lookup("#" + room);
             previousRoom.getStyleClass().remove("roomsButtons-selected");
         }
 
-        Button nextRoom = (Button)Manager.Stage.getScene().lookup("#" + buttonID);
+        Button nextRoom = (Button)Manager.getScene().lookup("#" + buttonID);
         nextRoom.getStyleClass().add("roomsButtons-selected");
     }
 
@@ -206,7 +205,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         settingsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 event -> {
                     try {
-                        Button roomButton = (Button) Manager.Stage.getScene().lookup("#" + room);
+                        Button roomButton = (Button) Manager.getScene().lookup("#" + room);
                         Manager.showChatSettings(roomButton.getText());
                     } catch (Exception e) {
                         e.printStackTrace();

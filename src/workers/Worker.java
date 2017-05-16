@@ -10,7 +10,6 @@ public class Worker implements Runnable {
     private BlockingQueue<Message> messages;
     private MainPage mainPage;
     private boolean running;
-    private ReactMessage reactMessage;
 
     public Worker(MainPage mainpage) {
         this.mainPage = mainpage;
@@ -22,7 +21,7 @@ public class Worker implements Runnable {
     public void run() {
         while(running) {
             try {
-                reactMessage = ReactMessage.getReactMessage(mainPage, messages.take());
+                ReactMessage reactMessage = ReactMessage.getReactMessage(mainPage, messages.take());
                 if( reactMessage == null ) return ;
                 reactMessage.react();
             } catch (Exception e) {

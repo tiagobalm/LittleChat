@@ -5,9 +5,9 @@ import javafx.application.Platform;
 
 import static message.MessageConstants.getFriendRequestsSize;
 
-public class FriendRequestType extends ReactMessage {
+public class GetFriendRequestType extends ReactMessage {
 
-    FriendRequestType(MainPage mainPage, Message message) {
+    GetFriendRequestType(MainPage mainPage, Message message) {
         super(mainPage, message);
     }
 

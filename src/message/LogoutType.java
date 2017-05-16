@@ -17,7 +17,7 @@ public class LogoutType extends ReactMessage {
 
         if( Manager.wantToClose ) {
             mainPage.stopWorkers();
-            Platform.runLater(() -> Manager.Stage.close());
+            Platform.runLater(() -> Manager.getStage().close());
             return;
         }
 

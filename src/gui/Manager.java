@@ -6,12 +6,13 @@ import gui.mainPage.ChatSettings;
 import gui.mainPage.ConversationPopUp;
 import gui.mainPage.MainPage;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class Manager extends Application {
 
-    public static Stage Stage, startConversation, chatSettings;
+    private static Stage Stage, startConversation, chatSettings;
     public static boolean wantToClose = false;
     private static MainPage mainpage;
     private static LoginGUI login;
@@ -77,5 +78,9 @@ public class Manager extends Application {
     }
 
     public static void stopMainPageThreads() { if(mainpage != null) mainpage.stopWorkers();  }
+
+    public static Stage getStage() { return Stage; }
+
+    public static Scene getScene() { return Stage.getScene(); }
 
 }

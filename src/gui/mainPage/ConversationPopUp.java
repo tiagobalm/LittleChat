@@ -15,8 +15,8 @@ import java.util.ResourceBundle;
 
 public class ConversationPopUp implements Initializable {
 
-    @FXML
-    private Button conversationYes;
+    //@FXML
+    //private Button conversationYes;
 
     @FXML
     private Button conversationNo;
