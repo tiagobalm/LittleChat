@@ -1,4 +1,5 @@
 package communication;
+import gui.Manager;
 import message.Message;
 
 import java.io.*;
@@ -62,9 +63,18 @@ public class Communication {
         try {
             socket.setSoTimeout(500);
             message = (Message)is.readObject();
-        } catch (SocketTimeoutException ignore) {}
-        catch (IOException | ClassNotFoundException e) {
+        }
+        catch (SocketTimeoutException ignore) {}
+        catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+        catch (IOException e) {
+            try {
+                Manager.stopMainPageThreads();
+                Manager.changeToLogin();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }
         return message;
     }
@@ -133,6 +143,11 @@ public class Communication {
         sendMessage(message);
     }
 
+    public void getFriendRequests() {
+        Message message = new Message("GETFRIENDREQUESTS ", "");
+        sendMessage(message);
+    }
+
     private void sendMessage(Message message) {
         try {
             synchronized (this) {
@@ -142,5 +157,10 @@ public class Communication {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendFriendRequest(String username, String text) {
+        Message message = new Message("FRIENDREQUEST ", username + "\0" + text);
+        sendMessage(message);
     }
 }

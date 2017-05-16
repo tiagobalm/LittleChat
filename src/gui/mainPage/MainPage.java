@@ -1,6 +1,6 @@
 package gui.mainPage;
 
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Priority;
 import javafx.application.Platform;
@@ -18,9 +18,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -75,6 +72,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     @FXML
     private VBox friendRequestButtons;
+
+    @FXML
+    private TextField friendRequestInput;
 
     @FXML
     private VBox profileButtons;
@@ -134,17 +134,18 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         startWorkerThreads();
         getRooms();
         getFriends();
+        getFriendRequests();
     }
 
     public void setUsername(String username) { MainPage.username = username; }
 
-    private void getRooms() {
-        Communication.getInstance().getRooms();
-    }
+    private void getRooms() { Communication.getInstance().getRooms(); }
 
     private void getFriends() {
         Communication.getInstance().getFriends();
     }
+
+    private void getFriendRequests() { Communication.getInstance().getFriendRequests(); }
 
     private void roomButtonHandler(MouseEvent event) {
         Integer buttonID = Integer.parseInt(((Button)event.getSource()).getId());
@@ -191,6 +192,14 @@ public class MainPage implements Initializable, Controller<MainPageState> {
             {
                 sendMessage(messageInput.getText());
                 messageInput.setText("");
+            }
+        });
+
+        friendRequestInput.setOnKeyReleased(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER)
+            {
+                sendFriendRequest(friendRequestInput.getText());
+                friendRequestInput.setText("");
             }
         });
 
@@ -343,6 +352,12 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         Communication.getInstance().sendMessageRequest(room, message);
     }
 
+    private void sendFriendRequest(String text) {
+        if( text.length() == 0 )
+            return ;
+        Communication.getInstance().sendFriendRequest(username, text);
+    }
+
     public BlockingQueue<Message> getMessages() { return messages; }
 
     private void getRoomMessages(Integer room) {
@@ -387,7 +402,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         if(chatMessages.containsKey(to))
             chatMessages.get(to).add(message);
         if(room == to)
-            Platform.runLater(() -> addMessageToPanel(from, message));
+            addMessageToPanel(from, message);
     }
 
     private void addRoomMessagesToPanel(Integer room) {
@@ -441,6 +456,18 @@ public class MainPage implements Initializable, Controller<MainPageState> {
             button.getStyleClass().add("roomsButtons");
 
             friendsButtons.getChildren().add(button);
+        }
+    }
+
+    public void addFriendRequests(List<String> friendRequests) {
+        for(String friend: friendRequests) {
+
+            Button button = new Button(friend);
+            button.setId(friend);
+            button.setMaxWidth(Double.MAX_VALUE);
+            button.getStyleClass().add("roomsButtons");
+
+            friendRequestButtons.getChildren().add(button);
         }
     }
 }

@@ -13,6 +13,8 @@ public class Manager extends Application {
 
     public static Stage Stage, startConversation, chatSettings;
     public static boolean wantToClose = false;
+    private static MainPage mainpage;
+    private static LoginGUI login;
 
     public static void main(String[] args) {
         launch(args);
@@ -27,11 +29,12 @@ public class Manager extends Application {
     }
 
     public static void changeToMainPage(String username) throws Exception {
-        MainPage mainPage = new MainPage();
-        mainPage.setUsername(username);
+        mainpage = new MainPage();
+        mainpage.setUsername(username);
 
         Stage.close();
-        Stage = mainPage.start();
+        login = null;
+        Stage = mainpage.start();
         Stage.show();
 
         Stage.setOnCloseRequest((WindowEvent t) -> {
@@ -44,9 +47,10 @@ public class Manager extends Application {
     }
 
     public static void changeToLogin() throws Exception {
-        LoginGUI login = new LoginGUI();
+        login = new LoginGUI();
 
         Stage.close();
+        mainpage = null;
         Stage = login.start();
         Stage.show();
     }
@@ -71,5 +75,7 @@ public class Manager extends Application {
         chatSettings = popup.start(roomName);
         chatSettings.show();
     }
+
+    public static void stopMainPageThreads() { if(mainpage != null) mainpage.stopWorkers();  }
 
 }
