@@ -42,6 +42,20 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 4, 0, 0, 0);
 }
 
+.transparentBackground {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+#messagesScrollPane > .viewport {
+    -fx-background-color: transparent;
+}
+
+#messagesScrollPane .scroll-bar {
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+}
+
 .title {
     -fx-font-family: "Raleway";
     -fx-font-size: 45px;

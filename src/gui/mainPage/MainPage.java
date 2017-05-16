@@ -1,5 +1,8 @@
 package gui.mainPage;
 
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Priority;
 import javafx.application.Platform;
 import message.Message;
 import workers.ReadThread;
@@ -77,13 +80,13 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private VBox profileButtons;
 
     @FXML
-    private VBox MessagesPanel;
+    private VBox messagesPanel;
+
+    @FXML
+    private ScrollPane messagesScrollPane;
 
     @FXML
     private TextArea messageInput;
-
-    @FXML
-    private Button messageSend;
 
     @FXML
     private Button settingsButton;
@@ -122,7 +125,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     public void initialize(URL location, ResourceBundle resources) {
         messages = new ArrayBlockingQueue<>(500);
         chatMessages = new ConcurrentHashMap<>();
-        MessagesPanel.setPadding(new Insets(10));
+        messageInput.setWrapText(true);
+        messagesScrollPane.setFitToWidth(true);
+        messagesScrollPane.vvalueProperty().bind(messagesPanel.heightProperty());
 
         initializeHandlers();
         setPaneMaxWidth();
@@ -181,10 +186,12 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> changeToLogin());
 
-        messageSend.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                e -> {
-            sendMessage(messageInput.getText());
-            messageInput.setText("");
+        messageInput.setOnKeyReleased(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER)
+            {
+                sendMessage(messageInput.getText());
+                messageInput.setText("");
+            }
         });
 
         settingsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -219,7 +226,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
             case ROOMS:
                 roomsButton.getStyleClass().remove("buttonSelected");
                 setPane(roomsPanel, false);
-                setPane(MessagesPanel, false);
+                setPane(messagesPanel, false);
                 toggleInput(false);
                 toggleSettingButton(false);
                 break;
@@ -243,9 +250,6 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private void toggleInput(boolean show) {
         messageInput.setVisible(show);
         messageInput.setDisable(!show);
-
-        messageSend.setVisible(show);
-        messageSend.setDisable(!show);
     }
 
     private void toggleSettingButton(boolean show) {
@@ -264,7 +268,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                 case ROOMS:
                     roomsButton.getStyleClass().add("buttonSelected");
                     setPane(roomsPanel, true);
-                    setPane(MessagesPanel, true);
+                    setPane(messagesPanel, true);
                     toggleInput(true);
                     if(room != -1)
                         toggleSettingButton(true);
@@ -387,7 +391,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     private void addRoomMessagesToPanel(Integer room) {
-        MessagesPanel.getChildren().clear();
+        messagesPanel.getChildren().clear();
 
         for(String message : chatMessages.get(room)) {
             String[] messageParameters = message.split("\0");
@@ -403,6 +407,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
         HBox hbox = new HBox();
         Label messageLabel = new Label(username + ": " + message);
+        messageLabel.setMaxWidth(300);
+        messageLabel.setMaxHeight(Integer.MAX_VALUE);
+        messageLabel.setWrapText(true);
+        VBox.setVgrow(messageLabel, Priority.ALWAYS);
 
         if(!username.equals(MainPage.username)) {
             messageLabel.getStyleClass().add("hboxThey");
@@ -413,7 +421,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         messageLabel.setPadding(new Insets(10));
         hbox.getChildren().add(messageLabel);
 
-        MessagesPanel.getChildren().add(hbox);
+        messagesPanel.getChildren().add(hbox);
     }
 
     public void addFriends(List<String> friends) {
