@@ -62,7 +62,6 @@ public class Communication {
         try {
             socket.setSoTimeout(500);
             message = (Message)is.readObject();
-            System.out.println("Read message");
         } catch (SocketTimeoutException ignore) {}
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
