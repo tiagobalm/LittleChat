@@ -1,6 +1,6 @@
 package message;
 
-import gui.mainPage.MainPage;
+import gui.Manager;
 import javafx.application.Platform;
 
 import static message.MessageConstants.getFriendRequestsSize;
@@ -9,11 +9,10 @@ public class GetFriendRequestType extends ReactMessage {
 
     /**
      * Get friend request type.
-     * @param mainPage Main page.
      * @param message text Message.
      */
-    GetFriendRequestType(MainPage mainPage, Message message) {
-        super(mainPage, message);
+    GetFriendRequestType(Message message) {
+        super(message);
     }
 
     /**
@@ -26,6 +25,6 @@ public class GetFriendRequestType extends ReactMessage {
         if( message.getOptionalMessage() == null || headerParameters.length != getFriendRequestsSize)
             return ;
 
-        Platform.runLater(() -> mainPage.addFriendRequests(message.getOptionalMessage()));
+        Platform.runLater(() -> Manager.mainpage.addFriendRequests(message.getOptionalMessage()));
     }
 }

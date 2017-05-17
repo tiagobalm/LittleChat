@@ -1,14 +1,14 @@
 package message;
 
-import gui.mainPage.MainPage;
+import gui.Manager;
 import javafx.application.Platform;
 
 import static message.MessageConstants.addRoomSize;
 
 public class AddRoomType extends ReactMessage {
 
-    AddRoomType(MainPage mainPage, Message message) {
-        super(mainPage, message);
+    AddRoomType(Message message) {
+        super(message);
     }
 
     @Override
@@ -18,6 +18,6 @@ public class AddRoomType extends ReactMessage {
         if( message.getMessage() == null || headerParameters.length != addRoomSize)
             return ;
 
-        Platform.runLater(() -> mainPage.addNewRoom(headerParameters[1], message.getMessage()));
+        Platform.runLater(() -> Manager.mainpage.addNewRoom(headerParameters[1], message.getMessage()));
     }
 }

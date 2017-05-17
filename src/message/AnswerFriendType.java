@@ -1,14 +1,14 @@
 package message;
 
-import gui.mainPage.MainPage;
+import gui.Manager;
 import javafx.application.Platform;
 
 import static message.MessageConstants.answerFriendSize;
 
 public class AnswerFriendType extends ReactMessage {
 
-    AnswerFriendType(MainPage mainPage, Message message) {
-        super(mainPage, message);
+    AnswerFriendType(Message message) {
+        super(message);
     }
 
     @Override
@@ -18,6 +18,6 @@ public class AnswerFriendType extends ReactMessage {
         if( message.getMessage() == null || headerParameters.length != answerFriendSize)
             return ;
 
-        Platform.runLater(() -> mainPage.reactToFriendRequestAnswer(headerParameters[1], message.getMessage()));
+        Platform.runLater(() -> Manager.mainpage.reactToFriendRequestAnswer(headerParameters[1], message.getMessage()));
     }
 }

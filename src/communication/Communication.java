@@ -119,7 +119,7 @@ public class Communication {
      * @param username User username.
      * @param password User password.
      * @param IPAddress Ip address.
-     * @param port Port Nnumber.
+     * @param port Port Number.
      * @return result of waitForLoginResponse function.
      */
     public boolean sendLoginRequest(String username, String password, String IPAddress, int port) {

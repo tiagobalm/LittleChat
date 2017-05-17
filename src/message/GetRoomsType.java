@@ -1,6 +1,6 @@
 package message;
 
-import gui.mainPage.MainPage;
+import gui.Manager;
 import javafx.application.Platform;
 
 import static message.MessageConstants.getRoomsSize;
@@ -9,11 +9,10 @@ public class GetRoomsType extends ReactMessage {
 
     /**
      * Get rooms type.
-     * @param mainPage Main page.
      * @param message Message text.
      */
-    GetRoomsType(MainPage mainPage, Message message) {
-        super(mainPage, message);
+    GetRoomsType(Message message) {
+        super(message);
     }
 
 
@@ -27,6 +26,6 @@ public class GetRoomsType extends ReactMessage {
         if( message.getOptionalMessage() == null || headerParameters.length != getRoomsSize)
             return ;
 
-        Platform.runLater(() -> mainPage.addRooms(message.getOptionalMessage()));
+        Platform.runLater(() -> Manager.mainpage.addRooms(message.getOptionalMessage()));
     }
 }

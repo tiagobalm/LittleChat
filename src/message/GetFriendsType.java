@@ -1,6 +1,6 @@
 package message;
 
-import gui.mainPage.MainPage;
+import gui.Manager;
 import javafx.application.Platform;
 
 import static message.MessageConstants.getRoomsSize;
@@ -9,11 +9,10 @@ public class GetFriendsType extends ReactMessage {
 
     /**
      * Get friends type.
-     * @param mainPage Main page.
      * @param message Message text.
      */
-    GetFriendsType(MainPage mainPage, Message message) {
-        super(mainPage, message);
+    GetFriendsType(Message message) {
+        super(message);
     }
 
     /**
@@ -26,6 +25,6 @@ public class GetFriendsType extends ReactMessage {
         if( message.getOptionalMessage() == null || headerParameters.length != getRoomsSize)
             return ;
 
-        Platform.runLater(() -> mainPage.addFriends(message.getOptionalMessage()));
+        Platform.runLater(() -> Manager.mainpage.addFriends(message.getOptionalMessage()));
     }
 }

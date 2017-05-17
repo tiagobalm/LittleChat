@@ -12,10 +12,10 @@ import javafx.stage.WindowEvent;
 
 public class Manager extends Application {
 
-    private static Stage Stage, startConversation, chatSettings;
+    public static Stage Stage, startConversation, chatSettings;
     public static boolean wantToClose = false;
-    private static MainPage mainpage;
-    private static LoginGUI login;
+    public static MainPage mainpage;
+    public static LoginGUI login;
 
     /**
      * Main function.
@@ -101,10 +101,10 @@ public class Manager extends Application {
      * @param roomName Chat room name.
      * @throws Exception
      */
-    public static void showChatSettings(String roomName) throws Exception {
+    public static void showChatSettings(int room, String roomName) throws Exception {
         ChatSettings popup = new ChatSettings();
 
-        chatSettings = popup.start(roomName);
+        chatSettings = popup.start(room, roomName, mainpage);
         chatSettings.show();
     }
 

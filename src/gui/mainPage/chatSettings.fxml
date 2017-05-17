@@ -11,15 +11,15 @@
 <AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.mainPage.ChatSettings">
    <children>
       <TextField fx:id="roomName" layoutX="93.0" layoutY="14.0" />
-      <ListView layoutX="26.0" layoutY="60.0" prefHeight="200.0" prefWidth="200.0" />
-      <ChoiceBox layoutX="257.0" layoutY="94.0" prefWidth="150.0" />
+      <ListView fx:id="membersList" layoutX="26.0" layoutY="60.0" prefHeight="200.0" prefWidth="200.0" />
+      <ChoiceBox fx:id="memberAdd" layoutX="257.0" layoutY="94.0" prefWidth="150.0" />
       <Separator layoutX="150.0" layoutY="50.0" prefWidth="200.0" />
       <Label layoutX="332.0" layoutY="66.0" text="Add a member" />
-      <Button layoutX="418.0" layoutY="94.0" mnemonicParsing="false" text="Add" />
+      <Button fx:id="buttonAdd" layoutX="418.0" layoutY="94.0" mnemonicParsing="false" text="Add" />
       <Label layoutX="320.0" layoutY="143.0" text="Remove a member" />
-      <ChoiceBox layoutX="257.0" layoutY="173.0" prefWidth="150.0" />
-      <Button layoutX="415.0" layoutY="173.0" mnemonicParsing="false" text="Remove" />
-      <Button layoutX="318.0" layoutY="248.0" mnemonicParsing="false" text="Leave chat room" />
-      <Button layoutX="307.0" layoutY="14.0" mnemonicParsing="false" text="Change name" />
+      <ChoiceBox fx:id="memberRemove" layoutX="257.0" layoutY="173.0" prefWidth="150.0" />
+      <Button fx:id="buttonRemove" layoutX="415.0" layoutY="173.0" mnemonicParsing="false" text="Remove" />
+      <Button fx:id="leave" layoutX="318.0" layoutY="248.0" mnemonicParsing="false" text="Leave chat room" />
+      <Button fx:id="changeName" layoutX="307.0" layoutY="14.0" mnemonicParsing="false" text="Change name" />
    </children>
 </AnchorPane>

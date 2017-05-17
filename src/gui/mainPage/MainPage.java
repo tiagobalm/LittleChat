@@ -1,6 +1,7 @@
 package gui.mainPage;
 
 import javafx.application.Platform;
+import javafx.scene.SubScene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -213,7 +214,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                 event -> {
                     try {
                         Button roomButton = (Button) Manager.getScene().lookup("#" + roomsID + room);
-                        Manager.showChatSettings(roomButton.getText());
+                        Manager.showChatSettings(room, roomButton.getText());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -363,6 +364,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private void sendFriendRequest(String text) {
         if( text.length() == 0 )
             return ;
+        if( friends.contains(text) ) return ;
+
         Communication.getInstance().sendFriendRequest(text);
 
         addWaitingFriendRequest(text);
@@ -401,16 +404,20 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private void addRoom(String room) {
         String[] roomParameters = room.split("\0");
 
+        for(int i = 0; i < roomParameters.length; i++)
+            System.out.println("Room parameters: " + roomParameters[i]);
+
         Button button = new Button(roomParameters[1]);
+        System.out.println(roomsID+roomParameters[0]);
         button.setId(roomsID+roomParameters[0]);
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, this::roomButtonHandler);
         button.setMaxWidth(Double.MAX_VALUE);
         button.getStyleClass().add("roomsButtons");
 
-        /*List<String> members = new ArrayList<>();
+        List<String> members = new ArrayList<>();
         for(int i = 2; i < roomParameters.length; i++)
             members.add(roomParameters[i]);
-        chatMembers.put(Integer.parseInt(roomParameters[0]), members);*/
+        chatMembers.put(Integer.parseInt(roomParameters[0]), members);
 
         conversationButtons.getChildren().add(button);
     }
@@ -483,15 +490,14 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     public void addFriendRequests(List<String> friendRequests) {
-        /*for(String friend: friendRequests) {
+        for(String friend: friendRequests) {
+            String[] users = friend.split("\0");
 
-            Button button = new Button(friend);
-            button.setId(friendRequestsID+friend);
-            button.setMaxWidth(Double.MAX_VALUE);
-            button.getStyleClass().add("roomsButtons");
-
-            friendRequestButtons.getChildren().add(button);
-        }*/
+            if(users[0].equals(username))
+                addWaitingFriendRequest(users[1]);
+            else
+                addRequestedFriendRequest(users[1]);
+        }
     }
 
     public void addNewRoom(String roomID, String message) {

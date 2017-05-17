@@ -1,14 +1,14 @@
 package message;
 
-import gui.mainPage.MainPage;
+import gui.Manager;
 import javafx.application.Platform;
 
 import static message.MessageConstants.friendRequestSize;
 
 public class FriendRequestType extends ReactMessage {
 
-    FriendRequestType(MainPage mainPage, Message message) {
-        super(mainPage, message);
+    FriendRequestType(Message message) {
+        super(message);
     }
 
     @Override
@@ -18,6 +18,6 @@ public class FriendRequestType extends ReactMessage {
         if( headerParameters.length != friendRequestSize)
             return ;
 
-        Platform.runLater(() -> mainPage.addFriendRequest(headerParameters[1], mainPage.getUsername()));
+        Platform.runLater(() -> Manager.mainpage.addFriendRequest(headerParameters[1], Manager.mainpage.getUsername()));
     }
 }
