@@ -14,7 +14,7 @@
          <children>
             <ScrollPane fx:id="messagesScrollPane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="560.0" prefWidth="505.0" styleClass="transparentBackground" vmax="560.0">
                <content>
-                  <VBox fx:id="messagesPanel" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" styleClass="transparentBackground" />
+                  <VBox fx:id="messagesPanel" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" spacing="5.0" styleClass="transparentBackground" />
                </content>
             </ScrollPane>
          </children>

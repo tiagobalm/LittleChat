@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -73,6 +74,9 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
                 e -> setNewState(MenuState.REGISTER));
         loginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> loginHandler());
+        password.setOnKeyReleased(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) loginHandler();
+        });
     }
 
     private void loginHandler() {

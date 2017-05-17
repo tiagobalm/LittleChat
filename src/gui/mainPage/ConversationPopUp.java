@@ -1,5 +1,6 @@
 package gui.mainPage;
 
+import communication.Communication;
 import gui.Manager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,16 +14,20 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
 public class ConversationPopUp implements Initializable {
 
-    //@FXML
-    //private Button conversationYes;
+    @FXML
+    private Button conversationYes;
 
     @FXML
     private Button conversationNo;
 
-    public Stage start() throws Exception {
+    private String roomName;
+
+    public Stage start(String name) throws Exception {
         Stage primaryStage = new Stage();
+        roomName = name;
 
         Parent root = FXMLLoader.load(getClass().getResource("conversationPopUp.fxml"));
         primaryStage.setTitle("");
@@ -39,6 +44,10 @@ public class ConversationPopUp implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        conversationYes.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            Communication.getInstance().addRoom(roomName);
+        });
 
         conversationNo.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             try {

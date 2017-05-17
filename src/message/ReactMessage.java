@@ -37,6 +37,12 @@ public abstract class ReactMessage {
                 return new GetFriendsType(mainPage, message);
             case getFriendRequestsType:
                 return new GetFriendRequestType(mainPage, message);
+            case addRoomType:
+                return new AddRoomType(mainPage, message);
+            case answerFriendType:
+                return new AnswerFriendType(mainPage, message);
+            case friendRequestType:
+                return new FriendRequestType(mainPage, message);
             default: break;
         }
 

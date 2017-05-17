@@ -56,10 +56,10 @@ public class Manager extends Application {
         Stage.show();
     }
 
-    public static void showConversationPopUp() throws Exception {
+    public static void showConversationPopUp(String roomName) throws Exception {
         ConversationPopUp popup = new ConversationPopUp();
 
-        startConversation = popup.start();
+        startConversation = popup.start(roomName);
         startConversation.show();
     }
 

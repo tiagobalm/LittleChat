@@ -8,6 +8,8 @@ import java.net.SocketTimeoutException;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
+import static message.MessageConstants.*;
+
 public class Communication {
     private static final String keystorePath = Communication.class.getResource("../keys/client.private").getPath();
     private static final String keystorePass = "littlechat";
@@ -81,7 +83,7 @@ public class Communication {
 
     public boolean sendRegisterRequest(String username, String password, String IPAddress, int port) {
 
-        String header = "REGISTER " + username + " " + password + " " + IPAddress + " " + port;
+        String header = registerType + " " + username + " " + password + " " + IPAddress + " " + port;
         Message message = new Message(header, "");
 
         sendMessage(message);
@@ -91,7 +93,7 @@ public class Communication {
 
     public boolean sendLoginRequest(String username, String password, String IPAddress, int port) {
 
-        String header = "LOGIN " + username + " " + password + " " + IPAddress + " " + port;
+        String header = loginType + " " + username + " " + password + " " + IPAddress + " " + port;
         Message message = new Message(header, "");
 
         sendMessage(message);
@@ -119,32 +121,42 @@ public class Communication {
     }
 
     public void sendLogoutRequest() {
-        Message logout = new Message("LOGOUT", "");
+        Message logout = new Message(logoutType, "");
         sendMessage(logout);
     }
 
     public void sendMessageRequest(int room, String body) {
-        Message message = new Message("MESSAGE " + room, body);
+        Message message = new Message(messageType + " " + room, body);
         sendMessage(message);
     }
 
     public void getRooms() {
-        Message message = new Message("GETROOMS", "");
+        Message message = new Message(getRoomsType, "");
         sendMessage(message);
     }
 
     public void getFriends() {
-        Message message = new Message("GETFRIENDS", "");
+        Message message = new Message(getFriendsType, "");
         sendMessage(message);
     }
 
     public void getRoomMessages(Integer room) {
-        Message message = new Message("GETMESSAGES " + room, "");
+        Message message = new Message(getMessagesType + " " + room, "");
         sendMessage(message);
     }
 
     public void getFriendRequests() {
-        Message message = new Message("GETFRIENDREQUESTS ", "");
+        Message message = new Message(getFriendRequestsType + " ", "");
+        sendMessage(message);
+    }
+
+    public void sendFriendRequest(String text) {
+        Message message = new Message(friendRequestType + " ", text);
+        sendMessage(message);
+    }
+
+    public void addRoom(String roomName) {
+        Message message = new Message(addRoomType , roomName + "\0" + roomName);
         sendMessage(message);
     }
 
@@ -157,10 +169,5 @@ public class Communication {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void sendFriendRequest(String username, String text) {
-        Message message = new Message("FRIENDREQUEST ", username + "\0" + text);
-        sendMessage(message);
     }
 }

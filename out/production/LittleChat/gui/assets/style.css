@@ -140,7 +140,7 @@
 
 #settingsButton {
     -fx-background-image: url("images/settings.png");
-    -fx-background-size: 30px, 30px;
+    -fx-background-size: 20px, 20px;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
     -fx-background-color: transparent;
