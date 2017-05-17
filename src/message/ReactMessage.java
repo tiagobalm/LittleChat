@@ -8,15 +8,30 @@ public abstract class ReactMessage {
     protected Message message;
     protected MainPage mainPage;
 
+    /**
+     * React message.
+     * @param mainPage Main page.
+     * @param message Message.
+     */
     ReactMessage(MainPage mainPage, Message message) {
         this.mainPage = mainPage;
         this.message = message;
     }
 
+    /**
+     * React.
+     * @throws Exception
+     */
     public void react() throws Exception {
         throw new AbstractMethodError("Wrong class");
     }
 
+    /**
+     * React message.
+     * @param mainPage Main page.
+     * @param message Message.
+     * @return React message.
+     */
     public static ReactMessage getReactMessage(MainPage mainPage, Message message) {
         String[] parameters = message.getHeader().split(" ");
         if( parameters.length < 1 )

@@ -6,10 +6,19 @@ import static message.MessageConstants.getMessagesSize;
 
 public class GetMessagesType extends ReactMessage {
 
+    /**
+     * Get messages type.
+     * @param mainPage Main page.
+     * @param message Message text.
+     */
     GetMessagesType(MainPage mainPage, Message message) {
         super(mainPage, message);
     }
 
+
+    /**
+     * React.
+     */
     @Override
     public void react() {
         String[] headerParameters = message.getHeader().split(" ");

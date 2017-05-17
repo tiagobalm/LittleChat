@@ -22,6 +22,10 @@ public class Communication {
 
     private static Communication instance = null;
 
+    /**
+     * Establishes the communication.
+     *
+     */
     private Communication() {
         System.setProperty("javax.net.ssl.keyStore", keystorePath);
         System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
@@ -51,6 +55,11 @@ public class Communication {
         }
     }
 
+    /**
+     * Gets the communication instance.
+     *
+     * @return instance communication.
+     */
     public static Communication getInstance() {
         if(instance == null)
             instance = new Communication();
@@ -58,6 +67,11 @@ public class Communication {
         return instance;
     }
 
+    /**
+     * Read a message.
+     *
+     * @return message.
+     */
     public Message read() {
         Message message = null;
         try {
@@ -79,6 +93,15 @@ public class Communication {
         return message;
     }
 
+    /**
+     * Send a register request.
+     *
+     * @param username User username.
+     * @param password User password.
+     * @param IPAddress Ip address.
+     * @param port Port Nnumber.
+     * @return result of waitForLoginResponse function.
+     */
     public boolean sendRegisterRequest(String username, String password, String IPAddress, int port) {
 
         String header = "REGISTER " + username + " " + password + " " + IPAddress + " " + port;
@@ -89,6 +112,14 @@ public class Communication {
         return waitForLoginResponse();
     }
 
+    /**
+     * Send login request.
+     * @param username User username.
+     * @param password User password.
+     * @param IPAddress Ip address.
+     * @param port Port Nnumber.
+     * @return result of waitForLoginResponse function.
+     */
     public boolean sendLoginRequest(String username, String password, String IPAddress, int port) {
 
         String header = "LOGIN " + username + " " + password + " " + IPAddress + " " + port;
@@ -99,6 +130,11 @@ public class Communication {
         return waitForLoginResponse();
     }
 
+    /**
+     * Wait for login response.
+     *
+     * @return True if loggedIn, otherwise return false.
+     */
     private boolean waitForLoginResponse() {
         boolean loggedIn = false;
 
@@ -118,36 +154,61 @@ public class Communication {
         return loggedIn;
     }
 
+    /**
+     * Send logout request.
+     */
     public void sendLogoutRequest() {
         Message logout = new Message("LOGOUT", "");
         sendMessage(logout);
     }
 
+    /**
+     * Send Message Request.
+     * @param room Chat room.
+     * @param body Message body.
+     */
     public void sendMessageRequest(int room, String body) {
         Message message = new Message("MESSAGE " + room, body);
         sendMessage(message);
     }
 
+    /**
+     * Get chat rooms.
+     */
     public void getRooms() {
         Message message = new Message("GETROOMS", "");
         sendMessage(message);
     }
 
+    /**
+     * Get friends.
+     */
     public void getFriends() {
         Message message = new Message("GETFRIENDS", "");
         sendMessage(message);
     }
 
+    /**
+     * Get room messages.
+     * @param room Chat room.
+     */
     public void getRoomMessages(Integer room) {
         Message message = new Message("GETMESSAGES " + room, "");
         sendMessage(message);
     }
 
+    /**
+     * Get friend requests.
+     */
     public void getFriendRequests() {
         Message message = new Message("GETFRIENDREQUESTS ", "");
         sendMessage(message);
     }
 
+    /**
+     * Send message.
+     * @param message Message to send.
+     */
     private void sendMessage(Message message) {
         try {
             synchronized (this) {
@@ -159,6 +220,11 @@ public class Communication {
         }
     }
 
+    /**
+     * Send friend request.
+     * @param username User username.
+     * @param text Message text.
+     */
     public void sendFriendRequest(String username, String text) {
         Message message = new Message("FRIENDREQUEST ", username + "\0" + text);
         sendMessage(message);

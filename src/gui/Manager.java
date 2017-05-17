@@ -17,10 +17,19 @@ public class Manager extends Application {
     private static MainPage mainpage;
     private static LoginGUI login;
 
+    /**
+     * Main function.
+     * @param args Arguments to launch the program.
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Start.
+     * @param primaryStage Primary stage.
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         Stage = primaryStage;
@@ -29,6 +38,11 @@ public class Manager extends Application {
         changeToLogin();
     }
 
+    /**
+     * Change to main page.
+     * @param username User username.
+     * @throws Exception
+     */
     public static void changeToMainPage(String username) throws Exception {
         mainpage = new MainPage();
         mainpage.setUsername(username);
@@ -47,6 +61,10 @@ public class Manager extends Application {
         });
     }
 
+    /**
+     * Change to login page.
+     * @throws Exception
+     */
     public static void changeToLogin() throws Exception {
         login = new LoginGUI();
 
@@ -56,6 +74,10 @@ public class Manager extends Application {
         Stage.show();
     }
 
+    /**
+     * Open conversation PopUp.
+     * @throws Exception
+     */
     public static void showConversationPopUp() throws Exception {
         ConversationPopUp popup = new ConversationPopUp();
 
@@ -63,6 +85,10 @@ public class Manager extends Application {
         startConversation.show();
     }
 
+    /**
+     * Close conversation PopUp.
+     * @throws Exception
+     */
     public static void closeConversationPopUp() throws Exception {
         if(startConversation != null) {
             startConversation.close();
@@ -70,6 +96,11 @@ public class Manager extends Application {
         }
     }
 
+    /**
+     * Show chat settings.
+     * @param roomName Chat room name.
+     * @throws Exception
+     */
     public static void showChatSettings(String roomName) throws Exception {
         ChatSettings popup = new ChatSettings();
 
@@ -77,10 +108,21 @@ public class Manager extends Application {
         chatSettings.show();
     }
 
+    /**
+     * Stop main page threads.
+     */
     public static void stopMainPageThreads() { if(mainpage != null) mainpage.stopWorkers();  }
 
+    /**
+     * Get current stage.
+     * @return Stage.
+     */
     public static Stage getStage() { return Stage; }
 
+    /**
+     * Get current scene.
+     * @return Scene.
+     */
     public static Scene getScene() { return Stage.getScene(); }
 
 }

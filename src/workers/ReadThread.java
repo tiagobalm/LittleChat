@@ -9,11 +9,18 @@ public class ReadThread extends Thread {
     private BlockingQueue<Message> messages;
     private boolean running;
 
+    /**
+     * Read thread.
+     * @param messages Messages passed.
+     */
     public ReadThread(BlockingQueue<Message> messages) {
         this.messages = messages;
         running = true;
     }
 
+    /**
+     * Run.
+     */
     @Override
     public void run() {
         while (running) {
@@ -23,5 +30,8 @@ public class ReadThread extends Thread {
         }
     }
 
+    /**
+     * Stop thread from running.
+     */
     public void stopThread() { this.running = false; }
 }
