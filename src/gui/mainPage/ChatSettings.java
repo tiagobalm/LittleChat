@@ -1,5 +1,7 @@
 package gui.mainPage;
 
+import gui.Manager;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ChatSettings implements Initializable {
 
@@ -46,11 +49,10 @@ public class ChatSettings implements Initializable {
 
     private static int roomID;
 
-    public Stage start(int room, String roomName, MainPage main) throws Exception {
+    public Stage start(int room, String roomName) throws Exception {
         Stage primaryStage = new Stage();
 
         roomNameTemp = roomName;
-        mainPage = main;
         roomID = room;
 
         Parent root = FXMLLoader.load(getClass().getResource("chatSettings.fxml"));

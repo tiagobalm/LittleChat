@@ -1,15 +1,17 @@
 package message;
 
 import gui.Manager;
+import gui.mainPage.MainPage;
 import javafx.application.Platform;
 
 public class LogoutType extends ReactMessage {
     /**
      * Get logout type.
+     * @param mainPage Main page.
      * @param message Message text.
      */
-    LogoutType(Message message) {
-        super(message);
+    LogoutType(MainPage mainPage, Message message) {
+        super(mainPage, message);
     }
 
     /**
@@ -22,14 +24,14 @@ public class LogoutType extends ReactMessage {
             return ;
 
         if( Manager.wantToClose ) {
-            Manager.mainpage.stopWorkers();
+            mainPage.stopWorkers();
             Platform.runLater(() -> Manager.getStage().close());
             return;
         }
 
         Platform.runLater(() -> {
                 try {
-                    Manager.mainpage.stopWorkers();
+                    mainPage.stopWorkers();
                     Manager.changeToLogin();
                 } catch (Exception e) {
                     e.printStackTrace();

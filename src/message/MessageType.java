@@ -1,6 +1,6 @@
 package message;
 
-import gui.Manager;
+import gui.mainPage.MainPage;
 import javafx.application.Platform;
 
 import static message.MessageConstants.*;
@@ -9,10 +9,11 @@ public class MessageType extends ReactMessage {
 
     /**
      * Get message type.
+     * @param mainPage Main page.
      * @param message Message.
      */
-    MessageType(Message message) {
-        super(message);
+    MessageType(MainPage mainPage, Message message) {
+        super(mainPage, message);
     }
 
     /**
@@ -26,6 +27,6 @@ public class MessageType extends ReactMessage {
         if( parameters.length != messageSize || message.getMessage() == null)
             return ;
         System.out.println("Add message");
-        Platform.runLater(() -> Manager.mainpage.addNewMessage(parameters[1], Integer.parseInt(parameters[2]), message.getMessage()));
+        Platform.runLater(() -> mainPage.addNewMessage(parameters[1], Integer.parseInt(parameters[2]), message.getMessage()));
     }
 }

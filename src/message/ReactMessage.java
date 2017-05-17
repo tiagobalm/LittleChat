@@ -1,15 +1,20 @@
 package message;
 
+import gui.mainPage.MainPage;
+
 import static message.MessageConstants.*;
 
 public abstract class ReactMessage {
     protected Message message;
+    protected MainPage mainPage;
 
     /**
      * React message.
+     * @param mainPage Main page.
      * @param message Message.
      */
-    ReactMessage(Message message) {
+    ReactMessage(MainPage mainPage, Message message) {
+        this.mainPage = mainPage;
         this.message = message;
     }
 
@@ -23,10 +28,11 @@ public abstract class ReactMessage {
 
     /**
      * React message.
+     * @param mainPage Main page.
      * @param message Message.
      * @return React message.
      */
-    public static ReactMessage getReactMessage(Message message) {
+    public static ReactMessage getReactMessage(MainPage mainPage, Message message) {
         String[] parameters = message.getHeader().split(" ");
         if( parameters.length < 1 )
             return null;
@@ -35,23 +41,23 @@ public abstract class ReactMessage {
         System.out.println("Reacting to message: " + messageHeaderType);
         switch (messageHeaderType) {
             case logoutType:
-                return new LogoutType(message);
+                return new LogoutType(mainPage, message);
             case messageType:
-                return new MessageType(message);
+                return new MessageType(mainPage, message);
             case getRoomsType:
-                return new GetRoomsType(message);
+                return new GetRoomsType(mainPage, message);
             case getMessagesType:
-                return new GetMessagesType(message);
+                return new GetMessagesType(mainPage, message);
             case getFriendsType:
-                return new GetFriendsType(message);
+                return new GetFriendsType(mainPage, message);
             case getFriendRequestsType:
-                return new GetFriendRequestType(message);
+                return new GetFriendRequestType(mainPage, message);
             case addRoomType:
-                return new AddRoomType(message);
+                return new AddRoomType(mainPage, message);
             case answerFriendType:
-                return new AnswerFriendType(message);
+                return new AnswerFriendType(mainPage, message);
             case friendRequestType:
-                return new FriendRequestType(message);
+                return new FriendRequestType(mainPage, message);
             default: break;
         }
 

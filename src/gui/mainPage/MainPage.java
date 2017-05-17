@@ -146,6 +146,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     public String getUsername() { return username; }
 
+    public CopyOnWriteArrayList<String> getFriendList() { return friends; }
+
     private void getRooms() { Communication.getInstance().getRooms(); }
 
     private void getFriends() {
@@ -402,13 +404,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     private void addRoom(String room) {
+        System.out.println("Room: " + room);
         String[] roomParameters = room.split("\0");
 
-        for(int i = 0; i < roomParameters.length; i++)
-            System.out.println("Room parameters: " + roomParameters[i]);
-
         Button button = new Button(roomParameters[1]);
-        System.out.println(roomsID+roomParameters[0]);
         button.setId(roomsID+roomParameters[0]);
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, this::roomButtonHandler);
         button.setMaxWidth(Double.MAX_VALUE);

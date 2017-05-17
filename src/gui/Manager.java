@@ -12,10 +12,8 @@ import javafx.stage.WindowEvent;
 
 public class Manager extends Application {
 
-    public static Stage Stage, startConversation, chatSettings;
+    private static Stage Stage, startConversation, chatSettings;
     public static boolean wantToClose = false;
-    public static MainPage mainpage;
-    public static LoginGUI login;
 
     /**
      * Main function.
@@ -44,12 +42,11 @@ public class Manager extends Application {
      * @throws Exception
      */
     public static void changeToMainPage(String username) throws Exception {
-        mainpage = new MainPage();
-        mainpage.setUsername(username);
+        MainPage mainPage = new MainPage();
+        mainPage.setUsername(username);
 
         Stage.close();
-        login = null;
-        Stage = mainpage.start();
+        Stage = mainPage.start();
         Stage.show();
 
         Stage.setOnCloseRequest((WindowEvent t) -> {
@@ -66,10 +63,9 @@ public class Manager extends Application {
      * @throws Exception
      */
     public static void changeToLogin() throws Exception {
-        login = new LoginGUI();
+        LoginGUI login = new LoginGUI();
 
         Stage.close();
-        mainpage = null;
         Stage = login.start();
         Stage.show();
     }
@@ -104,14 +100,9 @@ public class Manager extends Application {
     public static void showChatSettings(int room, String roomName) throws Exception {
         ChatSettings popup = new ChatSettings();
 
-        chatSettings = popup.start(room, roomName, mainpage);
+        chatSettings = popup.start(room, roomName);
         chatSettings.show();
     }
-
-    /**
-     * Stop main page threads.
-     */
-    public static void stopMainPageThreads() { if(mainpage != null) mainpage.stopWorkers();  }
 
     /**
      * Get current stage.

@@ -1,5 +1,6 @@
 package communication;
 import gui.Manager;
+import javafx.application.Platform;
 import message.Message;
 
 import java.io.*;
@@ -45,7 +46,6 @@ public class Communication {
 
             os = new ObjectOutputStream(socket.getOutputStream());
             os.flush();
-            System.out.println("Hello!");
             is = new ObjectInputStream(socket.getInputStream());
 
             System.out.println("Loading output streams");
@@ -85,12 +85,7 @@ public class Communication {
             e.printStackTrace();
         }
         catch (IOException e) {
-            try {
-                Manager.stopMainPageThreads();
-                Manager.changeToLogin();
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
+            e.printStackTrace();
         }
         return message;
     }

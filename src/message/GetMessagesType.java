@@ -1,6 +1,6 @@
 package message;
 
-import gui.Manager;
+import gui.mainPage.MainPage;
 
 import static message.MessageConstants.getMessagesSize;
 
@@ -8,10 +8,11 @@ public class GetMessagesType extends ReactMessage {
 
     /**
      * Get messages type.
+     * @param mainPage Main page.
      * @param message Message text.
      */
-    GetMessagesType(Message message) {
-        super(message);
+    GetMessagesType(MainPage mainPage, Message message) {
+        super(mainPage, message);
     }
 
 
@@ -24,6 +25,6 @@ public class GetMessagesType extends ReactMessage {
         if( message.getOptionalMessage() == null || headerParameters.length != getMessagesSize)
             return ;
 
-        Manager.mainpage.getChatMessages().put(Integer.parseInt(headerParameters[1]), message.getOptionalMessage());
+        mainPage.getChatMessages().put(Integer.parseInt(headerParameters[1]), message.getOptionalMessage());
     }
 }
