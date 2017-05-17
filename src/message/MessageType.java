@@ -7,10 +7,18 @@ import static message.MessageConstants.*;
 
 public class MessageType extends ReactMessage {
 
+    /**
+     * Get message type.
+     * @param mainPage Main page.
+     * @param message Message.
+     */
     MessageType(MainPage mainPage, Message message) {
         super(mainPage, message);
     }
 
+    /**
+     * React.
+     */
     @Override
     public void react() {
         String[] parameters = message.getHeader().split(" ");

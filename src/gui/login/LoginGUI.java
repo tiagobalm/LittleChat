@@ -45,6 +45,12 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
 
     private String IPAddress;
 
+    /**
+     * Start.
+     *
+     * @return Stage.
+     * @throws IOException
+     */
     public Stage start() throws IOException {
         Stage primaryStage = new Stage();
 
@@ -59,12 +65,20 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
         return primaryStage;
     }
 
+    /**
+     * Initializer.
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         getIPAddress();
         initializeHandlers();
     }
 
+    /**
+     * Initialize handlers.
+     */
     private void initializeHandlers() {
         menuLoginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> setNewState(MenuState.LOGIN));
@@ -79,6 +93,9 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
         });
     }
 
+    /**
+     * Login handler.
+     */
     private void loginHandler() {
         String username = this.username.getText();
         String password = this.password.getText();
@@ -98,11 +115,19 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
         }
     }
 
+    /**
+     * Set pane.
+     * @param pane Panel.
+     * @param show Show.
+     */
     @Override
     public void setPane(Pane pane, boolean show) {
         TransitionControl.showTransition(pane, show, getPaneTransition(pane, show));
     }
 
+    /**
+     * Disable current state.
+     */
     @Override
     public void disableCurrState() {
         if(state == MenuState.LOGIN || state == MenuState.REGISTER)
@@ -111,6 +136,11 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
             setPane(menuPane, false);
     }
 
+    /**
+     * Set a new state.
+     *
+     * @param newState State.
+     */
     @Override
     public void setNewState(MenuState newState) {
         disableCurrState();
@@ -130,6 +160,12 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
         }
     }
 
+    /**
+     * Get pane transition.
+     * @param pane Panel.
+     * @param show Show
+     * @return TranslateTransition.
+     */
     @Override
     public TranslateTransition getPaneTransition(Pane pane, boolean show){
         TranslateTransition tt;
@@ -151,6 +187,9 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
         return tt;
     }
 
+    /**
+     * Get Ip Address.
+     */
     private void getIPAddress() {
 
         try {

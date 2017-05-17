@@ -11,12 +11,19 @@ public class Worker implements Runnable {
     private MainPage mainPage;
     private boolean running;
 
+    /**
+     * Worker.
+     * @param mainpage main page.
+     */
     public Worker(MainPage mainpage) {
         this.mainPage = mainpage;
         this.messages = mainpage.getMessages();
         running = true;
     }
 
+    /**
+     * Run.
+     */
     @Override
     public void run() {
         while(running) {
