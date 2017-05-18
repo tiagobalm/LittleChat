@@ -14,22 +14,23 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
-public class ConversationPopUp implements Initializable {
-
-    @FXML
-    private Button conversationYes;
+public class AnswerFriend implements Initializable {
 
     @FXML
-    private Button conversationNo;
+    private Button accept;
 
-    private static String roomName;
+    @FXML
+    private Button decline;
 
-    public Stage start(String name) throws Exception {
+    private static String username;
+    private static MainPage mainPage;
+
+    public Stage start(String user, MainPage page) throws Exception {
         Stage primaryStage = new Stage();
-        roomName = name;
+        username = user;
+        mainPage = page;
 
-        Parent root = FXMLLoader.load(getClass().getResource("conversationPopUp.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("answerFriend.fxml"));
         primaryStage.setTitle("");
 
         Scene scene = new Scene(root, 333, 85);
@@ -42,21 +43,25 @@ public class ConversationPopUp implements Initializable {
         return primaryStage;
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        conversationYes.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            Communication.getInstance().addRoom(roomName);
+        accept.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            Communication.getInstance().sendAnswerFriend(username, "True");
+            mainPage.removeRequestedFriend(username, "True");
             try {
-                Manager.closeConversationPopUp();
+                Manager.closeAnswerFriendPop();
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
         });
 
-        conversationNo.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+        decline.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            Communication.getInstance().sendAnswerFriend(username, "False");
+            mainPage.removeRequestedFriend(username, "False");
             try {
-                Manager.closeConversationPopUp();
+                Manager.closeAnswerFriendPop();
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

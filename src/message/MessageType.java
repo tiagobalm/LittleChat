@@ -26,7 +26,6 @@ public class MessageType extends ReactMessage {
             System.out.println(str);
         if( parameters.length != messageSize || message.getMessage() == null)
             return ;
-        System.out.println("Add message");
         Platform.runLater(() -> mainPage.addNewMessage(parameters[1], Integer.parseInt(parameters[2]), message.getMessage()));
     }
 }

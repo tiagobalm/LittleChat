@@ -207,12 +207,17 @@ public class Communication {
      * @param username User to ask friendship.
      */
     public void sendFriendRequest(String username) {
-        Message message = new Message(friendRequestType + " ", username);
+        Message message = new Message(friendRequestType + " " + username, "");
         sendMessage(message);
     }
 
     public void addRoom(String roomName) {
         Message message = new Message(addRoomType , roomName + "\0" + roomName);
+        sendMessage(message);
+    }
+
+    public void sendAnswerFriend(String username, String answer) {
+        Message message = new Message(answerFriendType + " " + username, answer);
         sendMessage(message);
     }
 
@@ -229,11 +234,5 @@ public class Communication {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public void sendFriendRequest(String username, String text) {
-        Message message = new Message("FRIENDREQUEST ", username + "\0" + text);
-        sendMessage(message);
     }
 }
