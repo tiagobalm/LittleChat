@@ -1,13 +1,13 @@
 package communication;
-import gui.Manager;
-import javafx.application.Platform;
-import message.Message;
 
-import java.io.*;
-import java.net.SocketTimeoutException;
+import message.Message;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.SocketTimeoutException;
 
 import static message.MessageConstants.*;
 
