@@ -7,10 +7,18 @@ import static message.MessageConstants.addRoomSize;
 
 public class AddRoomType extends ReactMessage {
 
+    /**
+     * Add room type.
+     * @param mainPage Main page.
+     * @param message Message.
+     */
     AddRoomType(MainPage mainPage, Message message) {
         super(mainPage, message);
     }
 
+    /**
+     * React.
+     */
     @Override
     public void react() {
         String[] headerParameters = message.getHeader().split(" ");

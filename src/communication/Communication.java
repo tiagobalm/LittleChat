@@ -215,11 +215,20 @@ public class Communication {
         sendMessage(message);
     }
 
+    /**
+     * Add room chat.
+     * @param roomName Room chat name.
+     */
     public void addRoom(String roomName) {
         Message message = new Message(addRoomType , roomName + "\0" + roomName);
         sendMessage(message);
     }
 
+    /**
+     * Send answer friend.
+     * @param username User username.
+     * @param answer Message answer.
+     */
     public void sendAnswerFriend(String username, String answer) {
         Message message = new Message(answerFriendType + " " + username, answer);
         sendMessage(message);

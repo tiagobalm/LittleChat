@@ -105,6 +105,12 @@ public class Manager extends Application {
         chatSettings.show();
     }
 
+    /**
+     * Show answer friend popup.
+     * @param mainpage Main page.
+     * @param request Request.
+     * @throws Exception
+     */
     public static void showAnswerFriendPop(MainPage mainpage, String request) throws Exception {
         AnswerFriend popup = new AnswerFriend();
 
@@ -112,6 +118,11 @@ public class Manager extends Application {
         answerFriend.show();
     }
 
+    /**
+     * Close answer friend popup.
+     *
+     * @throws Exception
+     */
     public static void closeAnswerFriendPop() throws Exception {
         if(answerFriend != null) {
             answerFriend.close();
@@ -126,6 +137,10 @@ public class Manager extends Application {
      */
     public static Stage getStage() { return Stage; }
 
+    /**
+     * Get chat settings stage.
+     * @return
+     */
     public static Stage getChatSettingsStage() { return chatSettings; }
 
     /**
