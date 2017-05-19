@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.mainPage.ChatSettings">
+<AnchorPane fx:id="chatSettingsAnchor" prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.mainPage.ChatSettings">
    <children>
       <TextField fx:id="roomName" layoutX="93.0" layoutY="14.0" />
       <ListView fx:id="membersList" layoutX="26.0" layoutY="60.0" prefHeight="200.0" prefWidth="200.0" />

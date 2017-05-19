@@ -30,10 +30,7 @@ public class Communication {
      *
      */
     private Communication() {
-        System.setProperty("javax.net.ssl.keyStore", keystorePath);
-        System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
-        System.setProperty("javax.net.ssl.trustStore", truststorePath);
-        System.setProperty("javax.net.ssl.trustStorePassword", truststorePass);
+        setSystemSetting();
 
         SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 
@@ -55,6 +52,13 @@ public class Communication {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setSystemSetting() {
+        System.setProperty("javax.net.ssl.keyStore", keystorePath);
+        System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
+        System.setProperty("javax.net.ssl.trustStore", truststorePath);
+        System.setProperty("javax.net.ssl.trustStorePassword", truststorePass);
     }
 
     /**
@@ -218,6 +222,11 @@ public class Communication {
 
     public void sendAnswerFriend(String username, String answer) {
         Message message = new Message(answerFriendType + " " + username, answer);
+        sendMessage(message);
+    }
+
+    public void sendChangeRoomName(int roomID, String newName) {
+        Message message = new Message(changeRoomNameType + " " + roomID, newName);
         sendMessage(message);
     }
 

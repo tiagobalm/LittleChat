@@ -1,5 +1,6 @@
 package gui.mainPage;
 
+import communication.Communication;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -71,10 +73,10 @@ public class ChatSettings implements Initializable {
         membersList.setItems(FXCollections.observableArrayList(mainPage.getRoomMembers(roomID)));
 
         List<String> toAdd = new ArrayList<>(mainPage.getFriendsList());
-        //NOT WORKING, TRY TO FIGURE OUT WHY
         toAdd.removeAll(mainPage.getRoomMembers(roomID));
+
         memberAdd.setVisibleRowCount(3);
-        memberAdd.setItems(FXCollections.observableArrayList(mainPage.getFriendsList()));
+        memberAdd.setItems(FXCollections.observableArrayList(toAdd));
         memberAdd.getSelectionModel().selectFirst();
 
         List<String> chatMembers = new ArrayList<>(mainPage.getRoomMembers(roomID));
@@ -83,6 +85,15 @@ public class ChatSettings implements Initializable {
         memberRemove.setItems(FXCollections.observableArrayList(chatMembers));
         memberRemove.getSelectionModel().selectFirst();
 
+        changeName.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                Communication.getInstance().sendChangeRoomName(roomID, roomName.getText()));
 
+        mainPage.setChatSettings(this);
+    }
+
+    public void changeRoomName(String roomID, String newName) {
+
+        if(Integer.parseInt(roomID) == ChatSettings.roomID)
+            roomName.setText(newName);
     }
 }

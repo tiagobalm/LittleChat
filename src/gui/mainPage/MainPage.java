@@ -556,4 +556,18 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         if(answer.equals("True"))
             addFriend(username);
     }
+
+    public void changeRoomName(String roomID, String message) {
+        String[] messageParameters = message.split("\0");
+
+        if(messageParameters[0].equals("True")) {
+            Button room = (Button) Manager.getScene().lookup("#" + roomsID + roomID);
+
+            if(room != null)
+                room.setText(messageParameters[1]);
+
+            if(chatSettings != null)
+                chatSettings.changeRoomName(roomID, messageParameters[1]);
+        }
+    }
 }

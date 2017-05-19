@@ -103,7 +103,6 @@ public class Manager extends Application {
 
         chatSettings = popup.start(room, roomName, main);
         chatSettings.show();
-        main.setChatSettings(popup);
     }
 
     public static void showAnswerFriendPop(MainPage mainpage, String request) throws Exception {

@@ -58,6 +58,8 @@ public abstract class ReactMessage {
                 return new AnswerFriendType(mainPage, message);
             case friendRequestType:
                 return new FriendRequestType(mainPage, message);
+            case changeRoomNameType:
+                return new ChangeRoomNameType(mainPage, message);
             default: break;
         }
 

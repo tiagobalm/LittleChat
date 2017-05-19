@@ -10,8 +10,16 @@
     -fx-background-color: #daebf2;
 }
 
-#popup {
+#popup, #chatSettingsAnchor {
     -fx-background-color: #bedde9;
+}
+
+#membersList .list-cell:odd {
+    -fx-background-color: #D8EBF2;
+}
+
+#membersList .list-cell:even {
+    -fx-background-color: #ECF5F8;
 }
 
 .hboxMe {
@@ -21,7 +29,7 @@
 }
 
 .hboxThey {
-    -fx-background-color: aquamarine;
+    -fx-background-color: #eecbab;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
