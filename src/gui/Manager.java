@@ -2,6 +2,7 @@ package gui;
 
 import communication.Communication;
 import gui.login.LoginGUI;
+import gui.mainPage.AnswerFriend;
 import gui.mainPage.ChatSettings;
 import gui.mainPage.ConversationPopUp;
 import gui.mainPage.MainPage;
@@ -12,10 +13,8 @@ import javafx.stage.WindowEvent;
 
 public class Manager extends Application {
 
-    private static Stage Stage, startConversation, chatSettings;
+    private static Stage Stage, startConversation, chatSettings, answerFriend;
     public static boolean wantToClose = false;
-    private static MainPage mainpage;
-    private static LoginGUI login;
 
     /**
      * Main function.
@@ -44,12 +43,11 @@ public class Manager extends Application {
      * @throws Exception
      */
     public static void changeToMainPage(String username) throws Exception {
-        mainpage = new MainPage();
-        mainpage.setUsername(username);
+        MainPage mainPage = new MainPage();
+        mainPage.setUsername(username);
 
         Stage.close();
-        login = null;
-        Stage = mainpage.start();
+        Stage = mainPage.start();
         Stage.show();
 
         Stage.setOnCloseRequest((WindowEvent t) -> {
@@ -66,10 +64,9 @@ public class Manager extends Application {
      * @throws Exception
      */
     public static void changeToLogin() throws Exception {
-        login = new LoginGUI();
+        LoginGUI login = new LoginGUI();
 
         Stage.close();
-        mainpage = null;
         Stage = login.start();
         Stage.show();
     }
@@ -80,7 +77,7 @@ public class Manager extends Application {
      */
     public static void showConversationPopUp(String roomName) throws Exception {
         ConversationPopUp popup = new ConversationPopUp();
-
+        System.out.println("Manager " + roomName);
         startConversation = popup.start(roomName);
         startConversation.show();
     }
@@ -101,23 +98,36 @@ public class Manager extends Application {
      * @param roomName Chat room name.
      * @throws Exception
      */
-    public static void showChatSettings(String roomName) throws Exception {
+    public static void showChatSettings(int room, String roomName, MainPage main) throws Exception {
         ChatSettings popup = new ChatSettings();
 
-        chatSettings = popup.start(roomName);
+        chatSettings = popup.start(room, roomName, main);
         chatSettings.show();
+        main.setChatSettings(popup);
     }
 
-    /**
-     * Stop main page threads.
-     */
-    public static void stopMainPageThreads() { if(mainpage != null) mainpage.stopWorkers();  }
+    public static void showAnswerFriendPop(MainPage mainpage, String request) throws Exception {
+        AnswerFriend popup = new AnswerFriend();
+
+        answerFriend = popup.start(request, mainpage);
+        answerFriend.show();
+    }
+
+    public static void closeAnswerFriendPop() throws Exception {
+        if(answerFriend != null) {
+            answerFriend.close();
+            answerFriend = null;
+        }
+    }
+
 
     /**
      * Get current stage.
      * @return Stage.
      */
     public static Stage getStage() { return Stage; }
+
+    public static Stage getChatSettingsStage() { return chatSettings; }
 
     /**
      * Get current scene.

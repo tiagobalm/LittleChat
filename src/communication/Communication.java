@@ -1,5 +1,6 @@
 package communication;
 import gui.Manager;
+import javafx.application.Platform;
 import message.Message;
 
 import java.io.*;
@@ -45,7 +46,6 @@ public class Communication {
 
             os = new ObjectOutputStream(socket.getOutputStream());
             os.flush();
-            System.out.println("Hello!");
             is = new ObjectInputStream(socket.getInputStream());
 
             System.out.println("Loading output streams");
@@ -85,12 +85,7 @@ public class Communication {
             e.printStackTrace();
         }
         catch (IOException e) {
-            try {
-                Manager.stopMainPageThreads();
-                Manager.changeToLogin();
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
+            e.printStackTrace();
         }
         return message;
     }
@@ -119,7 +114,7 @@ public class Communication {
      * @param username User username.
      * @param password User password.
      * @param IPAddress Ip address.
-     * @param port Port Nnumber.
+     * @param port Port Number.
      * @return result of waitForLoginResponse function.
      */
     public boolean sendLoginRequest(String username, String password, String IPAddress, int port) {
@@ -212,12 +207,17 @@ public class Communication {
      * @param username User to ask friendship.
      */
     public void sendFriendRequest(String username) {
-        Message message = new Message(friendRequestType + " ", username);
+        Message message = new Message(friendRequestType + " " + username, "");
         sendMessage(message);
     }
 
     public void addRoom(String roomName) {
         Message message = new Message(addRoomType , roomName + "\0" + roomName);
+        sendMessage(message);
+    }
+
+    public void sendAnswerFriend(String username, String answer) {
+        Message message = new Message(answerFriendType + " " + username, answer);
         sendMessage(message);
     }
 
@@ -234,11 +234,5 @@ public class Communication {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public void sendFriendRequest(String username, String text) {
-        Message message = new Message("FRIENDREQUEST ", username + "\0" + text);
-        sendMessage(message);
     }
 }

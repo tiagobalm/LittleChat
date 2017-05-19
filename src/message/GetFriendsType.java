@@ -26,6 +26,9 @@ public class GetFriendsType extends ReactMessage {
         if( message.getOptionalMessage() == null || headerParameters.length != getRoomsSize)
             return ;
 
-        Platform.runLater(() -> mainPage.addFriends(message.getOptionalMessage()));
+        Platform.runLater(() -> {
+            for(String friend : message.getOptionalMessage())
+                mainPage.addFriend(friend);
+        });
     }
 }
