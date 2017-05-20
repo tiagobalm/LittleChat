@@ -513,8 +513,16 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         if(friendRequest != null)
             friendRequestButtons.getChildren().remove(friendRequest);
 
-        if(message.equals("True"))
+        if(message.equals("True")) {
+            Notifications.create()
+                    .title("LittleChat Notification")
+                    .text("You and " + friend + " are now friends!")
+                    .graphic(new ImageView(new Image(getClass().getResource("../assets/images/LittleChatLogoNoTextResized.png").toString())))
+                    .hideAfter(Duration.seconds(3))
+                    .position(Pos.BOTTOM_RIGHT)
+                    .hideCloseButton().show();
             addFriend(friend);
+        }
     }
 
     private void addRequestedFriendRequest(String request) {
@@ -558,11 +566,18 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     public void addFriendRequest(String request, String asked) {
-        System.out.println("Request " + request + " Asked " + asked);
         if(request.equals(username))
             addWaitingFriendRequest(asked);
-        else
+        else {
+            Notifications.create()
+                    .title("LittleChat Notification")
+                    .text("You received a new friend request from " + request)
+                    .graphic(new ImageView(new Image(getClass().getResource("../assets/images/LittleChatLogoNoTextResized.png").toString())))
+                    .hideAfter(Duration.seconds(3))
+                    .position(Pos.BOTTOM_RIGHT)
+                    .hideCloseButton().show();
             addRequestedFriendRequest(request);
+        }
     }
 
     void removeRequestedFriend(String username, String answer) {
