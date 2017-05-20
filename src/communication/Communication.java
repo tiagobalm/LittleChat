@@ -30,6 +30,9 @@ public class Communication {
 
     private static boolean reconnecting = false;
 
+    private static String username, password, IPAddress;
+    private static int port;
+
     /**
      * Establishes the communication.
      *
@@ -121,8 +124,11 @@ public class Communication {
                     os.flush();
                     is = new ObjectInputStream(socket.getInputStream());
 
-                    System.out.println("Connected!");
-                    reconnecting = false;
+                    if(sendLoginRequest(username, password, IPAddress, port)) {
+                        System.out.println("Connected!");
+                        reconnecting = false;
+                    }
+
                 } catch (IOException e) {
                     counter++;
                 }
@@ -146,6 +152,11 @@ public class Communication {
         String header = registerType + " " + username + " " + password + " " + IPAddress + " " + port;
         Message message = new Message(header, "");
 
+        Communication.username = username;
+        Communication.password = password;
+        Communication.IPAddress = IPAddress;
+        Communication.port = port;
+
         sendMessage(message);
 
         return waitForLoginResponse();
@@ -163,6 +174,11 @@ public class Communication {
 
         String header = loginType + " " + username + " " + password + " " + IPAddress + " " + port;
         Message message = new Message(header, "");
+
+        Communication.username = username;
+        Communication.password = password;
+        Communication.IPAddress = IPAddress;
+        Communication.port = port;
 
         sendMessage(message);
 
@@ -182,12 +198,23 @@ public class Communication {
             Message response = (Message)is.readObject();
 
             loggedIn = ("True".equals(response.getMessage()));
+
+            if(!loggedIn) {
+                Communication.username = "";
+                Communication.password = "";
+                Communication.IPAddress = "";
+                Communication.port = -1;
+            }
         }
         catch (SocketTimeoutException timeout) {
             System.out.println("Timeout exception");
         }
-        catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        catch(ClassNotFoundException e) {
+            System.out.println("Message class is not the same.");
+        }
+        catch (IOException e) {
+            reconnect();
+            return waitForLoginResponse();
         }
 
         return loggedIn;
