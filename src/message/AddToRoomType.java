@@ -6,8 +6,9 @@ import javafx.application.Platform;
 import static message.MessageConstants.addToRoomSize;
 
 public class AddToRoomType extends ReactMessage {
+
     /**
-     * React message.
+     * Add to room type react message.
      *
      * @param mainPage Main page.
      * @param message  Message.
@@ -16,6 +17,10 @@ public class AddToRoomType extends ReactMessage {
         super(mainPage, message);
     }
 
+    /**
+     * React.
+     *
+     */
     @Override
     public void react() {
         String[] headerParameters = message.getHeader().split(" ");

@@ -7,7 +7,7 @@ import static message.MessageConstants.getMessagesSize;
 public class GetMessagesType extends ReactMessage {
 
     /**
-     * Get messages type.
+     * Get messages type react message.
      * @param mainPage Main page.
      * @param message Message text.
      */

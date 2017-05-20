@@ -7,7 +7,7 @@ import static message.MessageConstants.getRoomSize;
 
 public class GetRoomType extends ReactMessage {
     /**
-     * React message.
+     * Get room type react message.
      *
      * @param mainPage Main page.
      * @param message  Message.

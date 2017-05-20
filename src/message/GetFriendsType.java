@@ -8,7 +8,7 @@ import static message.MessageConstants.getRoomsSize;
 public class GetFriendsType extends ReactMessage {
 
     /**
-     * Get friends type.
+     * Get friends type react message.
      * @param mainPage Main page.
      * @param message Message text.
      */

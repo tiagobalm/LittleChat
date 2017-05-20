@@ -7,7 +7,7 @@ import static message.MessageConstants.deleteFromRoomSize;
 
 public class DeleteFromRoomType extends ReactMessage {
     /**
-     * React message.
+     * Delete from room type react message.
      *
      * @param mainPage Main page.
      * @param message  Message.
@@ -16,6 +16,9 @@ public class DeleteFromRoomType extends ReactMessage {
         super(mainPage, message);
     }
 
+    /**
+     * React.
+     */
     @Override
     public void react() {
         String[] headerParameters = message.getHeader().split(" ");

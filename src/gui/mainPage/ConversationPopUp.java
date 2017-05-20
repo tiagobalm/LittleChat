@@ -25,6 +25,12 @@ public class ConversationPopUp implements Initializable {
 
     private static String roomName;
 
+    /**
+     * Start a chat room.
+     * @param name Chat room name.
+     * @return Stage.
+     * @throws Exception
+     */
     public Stage start(String name) throws Exception {
         Stage primaryStage = new Stage();
         roomName = name;
@@ -42,6 +48,11 @@ public class ConversationPopUp implements Initializable {
         return primaryStage;
     }
 
+    /**
+     * Initialize.
+     * @param location URL location.
+     * @param resources ResourceBundle resources.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

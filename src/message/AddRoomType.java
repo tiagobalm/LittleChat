@@ -8,7 +8,7 @@ import static message.MessageConstants.addRoomSize;
 public class AddRoomType extends ReactMessage {
 
     /**
-     * Add room type.
+     * Add room type react message.
      * @param mainPage Main page.
      * @param message Message.
      */

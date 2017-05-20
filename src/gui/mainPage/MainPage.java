@@ -114,6 +114,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private ConcurrentHashMap<Integer, List<String>> chatMessages, chatMembers;
     private CopyOnWriteArrayList<String> friends;
 
+    /**
+     * Start.
+     * @return Stage.
+     * @throws Exception
+     */
     public Stage start() throws Exception {
         Stage primaryStage = new Stage();
         executor = Executors.newFixedThreadPool(numberOfWorkerThreads);
@@ -131,6 +136,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         return primaryStage;
     }
 
+    /**
+     * Initialize.
+     * @param location URL location.
+     * @param resources ResourceBundle resources.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         messages = new ArrayBlockingQueue<>(500);
@@ -154,22 +164,55 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         Communication.getInstance().getFriendRequests();
     }
 
+    /**
+     * Set User username.
+     * @param username User username to set.
+     */
     public void setUsername(String username) { MainPage.username = username; }
 
+    /**
+     * Set chat settings.
+     * @param chat Settings of new chat.
+     */
     public void setChatSettings(ChatSettings chat) { MainPage.chatSettings = chat; }
 
+    /**
+     * Get user username.
+     * @return User username.
+     */
     public String getUsername() { return username; }
 
+    /**
+     * Get room members.
+     * @param room Chat room id.
+     * @return List of usernames of the members from the chat room.
+     */
     public List<String> getRoomMembers(int room) { return chatMembers.get(room); }
 
+    /**
+     * Get messages.
+     * @return Messages.
+     */
     public BlockingQueue<Message> getMessages() { return messages; }
 
+    /**
+     * Get chat messages.
+     * @return Messages.
+     */
     public ConcurrentHashMap<Integer, List<String>> getChatMessages() {
         return chatMessages;
     }
 
+    /**
+     * Get friends list.
+     * @return friends.
+     */
     public CopyOnWriteArrayList<String> getFriendsList() { return friends; }
 
+    /**
+     * Room button handler.
+     * @param event Mouse event to handler.
+     */
     private void roomButtonHandler(MouseEvent event) {
         Integer buttonID = Integer.parseInt(((Button)event.getSource()).getId().replaceAll(roomsID, ""));
 
@@ -185,6 +228,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         toggleSettingButton(true);
     }
 
+    /**
+     * Change active chat room.
+     * @param room Chat room id.
+     * @param buttonID Button id.
+     */
     private void changeActiveRoom(int room, Integer buttonID) {
         if(room != -1) {
             Button previousRoom = (Button) Manager.getScene().lookup("#" + roomsID + room);
@@ -195,6 +243,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         nextRoom.getStyleClass().add("roomsButtons-selected");
     }
 
+    /**
+     * Initialize handlers.
+     */
     private void initializeHandlers() {
         roomsButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> setNewState(MainPageState.ROOMS));
@@ -250,6 +301,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                 });
     }
 
+    /**
+     * Start worker threads.
+     */
     private void startWorkerThreads() {
         System.out.println("Starting worker threads");
         readThread = new ReadThread(messages);
@@ -261,11 +315,17 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    /**
+     * Stop workers threads.
+     */
     public void stopWorkers() {
         executor.shutdownNow();
         readThread.stopThread();
     }
 
+    /**
+     * Disable current state.
+     */
     @Override
     public void disableCurrState() {
         switch (state) {
@@ -293,17 +353,30 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    /**
+     * Hide the chat box when user leaves the chat room.
+     * @param
+     *
+     */
     private void toggleInput(boolean show) {
         if(show) Platform.runLater(() -> messageInput.requestFocus());
         messageInput.setVisible(show);
         messageInput.setDisable(!show);
     }
 
+    /**
+     * Hide settings button.
+     * @param show
+     */
     private void toggleSettingButton(boolean show) {
         settingsButton.setVisible(show);
         settingsButton.setDisable(!show);
     }
 
+    /**
+     * Set new state.
+     * @param newState New state.
+     */
     @Override
     public void setNewState(MainPageState newState) {
 
@@ -339,11 +412,22 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    /**
+     * Set panel.
+     * @param pane panel.
+     * @param show show.
+     */
     @Override
     public void setPane(Pane pane, boolean show) {
         TransitionControl.showTransition(pane, show, getPaneTransition(pane, show));
     }
 
+    /**
+     * Get panel transition.
+     * @param pane Panel.
+     * @param show Show.
+     * @return translate transition.
+     */
     @Override
     public TranslateTransition getPaneTransition(Pane pane, boolean show){
         TranslateTransition tt;
@@ -366,6 +450,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         return tt;
     }
 
+    /**
+     * Set panel max width.
+     */
     private void setPaneMaxWidth() {
 
         menuVBox.setMaxHeight(Double.MAX_VALUE);
@@ -376,6 +463,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         logoutButton.setMaxWidth(Double.MAX_VALUE);
     }
 
+    /**
+     * Get chat room messages.
+     * @param room Chat room id.
+     */
     private void getRoomMessages(Integer room) {
         int counter = 0;
 
@@ -398,10 +489,18 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         if(counter == 3) System.out.println("Unable to retrieve messages from room with ID " + room);
     }
 
+    /**
+     * Get chat room.
+     * @param roomID Chat room id.
+     */
     private void getRoom(String roomID) {
         Communication.getInstance().getRoom(roomID);
     }
 
+    /**
+     * Add chat room.
+     * @param room Room to be added.
+     */
     public void addRoom(String room) {
         String[] roomParameters = room.split("\0");
 
@@ -417,6 +516,12 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         conversationButtons.getChildren().add(button);
     }
 
+    /**
+     * Add new message.
+     * @param from Username that sends the message.
+     * @param to User that receives the message.
+     * @param message Message.
+     */
     public void addNewMessage(String from, int to, String message) {
 
         if(chatMessages.containsKey(to))
@@ -434,6 +539,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    /**
+     * Add chat room messages to panel.
+     * @param room Chat room id.
+     */
     private void addRoomMessagesToPanel(Integer room) {
         messagesPanel.getChildren().clear();
 
@@ -445,6 +554,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    /**
+     * Add message to panel.
+     * @param username User username.
+     * @param message Message text.
+     */
     private void addMessageToPanel(String username, String message) {
 
         HBox hbox = new HBox();
@@ -466,6 +580,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         messagesPanel.getChildren().add(hbox);
     }
 
+    /**
+     * Add friend.
+     * @param friend Friend username.
+     */
     public void addFriend(String friend) {
 
         if(!friends.contains(friend)) {
@@ -487,6 +605,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    /**
+     * Add friend requests.
+     * @param friendRequests List of friends requests.
+     */
     public void addFriendRequests(List<String> friendRequests) {
         for(String friend: friendRequests) {
             String[] users = friend.split("\0");
@@ -498,6 +620,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    /**
+     * Add new chat room.
+     * @param roomID Chat room id.
+     * @param message Message text.
+     */
     public void addNewRoom(String roomID, String message) {
         System.out.println("Add new room message: " + message);
         String[] messageParameters = message.split("\0");
@@ -506,6 +633,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
             addRoom(roomID + "\0" + messageParameters[1] + "\0" + username + "\0" + messageParameters[2]);
     }
 
+    /**
+     * React to friend request answer.
+     * @param friend Friend username.
+     * @param message Message text.
+     */
     public void reactToFriendRequestAnswer(String friend, String message) {
 
         Button friendRequest = (Button) Manager.getScene().lookup("#" + friendRequestWaitingID + friend);
@@ -525,6 +657,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    /**
+     * Add requested friend request.
+     * @param request Request.
+     */
     private void addRequestedFriendRequest(String request) {
         MainPage main = this;
         Text userName = new Text(request);
@@ -549,6 +685,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         friendRequestButtons.getChildren().add(button);
     }
 
+    /**
+     * Add waiting friend request.
+     * @param asked Username asked.
+     */
     private void addWaitingFriendRequest(String asked) {
         Text userName = new Text(asked);
         Text label = new Text("\nAwaiting...");
@@ -565,6 +705,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         friendRequestButtons.getChildren().add(button);
     }
 
+    /**
+     * Add friend request.
+     * @param request Request.
+     * @param asked Username asked.
+     */
     public void addFriendRequest(String request, String asked) {
         if(request.equals(username))
             addWaitingFriendRequest(asked);
@@ -580,6 +725,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    /**
+     * Remove requested friend.
+     * @param username User username.
+     * @param answer Answer to request(accept or not accept friendship).
+     */
     void removeRequestedFriend(String username, String answer) {
         Button friendRequest = (Button) Manager.getScene().lookup("#" + friendRequestAskingID + username);
 
@@ -590,6 +740,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
             addFriend(username);
     }
 
+    /**
+     * Change chat room name.
+     * @param roomID chat room id.
+     * @param message Message text.
+     */
     public void changeRoomName(String roomID, String message) {
         String[] messageParameters = message.split("\0");
 
@@ -604,6 +759,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         }
     }
 
+    /**
+     * Add chat room.
+     * @param roomID chat room id.
+     * @param message Message text.
+     */
     public void addToRoom(String roomID, String message) {
         String[] messageParameters = message.split("\0");
 
@@ -619,6 +779,11 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     }
 
+    /**
+     * Delete message from chat room.
+     * @param roomID chat room id.
+     * @param message Message to be deleted.
+     */
     public void deleteFromRoom(String roomID, String message) {
         String[] messageParameters = message.split("\0");
 

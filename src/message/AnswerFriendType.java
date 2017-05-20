@@ -8,9 +8,10 @@ import static message.MessageConstants.answerFriendSize;
 public class AnswerFriendType extends ReactMessage {
 
     /**
-     * Get answer friend type.
+     * Answer friend type react message.
+     *
      * @param mainPage Main page.
-     * @param message Message.
+     * @param message  Message.
      */
     AnswerFriendType(MainPage mainPage, Message message) {
         super(mainPage, message);

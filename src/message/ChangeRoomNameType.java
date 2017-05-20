@@ -8,7 +8,7 @@ import static message.MessageConstants.changeRoomNameSize;
 
 public class ChangeRoomNameType extends ReactMessage {
     /**
-     * React message.
+     * Change room name type react message.
      *
      * @param mainPage Main page.
      * @param message  Message.
@@ -17,6 +17,9 @@ public class ChangeRoomNameType extends ReactMessage {
         super(mainPage, message);
     }
 
+    /**
+     * React.
+     */
     @Override
     public void react() {
         String[] headerParameters = message.getHeader().split(" ");

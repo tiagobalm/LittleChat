@@ -25,6 +25,13 @@ public class AnswerFriend implements Initializable {
     private static String username;
     private static MainPage mainPage;
 
+    /**
+     * Start.
+     * @param user User.
+     * @param page Page.
+     * @return Stage.
+     * @throws Exception
+     */
     public Stage start(String user, MainPage page) throws Exception {
         Stage primaryStage = new Stage();
         username = user;
@@ -44,6 +51,11 @@ public class AnswerFriend implements Initializable {
     }
 
 
+    /**
+     * Initialize.
+     * @param location URL location.
+     * @param resources ResourceBundle resources.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

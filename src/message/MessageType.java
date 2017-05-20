@@ -8,7 +8,7 @@ import static message.MessageConstants.*;
 public class MessageType extends ReactMessage {
 
     /**
-     * Get message type.
+     * Get message type react message.
      * @param mainPage Main page.
      * @param message Message.
      */

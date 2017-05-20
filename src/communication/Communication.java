@@ -54,6 +54,9 @@ public class Communication {
         }
     }
 
+    /**
+     * Set system settings.
+     */
     private void setSystemSetting() {
         System.setProperty("javax.net.ssl.keyStore", keystorePath);
         System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
@@ -64,7 +67,7 @@ public class Communication {
     /**
      * Gets the communication instance.
      *
-     * @return instance communication.
+     * @return Instance communication.
      */
     public static Communication getInstance() {
         if(instance == null)
@@ -76,7 +79,7 @@ public class Communication {
     /**
      * Read a message.
      *
-     * @return message.
+     * @return Message read.
      */
     public Message read() {
         Message message = null;
@@ -231,22 +234,41 @@ public class Communication {
         sendMessage(message);
     }
 
+    /**
+     * Send change chat room name message.
+     * @param roomID Chat room id.
+     * @param newName New chat room name.
+     */
     public void sendChangeRoomName(int roomID, String newName) {
         Message message = new Message(changeRoomNameType + " " + roomID, newName);
         sendMessage(message);
     }
 
+    /**
+     * Get chat room.
+     * @param roomID Chat room id.
+     */
     public void getRoom(String roomID) {
         Message message = new Message(getRoomType + " " + roomID, "");
         sendMessage(message);
     }
 
+    /**
+     * Add user to chat room.
+     * @param username User username.
+     * @param roomID Chat room id.
+     */
     public void addToRoom(String username, int roomID) {
         Message message = new Message(addToRoomType + " " + roomID, username);
         sendMessage(message);
     }
 
 
+    /**
+     * Delete user from chat room.
+     * @param username User username.
+     * @param roomID Chat room id.
+     */
     public void deleteFromRoom(String username, int roomID) {
         Message message = new Message(deleteFromRoomType + " " + roomID, username);
         sendMessage(message);

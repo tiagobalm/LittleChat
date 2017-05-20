@@ -47,6 +47,14 @@ public class ChatSettings implements Initializable {
 
     private static int roomID;
 
+    /**
+     * Start.
+     * @param room Chat room number.
+     * @param roomName Chat room name.
+     * @param main Main page.
+     * @return Stage.
+     * @throws Exception
+     */
     public Stage start(int room, String roomName, MainPage main) throws Exception {
         Stage primaryStage = new Stage();
 
@@ -69,6 +77,11 @@ public class ChatSettings implements Initializable {
         return primaryStage;
     }
 
+    /**
+     * Initialize.
+     * @param location URL location.
+     * @param resources ResourceBundle resources.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -81,10 +94,16 @@ public class ChatSettings implements Initializable {
         mainPage.setChatSettings(this);
     }
 
+    /**
+     * Initialize leave button.
+     */
     private void initializeLeaveButton() {
         leave.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> Communication.getInstance().deleteFromRoom(mainPage.getUsername(), roomID));
     }
 
+    /**
+     * Initialize remove members.
+     */
     private void initializeRemoveMembers() {
         List<String> chatMembers = new ArrayList<>(mainPage.getRoomMembers(roomID));
         chatMembers.remove(mainPage.getUsername());
@@ -95,6 +114,9 @@ public class ChatSettings implements Initializable {
         buttonRemove.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> Communication.getInstance().deleteFromRoom(memberRemove.getValue(), roomID));
     }
 
+    /**
+     * Initialize add members.
+     */
     private void initializeAddMembers() {
         List<String> toAdd = new ArrayList<>(mainPage.getFriendsList());
         toAdd.removeAll(mainPage.getRoomMembers(roomID));
@@ -106,10 +128,16 @@ public class ChatSettings implements Initializable {
         buttonAdd.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> Communication.getInstance().addToRoom(memberAdd.getValue(), roomID));
     }
 
+    /**
+     * Initialize member list.
+     */
     private void initializeMemberList() {
         membersList.setItems(FXCollections.observableArrayList(mainPage.getRoomMembers(roomID)));
     }
 
+    /**
+     * Initialize room name.
+     */
     private void initializeRoomName() {
         roomName.setText(roomNameTemp);
 
@@ -117,12 +145,22 @@ public class ChatSettings implements Initializable {
                 Communication.getInstance().sendChangeRoomName(roomID, roomName.getText()));
     }
 
+    /**
+     * Changes the name of a chat room.
+     * @param roomID Chat room id.
+     * @param newName Chat room new name.
+     */
     public void changeRoomName(String roomID, String newName) {
 
         if(Integer.parseInt(roomID) == ChatSettings.roomID)
             roomName.setText(newName);
     }
 
+    /**
+     * Add user to chat room.
+     * @param roomID Chat room id.
+     * @param userToAdd User username to add to the chat room.
+     */
     public void addToRoom(String roomID, String userToAdd) {
 
         if(ChatSettings.roomID == Integer.parseInt(roomID)) {
@@ -134,6 +172,11 @@ public class ChatSettings implements Initializable {
         }
     }
 
+    /**
+     * Delete user from chat room.
+     * @param roomID Chat room id.
+     * @param username User username to remove from chat room.
+     */
     public void deleteFromRoom(String roomID, String username) {
 
         if(ChatSettings.roomID == Integer.parseInt(roomID)) {

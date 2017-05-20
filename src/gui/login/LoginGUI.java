@@ -122,7 +122,7 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
     }
 
     /**
-     * Set pane.
+     * Set panel.
      * @param pane Panel.
      * @param show Show.
      */

@@ -8,7 +8,7 @@ import static message.MessageConstants.getFriendRequestsSize;
 public class GetFriendRequestType extends ReactMessage {
 
     /**
-     * Get friend request type.
+     * Get friend request type react message.
      * @param mainPage Main page.
      * @param message text Message.
      */

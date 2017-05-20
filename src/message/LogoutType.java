@@ -6,7 +6,7 @@ import javafx.application.Platform;
 
 public class LogoutType extends ReactMessage {
     /**
-     * Get logout type.
+     * Get logout type react message.
      * @param mainPage Main page.
      * @param message Message text.
      */
