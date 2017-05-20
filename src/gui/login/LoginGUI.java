@@ -8,16 +8,21 @@ import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.Enumeration;
@@ -80,6 +85,7 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
      * Initialize handlers.
      */
     private void initializeHandlers() {
+
         menuLoginButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 e -> setNewState(MenuState.LOGIN));
         cancelLogin.addEventHandler(MouseEvent.MOUSE_CLICKED,

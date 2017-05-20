@@ -7,9 +7,15 @@ import gui.mainPage.ChatSettings;
 import gui.mainPage.ConversationPopUp;
 import gui.mainPage.MainPage;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 public class Manager extends Application {
 
@@ -20,9 +26,7 @@ public class Manager extends Application {
      * Main function.
      * @param args Arguments to launch the program.
      */
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
 
     /**
      * Start.

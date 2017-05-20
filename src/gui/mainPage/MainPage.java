@@ -1,11 +1,16 @@
 package gui.mainPage;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import message.Message;
+import org.controlsfx.control.Notifications;
 import workers.ReadThread;
 import communication.Communication;
 import gui.Controller;
@@ -418,6 +423,15 @@ public class MainPage implements Initializable, Controller<MainPageState> {
             chatMessages.get(to).add(message);
         if(room == to)
             addMessageToPanel(from, message);
+        else {
+            Notifications.create()
+                    .title("LittleChat Notification")
+                    .text("New message in " + ((Button) Manager.getScene().lookup("#" + roomsID + to)).getText())
+                    .graphic(new ImageView(new Image(getClass().getResource("../assets/images/LittleChatLogoNoTextResized.png").toString())))
+                    .hideAfter(Duration.seconds(3))
+                    .position(Pos.BOTTOM_RIGHT)
+                    .hideCloseButton().show();
+        }
     }
 
     private void addRoomMessagesToPanel(Integer room) {
