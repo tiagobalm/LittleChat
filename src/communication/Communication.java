@@ -7,6 +7,7 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.SocketTimeoutException;
 
 import static message.MessageConstants.*;
@@ -18,12 +19,16 @@ public class Communication {
     private static final String truststorePass = "littlechat";
 
     private static final String IP = "127.0.0.1";
-    private static final int PORT = 15000;
+    private static final int MAINPORT = 15000;
+    private static final int BACKUPORT = 14999;
     private static ObjectOutputStream os;
     private static ObjectInputStream is;
     private static SSLSocket socket;
+    private static SSLSocketFactory factory;
 
     private static Communication instance = null;
+
+    private static boolean reconnecting = false;
 
     /**
      * Establishes the communication.
@@ -32,20 +37,19 @@ public class Communication {
     private Communication() {
         setSystemSetting();
 
-        SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-
         try {
-            socket = (SSLSocket) factory.createSocket(IP, PORT);
+            factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+            socket = (SSLSocket) factory.createSocket();
+            socket.connect(new InetSocketAddress(IP, MAINPORT));
 
             String[] ciphers = new String[1];
             ciphers[0] ="TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256";
             socket.setEnabledCipherSuites(ciphers);
 
+            System.out.println("Loading output streams");
             os = new ObjectOutputStream(socket.getOutputStream());
             os.flush();
             is = new ObjectInputStream(socket.getInputStream());
-
-            System.out.println("Loading output streams");
 
             System.out.println("Streams loaded");
 
@@ -88,10 +92,44 @@ public class Communication {
             message = (Message)is.readObject();
         }
         catch (SocketTimeoutException ignore) {}
-        catch (IOException | ClassNotFoundException e ) {
-            e.printStackTrace();
+        catch ( ClassNotFoundException e) {
+            System.out.println("Message class is not the same.");
+        }
+        catch (IOException e ) {
+            reconnect();
         }
         return message;
+    }
+
+    private void reconnect() {
+        int counter = 0;
+
+        if(!reconnecting) {
+            reconnecting = true;
+
+            while (reconnecting) {
+                try {
+                    socket = (SSLSocket) factory.createSocket();
+                    socket.setReuseAddress(true);
+
+                    if(counter % 2 == 0)
+                        socket.connect(new InetSocketAddress(IP, MAINPORT));
+                    if(counter % 2 != 0)
+                        socket.connect(new InetSocketAddress(IP, BACKUPORT));
+
+                    os = new ObjectOutputStream(socket.getOutputStream());
+                    os.flush();
+                    is = new ObjectInputStream(socket.getInputStream());
+
+                    System.out.println("Connected!");
+                    reconnecting = false;
+                } catch (IOException e) {
+                    counter++;
+                }
+            }
+        } else {
+            while(reconnecting) {}
+        }
     }
 
     /**
@@ -285,7 +323,8 @@ public class Communication {
                 os.flush();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            reconnect();
+            sendMessage(message);
         }
     }
 }
