@@ -36,4 +36,13 @@ public class MessageConstants {
 
     public static final String changeRoomNameType = "CHANGEROOMNAME";
     public static final int changeRoomNameSize = 2;
+
+    public static final String addToRoomType = "ADDTOROOM";
+    public static final int addToRoomSize = 2;
+
+    public static final String getRoomType = "GETROOM";
+    public static final int getRoomSize = 1;
+
+    public static final String deleteFromRoomType = "DELETEFROMROOM";
+    public static final int deleteFromRoomSize = 2;
 }

@@ -77,7 +77,6 @@ public class Manager extends Application {
      */
     public static void showConversationPopUp(String roomName) throws Exception {
         ConversationPopUp popup = new ConversationPopUp();
-        System.out.println("Manager " + roomName);
         startConversation = popup.start(roomName);
         startConversation.show();
     }
@@ -106,6 +105,18 @@ public class Manager extends Application {
     }
 
     /**
+     * Close chat settings popup.
+     *
+     * @throws Exception
+     */
+    public static void closeChatSettings() throws Exception {
+        if(chatSettings != null) {
+            chatSettings.close();
+            chatSettings = null;
+        }
+    }
+
+    /**
      * Show answer friend popup.
      * @param mainpage Main page.
      * @param request Request.
@@ -130,18 +141,11 @@ public class Manager extends Application {
         }
     }
 
-
     /**
      * Get current stage.
      * @return Stage.
      */
     public static Stage getStage() { return Stage; }
-
-    /**
-     * Get chat settings stage.
-     * @return
-     */
-    public static Stage getChatSettingsStage() { return chatSettings; }
 
     /**
      * Get current scene.

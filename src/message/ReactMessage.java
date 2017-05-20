@@ -60,6 +60,12 @@ public abstract class ReactMessage {
                 return new FriendRequestType(mainPage, message);
             case changeRoomNameType:
                 return new ChangeRoomNameType(mainPage, message);
+            case addToRoomType:
+                return new AddToRoomType(mainPage, message);
+            case getRoomType:
+                return new GetRoomType(mainPage, message);
+            case deleteFromRoomType:
+                return new DeleteFromRoomType(mainPage, message);
             default: break;
         }
 

@@ -393,6 +393,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         if(counter == 3) System.out.println("Unable to retrieve messages from room with ID " + room);
     }
 
+    private void getRoom(String roomID) {
+        Communication.getInstance().getRoom(roomID);
+    }
+
     public void addRoom(String room) {
         String[] roomParameters = room.split("\0");
 
@@ -569,5 +573,47 @@ public class MainPage implements Initializable, Controller<MainPageState> {
             if(chatSettings != null)
                 chatSettings.changeRoomName(roomID, messageParameters[1]);
         }
+    }
+
+    public void addToRoom(String roomID, String message) {
+        String[] messageParameters = message.split("\0");
+
+        if(messageParameters[0].equals("True")) {
+            if(chatMembers.containsKey(Integer.parseInt(roomID)))
+                chatMembers.get(Integer.parseInt(roomID)).add(messageParameters[1]);
+            else
+                getRoom(roomID);
+
+            if(chatSettings != null)
+                chatSettings.addToRoom(roomID, messageParameters[1]);
+        }
+
+    }
+
+    public void deleteFromRoom(String roomID, String message) {
+        String[] messageParameters = message.split("\0");
+
+        if(messageParameters[0].equals("True")) {
+            if(messageParameters[1].equals(username)) {
+                try {
+                    if(chatSettings != null)
+                        Manager.closeChatSettings();
+                    Button room = (Button) Manager.getScene().lookup("#" + roomsID + roomID);
+
+                    if(room != null)
+                        conversationButtons.getChildren().remove(room);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                chatMembers.get(Integer.parseInt(roomID)).remove(messageParameters[1]);
+
+                if(chatSettings != null) {
+                    chatSettings.deleteFromRoom(roomID, messageParameters[1]);
+                }
+            }
+        }
+
     }
 }

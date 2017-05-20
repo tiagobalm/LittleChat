@@ -85,10 +85,7 @@ public class Communication {
             message = (Message)is.readObject();
         }
         catch (SocketTimeoutException ignore) {}
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
+        catch (IOException | ClassNotFoundException e ) {
             e.printStackTrace();
         }
         return message;
@@ -236,6 +233,22 @@ public class Communication {
 
     public void sendChangeRoomName(int roomID, String newName) {
         Message message = new Message(changeRoomNameType + " " + roomID, newName);
+        sendMessage(message);
+    }
+
+    public void getRoom(String roomID) {
+        Message message = new Message(getRoomType + " " + roomID, "");
+        sendMessage(message);
+    }
+
+    public void addToRoom(String username, int roomID) {
+        Message message = new Message(addToRoomType + " " + roomID, username);
+        sendMessage(message);
+    }
+
+
+    public void deleteFromRoom(String username, int roomID) {
+        Message message = new Message(deleteFromRoomType + " " + roomID, username);
         sendMessage(message);
     }
 
