@@ -1,22 +1,11 @@
 package gui.mainPage;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
-import javafx.scene.text.*;
-import message.Message;
-import org.controlsfx.control.Notifications;
-import workers.ReadThread;
 import communication.Communication;
 import gui.Controller;
 import gui.Manager;
 import gui.TransitionControl;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,95 +13,102 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import message.Message;
+import org.controlsfx.control.Notifications;
+import workers.ReadThread;
 import workers.Worker;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.*;
 
 public class MainPage implements Initializable, Controller<MainPageState> {
-    private MainPageState state = MainPageState.ROOMS;
-
     private static final String roomsID = "Room";
     private static final String friendsID = "Friend";
     private static final String friendRequestWaitingID = "FriendRequestWaiting";
     private static final String friendRequestAskingID = "FriendRequestAsking";
-
+    private static String username;
+    private static ChatSettings chatSettings;
+    private static int room = -1;
+    private static int numberOfWorkerThreads = 10;
+    private static ExecutorService executor = Executors.newFixedThreadPool(numberOfWorkerThreads);
+    private static ReadThread readThread;
+    private MainPageState state = MainPageState.ROOMS;
     @FXML
     private Button roomsButton;
-
     @FXML
     private Button friendsButton;
-
     @FXML
     private Button friendRequestButton;
-
     @FXML
     private Button profileButton;
-
     @FXML
     private Button logoutButton;
-
     @FXML
     private Pane roomsPanel;
-
     @FXML
     private Pane friendsPanel;
-
     @FXML
     private Pane friendRequestPanel;
 
-    @FXML
-    private Pane profilePanel;
-
-    @FXML
-    private VBox menuVBox;
-
-    @FXML
-    private VBox conversationButtons;
-
-    @FXML
-    private VBox friendsButtons;
-
-    @FXML
-    private VBox friendRequestButtons;
-
-    @FXML
-    private TextField friendRequestInput;
-
     //@FXML
     //private VBox profileButtons;
-
+    @FXML
+    private Pane profilePanel;
+    @FXML
+    private VBox menuVBox;
+    @FXML
+    private VBox conversationButtons;
+    @FXML
+    private VBox friendsButtons;
+    @FXML
+    private VBox friendRequestButtons;
+    @FXML
+    private TextField friendRequestInput;
     @FXML
     private VBox messagesPanel;
-
     @FXML
     private ScrollPane messagesScrollPane;
-
     @FXML
     private TextArea messageInput;
-
     @FXML
     private Button settingsButton;
-
-    private static String username;
-
-    private static ChatSettings chatSettings;
-
     private BlockingQueue<Message> messages;
-
-    private int room = -1;
-
-    private static int numberOfWorkerThreads = 10;
-    private static ExecutorService executor = Executors.newFixedThreadPool(numberOfWorkerThreads);
-
-    private static ReadThread readThread;
-
     private ConcurrentHashMap<Integer, List<String>> chatMessages, chatMembers;
     private CopyOnWriteArrayList<String> friends;
+
+    /**
+     * Get user username.
+     *
+     * @return User username.
+     */
+    public static String getUsername() {
+        return username;
+    }
+
+    /**
+     * Set User username.
+     *
+     * @param username User username to set.
+     */
+    public void setUsername(String username) {
+        MainPage.username = username;
+    }
 
     /**
      * Start.
@@ -165,22 +161,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     /**
-     * Set User username.
-     * @param username User username to set.
-     */
-    public void setUsername(String username) { MainPage.username = username; }
-
-    /**
      * Set chat settings.
      * @param chat Settings of new chat.
      */
     public void setChatSettings(ChatSettings chat) { MainPage.chatSettings = chat; }
-
-    /**
-     * Get user username.
-     * @return User username.
-     */
-    public String getUsername() { return username; }
 
     /**
      * Get room members.
@@ -267,9 +251,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                 String message = messageInput.getText();
 
                 if( message.length() == 0 )
-                    return ;
-                if(chatMessages.containsKey(roomsID))
-                    chatMessages.get(roomsID).add(message);
+                    return;
+
+                if (chatMessages.containsKey(MainPage.room))
+                    chatMessages.get(MainPage.room).add(message);
                 addMessageToPanel(MainPage.username, message);
                 Communication.getInstance().sendMessageRequest(room, message);
                 messageInput.setText("");

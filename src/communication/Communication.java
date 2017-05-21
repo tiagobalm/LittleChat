@@ -1,5 +1,6 @@
 package communication;
 
+import gui.mainPage.MainPage;
 import message.Message;
 
 import javax.net.ssl.SSLSocket;
@@ -43,11 +44,12 @@ public class Communication {
         try {
             factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
             socket = (SSLSocket) factory.createSocket();
-            socket.connect(new InetSocketAddress(IP, MAINPORT));
 
             String[] ciphers = new String[1];
             ciphers[0] ="TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256";
             socket.setEnabledCipherSuites(ciphers);
+
+            socket.connect(new InetSocketAddress(IP, MAINPORT));
 
             System.out.println("Loading output streams");
             os = new ObjectOutputStream(socket.getOutputStream());
@@ -57,18 +59,8 @@ public class Communication {
             System.out.println("Streams loaded");
 
         } catch (IOException e) {
-            e.printStackTrace();
+            reconnect();
         }
-    }
-
-    /**
-     * Set system settings.
-     */
-    private void setSystemSetting() {
-        System.setProperty("javax.net.ssl.keyStore", keystorePath);
-        System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
-        System.setProperty("javax.net.ssl.trustStore", truststorePath);
-        System.setProperty("javax.net.ssl.trustStorePassword", truststorePass);
     }
 
     /**
@@ -81,6 +73,51 @@ public class Communication {
             instance = new Communication();
 
         return instance;
+    }
+
+    private void reconnect() {
+        int counter = 0;
+
+        if (!reconnecting) {
+            reconnecting = true;
+
+            while (reconnecting) {
+                try {
+                    socket = (SSLSocket) factory.createSocket();
+                    socket.setReuseAddress(true);
+
+                    if (counter % 2 == 0)
+                        socket.connect(new InetSocketAddress(IP, MAINPORT));
+                    if (counter % 2 != 0)
+                        socket.connect(new InetSocketAddress(IP, BACKUPORT));
+
+                    os = new ObjectOutputStream(socket.getOutputStream());
+                    os.flush();
+                    is = new ObjectInputStream(socket.getInputStream());
+
+                    if (sendLoginRequest(username, password, IPAddress, port)) {
+                        System.out.println("Connected!");
+                        reconnecting = false;
+                    }
+
+                } catch (IOException e) {
+                    counter++;
+                }
+            }
+        } else {
+            while (reconnecting) {
+            }
+        }
+    }
+
+    /**
+     * Set system settings.
+     */
+    private void setSystemSetting() {
+        System.setProperty("javax.net.ssl.keyStore", keystorePath);
+        System.setProperty("javax.net.ssl.keyStorePassword", keystorePass);
+        System.setProperty("javax.net.ssl.trustStore", truststorePath);
+        System.setProperty("javax.net.ssl.trustStorePassword", truststorePass);
     }
 
     /**
@@ -102,40 +139,6 @@ public class Communication {
             reconnect();
         }
         return message;
-    }
-
-    private void reconnect() {
-        int counter = 0;
-
-        if(!reconnecting) {
-            reconnecting = true;
-
-            while (reconnecting) {
-                try {
-                    socket = (SSLSocket) factory.createSocket();
-                    socket.setReuseAddress(true);
-
-                    if(counter % 2 == 0)
-                        socket.connect(new InetSocketAddress(IP, MAINPORT));
-                    if(counter % 2 != 0)
-                        socket.connect(new InetSocketAddress(IP, BACKUPORT));
-
-                    os = new ObjectOutputStream(socket.getOutputStream());
-                    os.flush();
-                    is = new ObjectInputStream(socket.getInputStream());
-
-                    if(sendLoginRequest(username, password, IPAddress, port)) {
-                        System.out.println("Connected!");
-                        reconnecting = false;
-                    }
-
-                } catch (IOException e) {
-                    counter++;
-                }
-            }
-        } else {
-            while(reconnecting) {}
-        }
     }
 
     /**
@@ -234,7 +237,7 @@ public class Communication {
      * @param body Message body.
      */
     public void sendMessageRequest(int room, String body) {
-        Message message = new Message(messageType + " " + room, body);
+        Message message = new Message(messageType + " " + room + " " + MainPage.getUsername(), body);
         sendMessage(message);
     }
 
@@ -276,7 +279,7 @@ public class Communication {
      * @param username User to ask friendship.
      */
     public void sendFriendRequest(String username) {
-        Message message = new Message(friendRequestType + " " + username, "");
+        Message message = new Message(friendRequestType + " " + username + " " + MainPage.getUsername(), "");
         sendMessage(message);
     }
 
@@ -295,7 +298,7 @@ public class Communication {
      * @param answer Message answer.
      */
     public void sendAnswerFriend(String username, String answer) {
-        Message message = new Message(answerFriendType + " " + username, answer);
+        Message message = new Message(answerFriendType + " " + username + " " + MainPage.getUsername(), answer);
         sendMessage(message);
     }
 
