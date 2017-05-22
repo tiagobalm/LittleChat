@@ -254,7 +254,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                     return;
 
                 if (chatMessages.containsKey(MainPage.room))
-                    chatMessages.get(MainPage.room).add(message);
+                    chatMessages.get(MainPage.room).add(username + "\0" + message);
+
+                for (String s : chatMessages.get(MainPage.room))
+                    System.out.println(s);
                 addMessageToPanel(MainPage.username, message);
                 Communication.getInstance().sendMessageRequest(room, message);
                 messageInput.setText("");

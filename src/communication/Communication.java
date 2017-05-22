@@ -237,7 +237,7 @@ public class Communication {
      * @param body Message body.
      */
     public void sendMessageRequest(int room, String body) {
-        Message message = new Message(messageType + " " + room + " " + MainPage.getUsername(), body);
+        Message message = new Message(messageType + " " + room + " " + MainPage.getUsername() + " " + System.currentTimeMillis(), body);
         sendMessage(message);
     }
 
