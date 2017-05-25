@@ -258,7 +258,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
                 for (String s : chatMessages.get(MainPage.room))
                     System.out.println(s);
-                addMessageToPanel(MainPage.username, message);
+                addMessageToPanel(MainPage.username, System.currentTimeMillis(), message);
                 Communication.getInstance().sendMessageRequest(room, message);
                 messageInput.setText("");
             }
@@ -512,12 +512,12 @@ public class MainPage implements Initializable, Controller<MainPageState> {
      * @param to User that receives the message.
      * @param message Message.
      */
-    public void addNewMessage(String from, int to, String message) {
+    public void addNewMessage(String from, int to, long date, String message) {
 
         if(chatMessages.containsKey(to))
             chatMessages.get(to).add(message);
         if(room == to)
-            addMessageToPanel(from, message);
+            addMessageToPanel(from, date, message);
         else {
             Notifications.create()
                     .title("LittleChat Notification")
@@ -538,9 +538,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
         for(String message : chatMessages.get(room)) {
             String[] messageParameters = message.split("\0");
-            if( messageParameters.length != 2 )
+            if (messageParameters.length != 3)
                 continue;
-            addMessageToPanel(messageParameters[0].trim(), messageParameters[1].trim());
+            addMessageToPanel(messageParameters[0].trim(), Long.parseLong(messageParameters[1].trim()), messageParameters[2].trim());
         }
     }
 
@@ -549,7 +549,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
      * @param username User username.
      * @param message Message text.
      */
-    private void addMessageToPanel(String username, String message) {
+    private void addMessageToPanel(String username, long date, String message) {
 
         HBox hbox = new HBox();
         Label messageLabel = new Label(username + ": " + message);
@@ -557,6 +557,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         messageLabel.setMaxHeight(Integer.MAX_VALUE);
         messageLabel.setWrapText(true);
         VBox.setVgrow(messageLabel, Priority.ALWAYS);
+
+        //Date dateFormat = new Date(date);
+        //messageLabel.setTooltip(new Tooltip("Message sent: " + dateFormat.toString()));
 
         if(!username.equals(MainPage.username)) {
             messageLabel.getStyleClass().add("hboxThey");

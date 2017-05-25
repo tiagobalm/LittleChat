@@ -23,7 +23,7 @@ public class MessageConstants {
     public static final int getMessagesSize = 2;
 
     public static final String messageType = "MESSAGE";
-    public static final int messageSize = 3;
+    public static final int messageSize = 4;
 
     public static final String friendRequestType = "FRIENDREQUEST";
     public static final int friendRequestSize = 2;

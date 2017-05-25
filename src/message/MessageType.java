@@ -3,7 +3,7 @@ package message;
 import gui.mainPage.MainPage;
 import javafx.application.Platform;
 
-import static message.MessageConstants.*;
+import static message.MessageConstants.messageSize;
 
 public class MessageType extends ReactMessage {
 
@@ -22,10 +22,8 @@ public class MessageType extends ReactMessage {
     @Override
     public void react() {
         String[] parameters = message.getHeader().split(" ");
-        for(String str : parameters)
-            System.out.println(str);
         if( parameters.length != messageSize || message.getMessage() == null)
             return ;
-        Platform.runLater(() -> mainPage.addNewMessage(parameters[1], Integer.parseInt(parameters[2]), message.getMessage()));
+        Platform.runLater(() -> mainPage.addNewMessage(parameters[1], Integer.parseInt(parameters[2]), Long.parseLong(parameters[3]), message.getMessage()));
     }
 }

@@ -143,8 +143,6 @@
 .notification-bar>.pane {
     -fx-background-color: #daebf2;
     -fx-padding: 5 5 5 5;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
 }
 
 .notification-bar>.pane .label {

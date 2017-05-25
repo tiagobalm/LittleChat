@@ -24,7 +24,6 @@ public class GetMessagesType extends ReactMessage {
         String[] headerParameters = message.getHeader().split(" ");
         if( message.getOptionalMessage() == null || headerParameters.length != getMessagesSize)
             return ;
-        System.out.println("Int room " + headerParameters[1]);
         mainPage.getChatMessages().put(Integer.parseInt(headerParameters[1]), message.getOptionalMessage());
     }
 }
