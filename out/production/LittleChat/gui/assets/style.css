@@ -71,8 +71,8 @@
 
 .buttonLogin {
     -fx-background-color: #e5b181;
-    -fx-background-radius: 15px;
-    -fx-border-radius: 15px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 0);
 }
 
@@ -153,9 +153,8 @@
 
 .notification-bar>.pane .title {
     -fx-font-size: 20px;
-    -fx-text-fill: #dd9757;
     -fx-font-weight: bold;
-    -fx-padding: 10 10 0 30;
+    -fx-padding: 10 10 0 60;
 }
 
 .notification-bar>.pane .close-button {

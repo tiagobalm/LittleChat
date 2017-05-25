@@ -522,8 +522,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
             Notifications.create()
                     .title("LittleChat Notification")
                     .text("New message in " + ((Button) Manager.getScene().lookup("#" + roomsID + to)).getText())
-                    .graphic(new ImageView(new Image(getClass().getResource("../assets/images/LittleChatLogoNoTextResized.png").toString())))
-                    .hideAfter(Duration.seconds(3))
+                    .graphic(new ImageView(new Image(getClass().getResource("../assets/images/LittleChatLogoNoTextResized2.png").toString())))
+                    .hideAfter(Duration.seconds(2))
                     .position(Pos.BOTTOM_RIGHT)
                     .hideCloseButton().show();
         }

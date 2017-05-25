@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane fx:id="body" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.login.LoginGUI">
+<?import javafx.scene.text.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="body" prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/8.0.111" fx:controller="gui.login.LoginGUI">
    <children>
       <AnchorPane fx:id="menuPane" prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Label layoutX="162.0" layoutY="80.0" text="LITTLE CHAT" textFill="WHITE" styleClass="title">
-               <font>
-                  <Font name="System Bold" size="39.0" />
-               </font>
-            </Label>
-            <Button fx:id="menuLoginButton" contentDisplay="CENTER" layoutX="126.0" layoutY="230.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="150.0" styleClass="buttonLogin" text="Login" textFill="WHITE">
+            <Button fx:id="menuLoginButton" contentDisplay="CENTER" layoutX="369.0" layoutY="140.0"
+                    mnemonicParsing="false" prefHeight="47.0" prefWidth="150.0" styleClass="buttonLogin" text="Login"
+                    textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Button fx:id="menuRegisterButton" contentDisplay="CENTER" layoutX="333.0" layoutY="230.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="150.0" styleClass="buttonLogin" text="Register" textFill="WHITE">
+            <Button fx:id="menuRegisterButton" contentDisplay="CENTER" layoutX="369.0" layoutY="219.0"
+                    mnemonicParsing="false" prefHeight="47.0" prefWidth="150.0" styleClass="buttonLogin" text="Register"
+                    textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
+            <ImageView fx:id="logo" fitHeight="236.0" fitWidth="223.0" layoutX="68.0" layoutY="69.0" pickOnBounds="true"
+                       preserveRatio="true">
+               <image>
+                  <Image url="@../assets/images/LittleChatLogo.png"/>
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="loginPane" disable="true" prefHeight="400.0" prefWidth="600.0" visible="false">
          <children>
-            <Label layoutX="162.0" layoutY="67.0" text="LITTLE CHAT" textFill="WHITE" styleClass="title">
+            <Label layoutX="162.0" layoutY="67.0" styleClass="title" text="LITTLE CHAT" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="39.0" />
                </font>
