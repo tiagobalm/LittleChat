@@ -43,12 +43,12 @@ public class ChatSettings implements Initializable {
     private Button changeName;
 
     /**
-     * Start.
+     * Creates the stage for the chat settings page.
      * @param room Chat room number.
      * @param roomName Chat room name.
-     * @param main Main page.
-     * @return Stage.
-     * @throws Exception
+     * @param main The main page currently active.
+     * @return The stage.
+     * @throws Exception Throws IOException if the fxml file is not found.
      */
     public Stage start(int room, String roomName, MainPage main) throws Exception {
         Stage primaryStage = new Stage();

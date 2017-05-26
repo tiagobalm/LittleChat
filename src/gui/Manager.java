@@ -25,7 +25,7 @@ public class Manager extends Application {
     /**
      * Change to main page.
      * @param username User username.
-     * @throws Exception
+     * @throws Exception Throws IOException if the fxml file is not found.
      */
     public static void changeToMainPage(String username) throws Exception {
         MainPage mainPage = new MainPage();
@@ -46,7 +46,7 @@ public class Manager extends Application {
 
     /**
      * Change to login page.
-     * @throws Exception
+     * @throws Exception Throws IOException if the fxml file is not found.
      */
     public static void changeToLogin() throws Exception {
         LoginGUI login = new LoginGUI();
@@ -58,7 +58,7 @@ public class Manager extends Application {
 
     /**
      * Open conversation PopUp.
-     * @throws Exception
+     * @throws Exception Throws IOException if the fxml file is not found.
      */
     public static void showConversationPopUp(String roomName) throws Exception {
         ConversationPopUp popup = new ConversationPopUp();
@@ -68,9 +68,8 @@ public class Manager extends Application {
 
     /**
      * Close conversation PopUp.
-     * @throws Exception
      */
-    public static void closeConversationPopUp() throws Exception {
+    public static void closeConversationPopUp() {
         if(startConversation != null) {
             startConversation.close();
             startConversation = null;
@@ -80,7 +79,7 @@ public class Manager extends Application {
     /**
      * Show chat settings.
      * @param roomName Chat room name.
-     * @throws Exception
+     * @throws Exception Throws IOException if the fxml file is not found.
      */
     public static void showChatSettings(int room, String roomName, MainPage main) throws Exception {
         ChatSettings popup = new ChatSettings();
@@ -92,9 +91,8 @@ public class Manager extends Application {
     /**
      * Close chat settings popup.
      *
-     * @throws Exception
      */
-    public static void closeChatSettings() throws Exception {
+    public static void closeChatSettings() {
         if(chatSettings != null) {
             chatSettings.close();
             chatSettings = null;
@@ -105,7 +103,7 @@ public class Manager extends Application {
      * Show answer friend popup.
      * @param mainpage Main page.
      * @param request Request.
-     * @throws Exception
+     * @throws Exception Throws IOException if the fxml file is not found.
      */
     public static void showAnswerFriendPop(MainPage mainpage, String request) throws Exception {
         AnswerFriend popup = new AnswerFriend();
@@ -116,10 +114,8 @@ public class Manager extends Application {
 
     /**
      * Close answer friend popup.
-     *
-     * @throws Exception
      */
-    public static void closeAnswerFriendPop() throws Exception {
+    public static void closeAnswerFriendPop() {
         if(answerFriend != null) {
             answerFriend.close();
             answerFriend = null;
@@ -140,9 +136,8 @@ public class Manager extends Application {
 
     /**
      * Start.
-     *
      * @param primaryStage Primary stage.
-     * @throws Exception
+     * @throws Exception Throws IOException if the fxml file is not found.
      */
     @Override
     public void start(Stage primaryStage) throws Exception {

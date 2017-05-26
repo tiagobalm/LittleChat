@@ -63,8 +63,6 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     @FXML
     private Pane friendRequestPanel;
 
-    //@FXML
-    //private VBox profileButtons;
     @FXML
     private Pane profilePanel;
     @FXML
@@ -108,9 +106,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     /**
-     * Start.
-     * @return Stage.
-     * @throws Exception
+     * Creates the stage for the main page.
+     * @return The stage.
+     * @throws Exception Throws IOException if the fxml file is not found.
      */
     public Stage start() throws Exception {
         Stage primaryStage = new Stage();
@@ -348,7 +346,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     /**
      * Hide the chat box when user leaves the chat room.
-     * @param
+     * @param show True or false.
      *
      */
     private void toggleInput(boolean show) {
@@ -359,7 +357,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
     /**
      * Hide settings button.
-     * @param show
+     * @param show True or false.
      */
     private void toggleSettingButton(boolean show) {
         settingsButton.setVisible(show);

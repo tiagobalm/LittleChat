@@ -17,19 +17,17 @@ import java.util.ResourceBundle;
 
 public class ConversationPopUp implements Initializable {
 
+    private static String roomName;
     @FXML
     private Button conversationYes;
-
     @FXML
     private Button conversationNo;
 
-    private static String roomName;
-
     /**
-     * Start a chat room.
+     * Creates the stage for the new room page.
      * @param name Chat room name.
-     * @return Stage.
-     * @throws Exception
+     * @return The stage.
+     * @throws Exception Throws IOException if the fxml file is not found.
      */
     public Stage start(String name) throws Exception {
         Stage primaryStage = new Stage();

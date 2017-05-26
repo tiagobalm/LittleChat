@@ -43,10 +43,9 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
     private TextField password;
 
     /**
-     * Start.
-     *
-     * @return Stage.
-     * @throws IOException
+     * Creates the stage for the login/register page.
+     * @return The stage.
+     * @throws IOException Throws IOException if the fxml file is not found.
      */
     public Stage start() throws IOException {
         Stage primaryStage = new Stage();
@@ -63,9 +62,9 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
     }
 
     /**
-     * Initializer.
-     * @param location
-     * @param resources
+     * Initializes the stage. Called after FXMLLoader. Initializes handlers.
+     * @param location location
+     * @param resources resource
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {

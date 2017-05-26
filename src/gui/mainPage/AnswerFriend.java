@@ -16,21 +16,19 @@ import java.util.ResourceBundle;
 
 public class AnswerFriend implements Initializable {
 
+    private static String username;
+    private static MainPage mainPage;
     @FXML
     private Button accept;
-
     @FXML
     private Button decline;
 
-    private static String username;
-    private static MainPage mainPage;
-
     /**
-     * Start.
-     * @param user User.
-     * @param page Page.
-     * @return Stage.
-     * @throws Exception
+     * Creates the stage for the answer friend request.
+     * @param user The user's username.
+     * @param page The main page currently active.
+     * @return The stage.
+     * @throws Exception Throws IOException if the fxml file is not found.
      */
     public Stage start(String user, MainPage page) throws Exception {
         Stage primaryStage = new Stage();
