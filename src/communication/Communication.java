@@ -31,8 +31,7 @@ public class Communication {
 
     private static boolean reconnecting = false;
 
-    private static String username = "", password = "", IPAddress = "";
-    private static int port = -1;
+    private static String username = "", password = "";
 
     /**
      * Establishes the communication.
@@ -98,8 +97,8 @@ public class Communication {
                     os.flush();
                     is = new ObjectInputStream(socket.getInputStream());
 
-                    if (username != "")
-                        sendLoginRequest(username, password, IPAddress, port);
+                    if (!username.equals(""))
+                        sendLoginRequest(username, password);
 
                     reconnecting = false;
 
@@ -108,8 +107,7 @@ public class Communication {
                 }
             }
         } else {
-            while (reconnecting) {
-            }
+            while (reconnecting) ;
         }
     }
 
@@ -149,19 +147,15 @@ public class Communication {
      *
      * @param username User username.
      * @param password User password.
-     * @param IPAddress Ip address.
-     * @param port Port Number.
      * @return result of waitForLoginResponse function.
      */
-    public boolean sendRegisterRequest(String username, String password, String IPAddress, int port) {
+    public boolean sendRegisterRequest(String username, String password) {
 
-        String header = registerType + " " + username + " " + password + " " + IPAddress + " " + port;
+        String header = registerType + " " + username + " " + password;
         Message message = new Message(header, "");
 
         Communication.username = username;
         Communication.password = password;
-        Communication.IPAddress = IPAddress;
-        Communication.port = port;
 
         sendMessage(message);
 
@@ -172,19 +166,15 @@ public class Communication {
      * Send login request.
      * @param username User username.
      * @param password User password.
-     * @param IPAddress Ip address.
-     * @param port Port Number.
      * @return result of waitForLoginResponse function.
      */
-    public boolean sendLoginRequest(String username, String password, String IPAddress, int port) {
+    public boolean sendLoginRequest(String username, String password) {
 
-        String header = loginType + " " + username + " " + password + " " + IPAddress + " " + port;
+        String header = loginType + " " + username + " " + password;
         Message message = new Message(header, "");
 
         Communication.username = username;
         Communication.password = password;
-        Communication.IPAddress = IPAddress;
-        Communication.port = port;
 
         sendMessage(message);
 
@@ -209,8 +199,6 @@ public class Communication {
             if(!loggedIn) {
                 Communication.username = "";
                 Communication.password = "";
-                Communication.IPAddress = "";
-                Communication.port = -1;
             }
         }
         catch (SocketTimeoutException timeout) {

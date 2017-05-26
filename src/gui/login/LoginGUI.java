@@ -20,8 +20,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.net.*;
-import java.util.Enumeration;
+import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginGUI implements Initializable, Controller<MenuState> {
@@ -75,7 +74,6 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        getIPAddress();
         initializeHandlers();
     }
 
@@ -108,9 +106,9 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
             boolean loggedIn = false;
 
             if(state == MenuState.REGISTER)
-                loggedIn = Communication.getInstance().sendRegisterRequest(username, password, IPAddress, 4556);
+                loggedIn = Communication.getInstance().sendRegisterRequest(username, password);
             if(state == MenuState.LOGIN)
-                loggedIn = Communication.getInstance().sendLoginRequest(username, password, IPAddress, 4556);
+                loggedIn = Communication.getInstance().sendLoginRequest(username, password);
 
             if(loggedIn)
                 Manager.changeToMainPage(username);
@@ -190,30 +188,4 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
 
         return tt;
     }
-
-    /**
-     * Get Ip Address.
-     */
-    private void getIPAddress() {
-
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface iface = interfaces.nextElement();
-                if (iface.isLoopback() || !iface.isUp())
-                    continue;
-
-                Enumeration<InetAddress> addresses = iface.getInetAddresses();
-                while(addresses.hasMoreElements()) {
-                    InetAddress address = addresses.nextElement();
-
-                    if (address instanceof Inet6Address) continue;
-                    IPAddress = address.getHostAddress();
-                }
-            }
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }
