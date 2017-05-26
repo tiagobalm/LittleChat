@@ -19,7 +19,7 @@ public class Communication {
     private static final String truststorePath = Communication.class.getResource("../keys/truststore").getPath();
     private static final String truststorePass = "littlechat";
 
-    private static final String IP = "172.30.5.16";
+    private static final String IP = "127.0.0.1";
     private static final int MAINPORT = 15000;
     private static final int BACKUPORT = 14999;
     private static ObjectOutputStream os;
@@ -31,8 +31,8 @@ public class Communication {
 
     private static boolean reconnecting = false;
 
-    private static String username, password, IPAddress;
-    private static int port;
+    private static String username = "", password = "", IPAddress = "";
+    private static int port = -1;
 
     /**
      * Establishes the communication.
@@ -48,6 +48,8 @@ public class Communication {
             String[] ciphers = new String[1];
             ciphers[0] ="TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256";
             socket.setEnabledCipherSuites(ciphers);
+
+            System.out.println("Trying to connect to main server.");
 
             socket.connect(new InetSocketAddress(IP, MAINPORT));
 
@@ -96,10 +98,10 @@ public class Communication {
                     os.flush();
                     is = new ObjectInputStream(socket.getInputStream());
 
-                    if (sendLoginRequest(username, password, IPAddress, port)) {
-                        System.out.println("Connected!");
-                        reconnecting = false;
-                    }
+                    if (username != "")
+                        sendLoginRequest(username, password, IPAddress, port);
+
+                    reconnecting = false;
 
                 } catch (IOException e) {
                     counter++;
@@ -200,6 +202,7 @@ public class Communication {
         try {
             socket.setSoTimeout(1000);
             Message response = (Message)is.readObject();
+            System.out.println("Response " + response.getHeader());
 
             loggedIn = ("True".equals(response.getMessage()));
 
@@ -348,6 +351,7 @@ public class Communication {
      * @param message Message to send.
      */
     private void sendMessage(Message message) {
+        System.out.println("Sending " + message.getHeader());
         try {
             synchronized (this) {
                 os.writeObject(message);
