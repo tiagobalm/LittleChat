@@ -12,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -42,10 +41,6 @@ public class LoginGUI implements Initializable, Controller<MenuState> {
     private TextField username;
     @FXML
     private TextField password;
-    @FXML
-    private ImageView logo;
-
-    private String IPAddress;
 
     /**
      * Start.

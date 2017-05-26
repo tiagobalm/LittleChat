@@ -26,6 +26,6 @@ public class FriendRequestType extends ReactMessage {
         if( headerParameters.length != friendRequestSize)
             return ;
 
-        Platform.runLater(() -> mainPage.addFriendRequest(headerParameters[1], mainPage.getUsername()));
+        Platform.runLater(() -> mainPage.addFriendRequest(headerParameters[1], MainPage.getUsername()));
     }
 }

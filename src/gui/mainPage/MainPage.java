@@ -161,14 +161,18 @@ public class MainPage implements Initializable, Controller<MainPageState> {
      * Set chat settings.
      * @param chat Settings of new chat.
      */
-    public void setChatSettings(ChatSettings chat) { MainPage.chatSettings = chat; }
+    void setChatSettings(ChatSettings chat) {
+        MainPage.chatSettings = chat;
+    }
 
     /**
      * Get room members.
      * @param room Chat room id.
      * @return List of usernames of the members from the chat room.
      */
-    public List<String> getRoomMembers(int room) { return chatMembers.get(room); }
+    List<String> getRoomMembers(int room) {
+        return chatMembers.get(room);
+    }
 
     /**
      * Get messages.
@@ -188,7 +192,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
      * Get friends list.
      * @return friends.
      */
-    public CopyOnWriteArrayList<String> getFriendsList() { return friends; }
+    CopyOnWriteArrayList<String> getFriendsList() {
+        return friends;
+    }
 
     /**
      * Room button handler.

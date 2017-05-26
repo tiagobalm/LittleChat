@@ -7,45 +7,40 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class ChatSettings implements Initializable {
 
+    private static String roomNameTemp;
+    private static MainPage mainPage;
+    private static int roomID;
     @FXML
     private TextField roomName;
-
     @FXML
     private ListView<String> membersList;
-
     @FXML
     private ComboBox<String> memberAdd;
-
     @FXML
     private Button buttonAdd;
-
     @FXML
     private ComboBox<String> memberRemove;
-
     @FXML
     private Button buttonRemove;
-
     @FXML
     private Button leave;
-
     @FXML
     private Button changeName;
-
-    private static String roomNameTemp;
-
-    private static MainPage mainPage;
-
-    private static int roomID;
 
     /**
      * Start.
@@ -98,7 +93,7 @@ public class ChatSettings implements Initializable {
      * Initialize leave button.
      */
     private void initializeLeaveButton() {
-        leave.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> Communication.getInstance().deleteFromRoom(mainPage.getUsername(), roomID));
+        leave.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> Communication.getInstance().deleteFromRoom(MainPage.getUsername(), roomID));
     }
 
     /**
@@ -106,7 +101,7 @@ public class ChatSettings implements Initializable {
      */
     private void initializeRemoveMembers() {
         List<String> chatMembers = new ArrayList<>(mainPage.getRoomMembers(roomID));
-        chatMembers.remove(mainPage.getUsername());
+        chatMembers.remove(MainPage.getUsername());
         memberRemove.setVisibleRowCount(3);
         memberRemove.setItems(FXCollections.observableArrayList(chatMembers));
         memberRemove.getSelectionModel().selectFirst();
@@ -150,7 +145,7 @@ public class ChatSettings implements Initializable {
      * @param roomID Chat room id.
      * @param newName Chat room new name.
      */
-    public void changeRoomName(String roomID, String newName) {
+    void changeRoomName(String roomID, String newName) {
 
         if(Integer.parseInt(roomID) == ChatSettings.roomID)
             roomName.setText(newName);
@@ -161,7 +156,7 @@ public class ChatSettings implements Initializable {
      * @param roomID Chat room id.
      * @param userToAdd User username to add to the chat room.
      */
-    public void addToRoom(String roomID, String userToAdd) {
+    void addToRoom(String roomID, String userToAdd) {
 
         if(ChatSettings.roomID == Integer.parseInt(roomID)) {
             memberAdd.getItems().remove(userToAdd);
@@ -177,7 +172,7 @@ public class ChatSettings implements Initializable {
      * @param roomID Chat room id.
      * @param username User username to remove from chat room.
      */
-    public void deleteFromRoom(String roomID, String username) {
+    void deleteFromRoom(String roomID, String username) {
 
         if(ChatSettings.roomID == Integer.parseInt(roomID)) {
             memberRemove.getItems().remove(username);

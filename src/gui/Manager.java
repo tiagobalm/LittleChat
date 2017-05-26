@@ -7,39 +7,20 @@ import gui.mainPage.ChatSettings;
 import gui.mainPage.ConversationPopUp;
 import gui.mainPage.MainPage;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
 
 public class Manager extends Application {
 
-    private static Stage Stage, startConversation, chatSettings, answerFriend;
     public static boolean wantToClose = false;
+    private static Stage Stage, startConversation, chatSettings, answerFriend;
 
     /**
      * Main function.
      * @param args Arguments to launch the program.
      */
     public static void main(String[] args) { launch(args); }
-
-    /**
-     * Start.
-     * @param primaryStage Primary stage.
-     * @throws Exception
-     */
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Stage = primaryStage;
-        startConversation = null;
-        chatSettings = null;
-        changeToLogin();
-    }
 
     /**
      * Change to main page.
@@ -156,5 +137,19 @@ public class Manager extends Application {
      * @return Scene.
      */
     public static Scene getScene() { return Stage.getScene(); }
+
+    /**
+     * Start.
+     *
+     * @param primaryStage Primary stage.
+     * @throws Exception
+     */
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Stage = primaryStage;
+        startConversation = null;
+        chatSettings = null;
+        changeToLogin();
+    }
 
 }
