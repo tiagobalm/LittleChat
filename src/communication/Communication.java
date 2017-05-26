@@ -59,6 +59,7 @@ public class Communication {
             System.out.println("Streams loaded");
 
         } catch (IOException e) {
+            System.out.println("Reconnecting");
             reconnect();
         }
     }

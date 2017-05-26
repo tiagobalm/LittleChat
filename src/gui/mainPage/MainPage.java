@@ -31,10 +31,7 @@ import workers.ReadThread;
 import workers.Worker;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class MainPage implements Initializable, Controller<MainPageState> {
@@ -558,8 +555,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         messageLabel.setWrapText(true);
         VBox.setVgrow(messageLabel, Priority.ALWAYS);
 
-        //Date dateFormat = new Date(date);
-        //messageLabel.setTooltip(new Tooltip("Message sent: " + dateFormat.toString()));
+        Date dateFormat = new Date(date);
+        messageLabel.setTooltip(new Tooltip("Message sent: " + dateFormat.toString()));
 
         if(!username.equals(MainPage.username)) {
             messageLabel.getStyleClass().add("hboxThey");
