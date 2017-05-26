@@ -107,7 +107,13 @@ public class Communication {
                 }
             }
         } else {
-            while (reconnecting) ;
+            while (reconnecting) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
