@@ -20,7 +20,7 @@ public abstract class ReactMessage {
 
     /**
      * React.
-     * @throws Exception
+     * @throws Exception method running on the wrong class
      */
     public void react() throws Exception {
         throw new AbstractMethodError("Wrong class");
