@@ -19,7 +19,7 @@ public class Communication {
     private static final String truststorePath = Communication.class.getResource("../keys/truststore").getPath();
     private static final String truststorePass = "littlechat";
 
-    private static final String IP = "127.0.0.1";
+    private static final String IP = "172.30.5.16";
     private static final int MAINPORT = 15000;
     private static final int BACKUPORT = 14999;
     private static ObjectOutputStream os;
