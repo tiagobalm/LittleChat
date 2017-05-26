@@ -18,10 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -83,6 +80,9 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private TextArea messageInput;
     @FXML
     private Button settingsButton;
+    @FXML
+    private Label profileUsername;
+
     private BlockingQueue<Message> messages;
     private ConcurrentHashMap<Integer, List<String>> chatMessages, chatMembers;
     private CopyOnWriteArrayList<String> friends;
@@ -141,6 +141,7 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         messageInput.setWrapText(true);
         messagesScrollPane.vvalueProperty().bind(messagesPanel.heightProperty());
 
+        initializeProfileLabel();
         initializeHandlers();
         setPaneMaxWidth();
         startWorkerThreads();
@@ -153,6 +154,14 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
         //Ask for the user's friendRequests
         Communication.getInstance().getFriendRequests();
+    }
+
+    private void initializeProfileLabel() {
+        profileUsername.setText(username);
+        profileUsername.setMaxWidth(Double.MAX_VALUE);
+        AnchorPane.setLeftAnchor(profileUsername, 0.0);
+        AnchorPane.setRightAnchor(profileUsername, 0.0);
+        profileUsername.setAlignment(Pos.CENTER);
     }
 
     /**
@@ -553,7 +562,15 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     private void addMessageToPanel(String username, long date, String message) {
 
         HBox hbox = new HBox();
-        Label messageLabel = new Label(username + ": " + message);
+        VBox vbox = new VBox();
+
+        HBox insideHbox = new HBox();
+        Label user = new Label(username);
+        user.setFont(Font.font("", FontPosture.ITALIC, 10));
+        insideHbox.getChildren().add(user);
+        insideHbox.setAlignment(Pos.BASELINE_RIGHT);
+
+        Label messageLabel = new Label(message);
         messageLabel.setMaxWidth(300);
         messageLabel.setMaxHeight(Integer.MAX_VALUE);
         messageLabel.setWrapText(true);
@@ -563,13 +580,17 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         messageLabel.setTooltip(new Tooltip("Message sent: " + dateFormat.toString()));
 
         if(!username.equals(MainPage.username)) {
+            insideHbox.setAlignment(Pos.BASELINE_LEFT);
             messageLabel.getStyleClass().add("hboxThey");
         } else {
+            insideHbox.setAlignment(Pos.BASELINE_RIGHT);
             messageLabel.getStyleClass().add("hboxMe");
             hbox.setAlignment(Pos.BOTTOM_RIGHT);
         }
         messageLabel.setPadding(new Insets(10));
-        hbox.getChildren().add(messageLabel);
+        vbox.getChildren().addAll(insideHbox, messageLabel);
+
+        hbox.getChildren().add(vbox);
 
         messagesPanel.getChildren().add(hbox);
     }
