@@ -3,7 +3,7 @@
 }
 
 #body {
-    -fx-background-color: #a3cfe0;
+    -fx-background-color: #add8e6;
 }
 
 #anchor {
@@ -29,7 +29,7 @@
 }
 
 .hboxThey {
-    -fx-background-color: #eecbab;
+    -fx-background-color: #e3c595;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
@@ -64,24 +64,29 @@
     -fx-opacity: 0;
 }
 
+#profileUsername {
+    -fx-font-family: "Raleway";
+    -fx-font-size: 30px;
+}
+
 .title {
     -fx-font-family: "Raleway";
     -fx-font-size: 45px;
 }
 
 .buttonLogin {
-    -fx-background-color: #e5b181;
+    -fx-background-color: #e3c595;
     -fx-background-radius: 5px;
     -fx-border-radius: 5px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 0);
 }
 
 .buttonLogin:hover {
-    -fx-background-color: #e1a46c;
+    -fx-background-color: #deba81;
 }
 
 .buttonLogin:pressed {
-    -fx-background-color: #dd9757;
+    -fx-background-color: #d9af6d;
 }
 
 .buttonMainPage {

@@ -108,7 +108,13 @@ public class Communication {
                 }
             }
         } else {
-            while (reconnecting) ;
+            while (reconnecting) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -138,6 +144,7 @@ public class Communication {
             System.out.println("Message class is not the same.");
         }
         catch (IOException e ) {
+            System.out.println("Reconnecting");
             reconnect();
         }
         return message;
@@ -193,7 +200,6 @@ public class Communication {
         try {
             socket.setSoTimeout(1000);
             Message response = (Message)is.readObject();
-            System.out.println("Response " + response.getHeader());
 
             loggedIn = ("True".equals(response.getMessage()));
 
@@ -340,7 +346,6 @@ public class Communication {
      * @param message Message to send.
      */
     private void sendMessage(Message message) {
-        System.out.println("Sending " + message.getHeader());
         try {
             synchronized (this) {
                 os.writeObject(message);
