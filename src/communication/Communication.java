@@ -1,6 +1,8 @@
 package communication;
 
+import gui.Manager;
 import gui.mainPage.MainPage;
+import javafx.application.Platform;
 import message.Message;
 
 import javax.net.ssl.SSLSocket;
@@ -19,8 +21,8 @@ public class Communication {
     private static final String truststorePath = Communication.class.getResource("../keys/truststore").getPath();
     private static final String truststorePass = "littlechat";
 
-    private static final String MAINIP = "192.168.1.16";
-    private static final String BACKUPIP = "192.168.1.17";
+    private static final String MAINIP = "127.0.0.1";
+    private static final String BACKUPIP = "127.0.0.1";
     private static final int MAINPORT = 15000;
     private static final int BACKUPORT = 14999;
     private static ObjectOutputStream os;
@@ -84,7 +86,7 @@ public class Communication {
         if (!reconnecting) {
             reconnecting = true;
 
-            while (reconnecting) {
+            while (reconnecting && counter < 10) {
                 try {
                     socket = (SSLSocket) factory.createSocket();
                     socket.setReuseAddress(true);
@@ -104,8 +106,24 @@ public class Communication {
                     reconnecting = false;
 
                 } catch (IOException e) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
                     counter++;
                 }
+            }
+
+            if (counter >= 10) {
+                MainPage.stopWorkers();
+                Platform.runLater(() -> {
+                    try {
+                        Manager.changeToLogin();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         } else {
             while (reconnecting) {
@@ -287,7 +305,7 @@ public class Communication {
      * @param roomName Room chat name.
      */
     public void addRoom(String roomName) {
-        Message message = new Message(addRoomType , roomName + "\0" + roomName);
+        Message message = new Message(addRoomType, roomName + "\0" + roomName + "\0" + MainPage.getUsername());
         sendMessage(message);
     }
 

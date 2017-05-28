@@ -4,6 +4,8 @@ import gui.Manager;
 import gui.mainPage.MainPage;
 import javafx.application.Platform;
 
+import static gui.Manager.changeToLogin;
+
 public class LogoutType extends ReactMessage {
     /**
      * Get logout type react message.
@@ -24,15 +26,15 @@ public class LogoutType extends ReactMessage {
             return ;
 
         if( Manager.wantToClose ) {
-            mainPage.stopWorkers();
+            MainPage.stopWorkers();
             Platform.runLater(() -> Manager.getStage().close());
             return;
         }
 
         Platform.runLater(() -> {
                 try {
-                    mainPage.stopWorkers();
-                    Manager.changeToLogin();
+                    MainPage.stopWorkers();
+                    changeToLogin();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

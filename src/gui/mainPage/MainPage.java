@@ -106,6 +106,14 @@ public class MainPage implements Initializable, Controller<MainPageState> {
     }
 
     /**
+     * Stop workers threads.
+     */
+    public static void stopWorkers() {
+        executor.shutdownNow();
+        readThread.stopThread();
+    }
+
+    /**
      * Creates the stage for the main page.
      * @return The stage.
      * @throws Exception Throws IOException if the fxml file is not found.
@@ -313,14 +321,6 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         for( int i = 0; i < numberOfWorkerThreads; i++ ) {
             executor.submit(new Worker(this));
         }
-    }
-
-    /**
-     * Stop workers threads.
-     */
-    public void stopWorkers() {
-        executor.shutdownNow();
-        readThread.stopThread();
     }
 
     /**
