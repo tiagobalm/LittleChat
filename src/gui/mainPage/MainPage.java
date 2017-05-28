@@ -222,8 +222,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
         room = buttonID;
         Platform.runLater(() -> messageInput.requestFocus());
 
-        if(chatMessages.containsKey(buttonID))
+        if (chatMessages.containsKey(buttonID)) {
+            System.out.println("Constains key");
             addRoomMessagesToPanel(buttonID);
+        }
         else
             getRoomMessages(buttonID);
 
@@ -272,10 +274,8 @@ public class MainPage implements Initializable, Controller<MainPageState> {
                     return;
 
                 if (chatMessages.containsKey(MainPage.room))
-                    chatMessages.get(MainPage.room).add(username + "\0" + message);
+                    chatMessages.get(MainPage.room).add(username + "\0" + System.currentTimeMillis() + "\0" + message);
 
-                for (String s : chatMessages.get(MainPage.room))
-                    System.out.println(s);
                 addMessageToPanel(MainPage.username, System.currentTimeMillis(), message);
                 Communication.getInstance().sendMessageRequest(room, message);
                 messageInput.setText("");
@@ -548,8 +548,10 @@ public class MainPage implements Initializable, Controller<MainPageState> {
 
         for(String message : chatMessages.get(room)) {
             String[] messageParameters = message.split("\0");
-            if (messageParameters.length != 3)
+            if (messageParameters.length != 3) {
+                System.out.println("String message != 3");
                 continue;
+            }
             addMessageToPanel(messageParameters[0].trim(), Long.parseLong(messageParameters[1].trim()), messageParameters[2].trim());
         }
     }
