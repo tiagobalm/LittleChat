@@ -19,7 +19,8 @@ public class Communication {
     private static final String truststorePath = Communication.class.getResource("../keys/truststore").getPath();
     private static final String truststorePass = "littlechat";
 
-    private static final String IP = "127.0.0.1";
+    private static final String MAINIP = "192.168.1.16";
+    private static final String BACKUPIP = "192.168.1.17";
     private static final int MAINPORT = 15000;
     private static final int BACKUPORT = 14999;
     private static ObjectOutputStream os;
@@ -50,7 +51,7 @@ public class Communication {
 
             System.out.println("Trying to connect to main server.");
 
-            socket.connect(new InetSocketAddress(IP, MAINPORT));
+            socket.connect(new InetSocketAddress(MAINIP, MAINPORT));
 
             System.out.println("Loading output streams");
             os = new ObjectOutputStream(socket.getOutputStream());
@@ -89,9 +90,9 @@ public class Communication {
                     socket.setReuseAddress(true);
 
                     if (counter % 2 == 0)
-                        socket.connect(new InetSocketAddress(IP, MAINPORT));
+                        socket.connect(new InetSocketAddress(MAINIP, MAINPORT));
                     if (counter % 2 != 0)
-                        socket.connect(new InetSocketAddress(IP, BACKUPORT));
+                        socket.connect(new InetSocketAddress(BACKUPIP, BACKUPORT));
 
                     os = new ObjectOutputStream(socket.getOutputStream());
                     os.flush();
